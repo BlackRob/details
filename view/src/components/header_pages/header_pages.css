@@ -1,0 +1,79 @@
+.Header_punctuation {
+  color: lightgray;
+  padding-left: 5vmin;
+  width: auto;
+}
+
+.Header_punctuation button {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  background-color: inherit;
+  padding: none;
+  font-weight: 300;
+  font-size: 1em;
+  color: lightgray;
+  transition: all 0.2s;
+  width: auto;
+}
+
+.Header_punctuation button:visited {
+  color: lightgray;
+}
+
+.Header_punctuation button:hover {
+  color: lightslategray;
+  cursor: pointer;
+}
+
+.Header_punctuation button:active {
+  color: darkslategray;
+}
+
+.hidden {
+  display: none;
+}
+
+.z1 {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  padding: 20px 0px;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  overflow-y: scroll;
+}
+
+.z1_body {
+  position: relative;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 960px;
+  text-align: left;
+  background: white;
+  border: 1px solid black;
+  color: black;
+  padding: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.z1_title {
+  font-size: 1.5rem;
+  color: #444;
+  width: 100%;
+  line-height: 1.8rem;
+}
+
+.z1_hide {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: -0.5rem;
+}

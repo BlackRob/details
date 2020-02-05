@@ -1,0 +1,33 @@
+.App_header {
+  font-size: 3em;
+  background-image: linear-gradient(to top, #21242b, #383f4d);
+  box-sizing: border-box;
+  height: auto;
+  padding: 2vmin 5vmin;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Header_logo {
+  color: lightgray;
+  text-align: left;
+  flex: 1;
+}
+
+.Header_logo a {
+  text-decoration: none;
+}
+
+.Header_logo a:visited {
+  color: lightgray;
+}
+
+.Header_logo a:hover {
+  color: lightslategray;
+}
+
+.Header_logo a:active {
+  color: darkslategray;
+}

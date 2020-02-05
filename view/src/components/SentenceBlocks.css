@@ -1,0 +1,110 @@
+.active_sentence {
+  grid-area: mid;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  align-content: center;
+  font-size: 1.3em;
+  padding: 10px;
+  line-height: 1.3em;
+}
+
+.block {
+  width: auto;
+  margin-bottom: 0.3em;
+  border-right: 1px solid #282c34;
+  display: grid;
+  grid-template-columns: minmax(0.8em, max-content);
+  grid-template-rows: 0.9em 1.3em;
+  grid-template-areas: 'up' 'down';
+}
+
+.block_border {
+  margin-right: 0px;
+  border-right: solid 1px red;
+}
+
+.placing_button { 
+  border-radius: 0px;
+  width: 0.4em;
+  height: auto;
+  font-size: 45%;
+  grid-area: up;
+  align-self: start;
+  justify-self: right;
+  margin: 0 0 0 auto;
+  padding: 0.2em;
+  background-color: inherit;
+  border: 1px solid red;
+  border-right: none;
+  transition: all 0s;
+}
+
+.block button:hover {
+  background-color: white;
+  color: black;
+}
+
+.gameid, .p_exc, .p_com, .p_cln, .p_semi, .p_prd, .p_parL, .p_parR, .p_qm {
+  color: white;
+  width: auto;
+  margin-right: auto;
+  height: 1.3em;
+  align-self: flex-end;
+  grid-area: down;
+  text-align: left;
+}
+
+.p_parL {
+  padding-right: 0.1em;
+  text-align: right;
+}
+
+.active_sentence .conj,
+.active_sentence .adj,
+.active_sentence .adv,
+.active_sentence .noun,
+.active_sentence .verb,
+.active_sentence .prep,
+.active_sentence .pron,
+.active_sentence .intrj {
+  height: 1.3em;
+  grid-area: down;
+  background-color: inherit;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+.active_sentence .conj {
+  color: yellow; 
+}
+
+.active_sentence .adj {
+  color: lightskyblue;
+}
+
+.active_sentence .noun {
+  color: dodgerblue;
+}
+
+.active_sentence .adv {
+  color: pink;
+}
+
+.active_sentence .verb {
+  color: salmon;
+}
+
+.active_sentence .intrj {
+  color: orange;
+}
+
+.active_sentence .prep {
+  color: lime;
+}
+
+.active_sentence .pron {
+  color: fuchsia;
+}

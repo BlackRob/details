@@ -1,0 +1,28 @@
+.button_row {
+  grid-area: top;
+  box-sizing: border-box;
+  height: auto;
+  padding: 2vmin 5vmin;
+  width: 100%;
+}
+
+.button_row button {
+  width: 6em;
+  font-size: 0.7em;
+  padding: 0.3em 0.4em;
+}
+
+.button_row:first-child {
+  text-align: left;
+}
+
+.button_row button + button {
+  margin-left: 1em;
+  float: right;
+}
+
+.button_row button:hover{
+  color:#000000;
+  background-color:#FFFFFF;
+  border-color: #FFFFFF;
+}
