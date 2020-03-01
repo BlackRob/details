@@ -19,10 +19,15 @@ const Block = (x, index, placing, insert) => {
 }
 
 export default ({ sentence, placing, insert }) => (
-  <div className="active_sentence">
-    {sentence.map((element, index) => {
-      return Block(element, index, placing, insert);
-    })
-    }
+  <div className="active_sentence_slot">
+    <div className="active_sentence_top_effect"></div>
+    <div className="active_sentence_content">
+      <div className="active_sentence">
+        {sentence.map((element, index) => {
+          return Block(element, index, placing, insert);
+        })}
+      </div>
+    </div>
+    <div className="active_sentence_bottom_effect"></div>
   </div>
 );

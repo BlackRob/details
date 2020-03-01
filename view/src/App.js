@@ -21,27 +21,28 @@ const App = () => {
 
 // the default sentence
 const helloworld = [{
+  sentenceId: uuid.v4(),
   id: 0,
   type: 'gameid',
   word: '',
 },
 {
-  id: uuid.v4(),
+  id: 1,
   type: 'intrj',
   word: 'Hello',
 },
 {
-  id: uuid.v4(),
+  id: 2,
   type: 'p_com',
   word: ',',
 },
 {
-  id: uuid.v4(),
+  id: 3,
   type: 'noun',
   word: 'World',
 },
 {
-  id: uuid.v4(),
+  id: 4,
   type: 'p_exc',
   word: '!',
 },];
@@ -52,7 +53,7 @@ class Game extends React.Component {
     this.state = {
       active: false,            // game is currently being played
       placing: false,           // display is showing where a word can be inserted
-      sentenceID: 0,            // ID of base sentence from server
+      showSharing: false,       // to show the sharing overlay or not
       sentence: [helloworld],   // our default sentence
       cards: [],                // all word-types cards player has
       workingCards: [],         // word-type cards in the working row
@@ -64,7 +65,6 @@ class Game extends React.Component {
       totalCardCount: 0,        // to track cards played
     };
 
-    this.share = this.share.bind(this);
     this.updateSentence = this.updateSentence.bind(this); // adds new sentence to history
     this.undo = this.undo.bind(this);
     this.newGame = this.newGame.bind(this);
@@ -78,10 +78,7 @@ class Game extends React.Component {
     this.setPlacing = this.setPlacing.bind(this);
     this.setLastCards = this.setLastCards.bind(this);
     this.setUndoability = this.setUndoability.bind(this);
-  }
-
-  share() {
-    console.log("sharing isn't implemented yet");
+    this.setShowSharing = this.setShowSharing.bind(this);
   }
 
   updateSentence(longerSentence) {
@@ -108,7 +105,7 @@ class Game extends React.Component {
     // ask server for new sentence... wait
     // if sentence arrives
     let newSentence = parseServerResponse();
-    this.setState({ sentence: newSentence.sentence, sentenceID: newSentence.sentenceID });
+    this.setState({ sentence: newSentence.sentence, });
     this.setPlacing(false);
     this.clearWR();
     // sometimes the game coming from server has cards, sometimes not
@@ -118,7 +115,7 @@ class Game extends React.Component {
       let x = [];
       // for now, every new game starts with five cards
       for (var i = 0; i < 5; i++) {
-        x.push(newRandomCard());
+        x.push(newRandomCard(i));
       }
       this.setState({ cards: x, totalCardCount: 5, });
     }
@@ -127,7 +124,7 @@ class Game extends React.Component {
 
   newCard() {
     this.setState({
-      cards: this.state.cards.concat([newRandomCard()]),
+      cards: this.state.cards.concat([newRandomCard(this.state.totalCardCount)]),
       totalCardCount: this.state.totalCardCount + 1,
     });
   }
@@ -164,7 +161,8 @@ class Game extends React.Component {
 
   insert(index) {
     // deciding how to format the working row is complicated, so logic moved to its own file
-    let toBeInserted = preInsertProcessing(this.state.cards, this.state.workingCards);
+    const maxCardId = this.state.sentence[this.state.sentence.length - 1].reduce((max, x) => (x.id > max ? x.id : max), 0);
+    let toBeInserted = preInsertProcessing(this.state.cards, this.state.workingCards, maxCardId);
     let newSentenceHead = this.state.sentence[this.state.sentence.length - 1].slice(0, index + 1);
     let newSentenceTail = this.state.sentence[this.state.sentence.length - 1].slice(index + 1);
     let newSentence = newSentenceHead.concat(toBeInserted).concat(newSentenceTail);
@@ -201,6 +199,10 @@ class Game extends React.Component {
     }, 1000);
   }
 
+  setShowSharing(value) {
+    this.setState({ showSharing: value });
+  }
+
   setPlacing(value) {
     this.setState({ placing: value });
   }
@@ -223,13 +225,20 @@ class Game extends React.Component {
     return <div className="Game">
       <DrawButtons
         undo={this.undo}
-        share={this.share}
+        cards={this.state.cards}
+        sentence={this.state.sentence[this.state.sentence.length - 1]}
         newGame={this.newGame}
         newCard={this.newCard}
+        showSharing={this.state.showSharing}
+        setShowSharing={this.setShowSharing}
         active={this.state.active}
         undoable={this.state.undoable}
+        workingCards={this.state.workingCards}
       />
-      <DrawSentence sentence={this.state.sentence[this.state.sentence.length - 1]} placing={this.state.placing} insert={this.insert} />
+      <DrawSentence sentence={this.state.sentence[this.state.sentence.length - 1]}
+        placing={this.state.placing}
+        insert={this.insert}
+      />
       <DrawCards
         cards={this.state.cards}
         onEdit={this.editCard}
@@ -251,8 +260,8 @@ class Game extends React.Component {
   }
 }
 
-const newRandomCard = () => {
-  const rando = Math.floor(Math.random() * Math.floor(1000));
+const newRandomCard = (newCardId) => {
+  const rando = Math.floor(Math.random() * 1000);
   let type = null;
   switch (true) {
     case (rando < 280): type = "noun"; break;
@@ -265,7 +274,7 @@ const newRandomCard = () => {
     default: type = "intrj";
   }
   return {
-    id: uuid.v4(),
+    id: newCardId,
     type: type,
     working: false,
     word: '',

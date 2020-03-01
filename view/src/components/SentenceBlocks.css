@@ -1,23 +1,72 @@
-.active_sentence {
+.active_sentence_slot {
   grid-area: mid;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+.active_sentence_top_effect {
+  position: absolute; /* Stay in place */
+  top: 0px;
+  width: 100%;
+  height: 15px;
+  background: linear-gradient(to bottom, rgba(40,44,52,1.0), rgba(40,44,52,0.0));
+  z-index: 1; /* Sit on top */
+  pointer-events: none;
+}
+.active_sentence_bottom_effect {
+  position: absolute; /* Stay in place */
+  bottom: 0px;
+  width: 100%;
+  height: 15px;
+  background: linear-gradient(to top, rgba(40,44,52,1.0), rgba(40,44,52,0.0));
+  z-index: 1; /* Sit on top */
+  pointer-events: none;
+}
+
+.active_sentence_content {
+  min-height: 0;
+  height: 100%;
+  width: auto;
+  margin: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: flex-start;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+.active_sentence_content::-webkit-scrollbar {
+  display: none;
+}
+
+.active_sentence {
+  min-height: 0;
+  height: auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: stretch;
+  align-items: flex-start;
   justify-content: center;
-  align-content: center;
+  align-content: flex-start;
   font-size: 1.3em;
   padding: 10px;
+  padding-top: 2.1em;
+  padding-bottom: 3.1em;
   line-height: 1.3em;
 }
 
 .block {
   width: auto;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.4em;
   border-right: 1px solid #282c34;
   display: grid;
   grid-template-columns: minmax(0.8em, max-content);
-  grid-template-rows: 0.9em 1.3em;
+  grid-template-rows: 0.8em 1.3em;
   grid-template-areas: 'up' 'down';
 }
 
@@ -48,7 +97,7 @@
 }
 
 .gameid, .p_exc, .p_com, .p_cln, .p_semi, .p_prd, .p_parL, .p_parR, .p_qm {
-  color: white;
+  color: var(--punc);
   width: auto;
   margin-right: auto;
   height: 1.3em;
@@ -78,33 +127,33 @@
 }
 
 .active_sentence .conj {
-  color: yellow; 
+  color: var(--conj); 
 }
 
 .active_sentence .adj {
-  color: lightskyblue;
+  color: var(--adj);
 }
 
 .active_sentence .noun {
-  color: dodgerblue;
+  color: var(--noun);
 }
 
 .active_sentence .adv {
-  color: pink;
+  color:  var(--adv);
 }
 
 .active_sentence .verb {
-  color: salmon;
+  color: var(--verb);
 }
 
 .active_sentence .intrj {
-  color: orange;
+  color: var(--intrj);
 }
 
 .active_sentence .prep {
-  color: lime;
+  color: var(--prep);
 }
 
 .active_sentence .pron {
-  color: fuchsia;
+  color: var(--pron);
 }

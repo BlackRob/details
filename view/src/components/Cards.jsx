@@ -23,11 +23,12 @@ const DrawClearButton = ({ updateState, active, wR, clearWR, toggleWorking }) =>
 /////////////////////// working row content
 const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards, toggleWorking, undoable, undoSecondsLeft, winner, totalCardCount, sentenceUpdateCount }) => {
   let content = "";
+  let rando = randomInterjection();
 
   if (undoable) {
     content = <div className="working_row_message">Seconds left to change your mind: {undoSecondsLeft}</div>
   } else if (winner) {
-    content = <div className="working_row_message">You won! &nbsp; Yeah! &nbsp; &nbsp; Cards inserted: {totalCardCount} &nbsp; &nbsp; Moves needed: {sentenceUpdateCount}</div>
+    content = <div className="working_row_message">{rando}! &nbsp; You won! &nbsp; &nbsp; Cards inserted: {totalCardCount} &nbsp; &nbsp; Moves needed: {sentenceUpdateCount}</div>
   }
 
   if (wR.length !== 0) {
@@ -40,6 +41,11 @@ const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards, toggleWor
     {content}
   </div>
 }
+
+const randomInterjection = (() => {
+  const coolInterjections = ["Yikes", "Wow", "Hey now", "Zounds", "Kapow", "Whammy", "Whaaaaat", "Whoopie", "Zoinks", "Bingo"];
+  return coolInterjections[Math.floor(Math.random() * coolInterjections.length)];
+})
 
 const DrawWorkingCard = ({ element, updateState, removeFromWR, toggleWorking }) => {
   return <div className={element.type + " card"}>

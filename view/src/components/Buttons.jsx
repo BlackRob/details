@@ -1,5 +1,6 @@
 import React from 'react';
 import './Buttons.css';
+import Sharing from './Sharing';
 
 const UndoButton = ({ action, undoable }) => {
   let optionalClass = "disabled";
@@ -12,16 +13,6 @@ const UndoButton = ({ action, undoable }) => {
       e.preventDefault();
       action();
     }}>undo
-    </button>;
-}
-
-const ShareButton = ({ action }) => {
-  return <button
-    className="enabled"
-    onClick={(e) => {
-      e.preventDefault();
-      action();
-    }}>share
     </button>;
 }
 
@@ -49,11 +40,31 @@ const NewCardButton = ({ action, active }) => {
     </button>;
 }
 
+const ShareButton = ({ action }) => {
+  return <button
+    className="enabled"
+    onClick={(e) => {
+      e.preventDefault();
+      action(true);
+    }}>share
+    </button>;
+}
+
 export default ({ ...props }) => (
   <div className="button_row">
-    <NewGameButton action={props.newGame} />
-    <ShareButton action={props.share} />
-    <NewCardButton action={props.newCard} active={props.active} />
-    <UndoButton action={props.undo} undoable={props.undoable} />
+    <div className="leftbutt">
+      <NewGameButton action={props.newGame} />
+    </div>
+    <div className="rightbutt">
+      <UndoButton action={props.undo} undoable={props.undoable} />
+      <NewCardButton action={props.newCard} active={props.active} />
+      <ShareButton action={props.setShowSharing} />
+      <Sharing sentence={props.sentence}
+        cards={props.cards}
+        showSharing={props.showSharing}
+        setShowSharing={props.setShowSharing}
+        workingCards={props.workingCards} />
+    </div>
+    <Sharing />
   </div>
 );

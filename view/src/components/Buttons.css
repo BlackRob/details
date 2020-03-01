@@ -4,21 +4,30 @@
   height: auto;
   padding: 2vmin 5vmin;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr fit-content;
+  grid-template-rows: auto;
+  grid-template-areas: 'leftbutt rightbutt';
+}
+
+.leftbutt {
+  grid-area: leftbutt;
+  text-align: left;
+}
+
+.rightbutt {
+  grid-area: rightbutt;
+  text-align: right;
+}
+
+.rightbutt button {
+  margin-left: 1em;
 }
 
 .button_row button {
   width: 6em;
   font-size: 0.7em;
   padding: 0.3em 0.4em;
-}
-
-.button_row:first-child {
-  text-align: left;
-}
-
-.button_row button + button {
-  margin-left: 1em;
-  float: right;
 }
 
 .button_row button:hover{
