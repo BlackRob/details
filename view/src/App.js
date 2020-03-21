@@ -5,6 +5,7 @@ import DrawHeader from './components/Header';
 import DrawSentence from './components/SentenceBlocks';
 import DrawCards from './components/Cards';
 import DrawButtons from './components/Buttons';
+import axios from 'axios';
 import { parseServerResponse } from './nonComponentFunctions/parseServerResponse';
 import { preInsertProcessing } from './nonComponentFunctions/preInsertProcessing';
 
@@ -81,6 +82,40 @@ class Game extends React.Component {
     this.setShowSharing = this.setShowSharing.bind(this);
   }
 
+  /*   componentDidMount() {
+      const method = "get";
+      const url = "http://localhost:3000/movies";
+      const config = { headers: { 'Access-Control-Allow-Origin': '*' }};
+      function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+  
+          // Check if the XMLHttpRequest object has a "withCredentials" property.
+          // "withCredentials" only exists on XMLHTTPRequest2 objects.
+          xhr.open(method, url, true);
+  
+        } else if (typeof XDomainRequest != "undefined") {
+  
+          // Otherwise, check if XDomainRequest.
+          // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+  
+        } else {
+  
+          // Otherwise, CORS is not supported by the browser.
+          xhr = null;
+  
+        }
+        return xhr;
+      }
+  
+      var xhr = createCORSRequest('GET', url);
+      if (!xhr) {
+        throw new Error('CORS not supported');
+      }
+    } */
+
   updateSentence(longerSentence) {
     var x = this.state.sentence;
     x.push(longerSentence);
@@ -104,22 +139,41 @@ class Game extends React.Component {
     // for now, just choose new sentence from file
     // ask server for new sentence... wait
     // if sentence arrives
-    let newSentence = parseServerResponse();
-    this.setState({ sentence: newSentence.sentence, });
-    this.setPlacing(false);
-    this.clearWR();
-    // sometimes the game coming from server has cards, sometimes not
-    if (newSentence.cards.length > 0) {
-      this.setState({ cards: newSentence.cards })
-    } else {
-      let x = [];
-      // for now, every new game starts with five cards
-      for (var i = 0; i < 5; i++) {
-        x.push(newRandomCard(i));
+    let serverResponse = "";
+    // movies/70025897-ce45-4024-a6ec-94e94b278516
+    axios.get('http://localhost:3000/', {
+      headers: {
+        'Content-Type': 'text/plain',
       }
-      this.setState({ cards: x, totalCardCount: 5, });
-    }
-    this.setState({ lastCards: [], active: true, winner: false, sentenceUpdateCount: 0 });
+    })
+      .then(response => {
+        serverResponse = response.data;
+        if (true) {
+          let newSentence = parseServerResponse(serverResponse);
+          console.log(newSentence)
+          this.setState({
+            sentence: [newSentence.sentence],
+          });
+          this.setPlacing(false);
+          this.clearWR();
+          // sometimes the game coming from server has cards, sometimes not
+          if (newSentence.cards.length > 0) {
+            this.setState({ cards: newSentence.cards })
+          } else {
+            let x = [];
+            // for now, every new game starts with five cards
+            for (var i = 0; i < 5; i++) {
+              x.push(newRandomCard(i));
+            }
+            this.setState({ cards: x, totalCardCount: 5, });
+          }
+          this.setState({ lastCards: [], active: true, winner: false, sentenceUpdateCount: 0 });
+        } else {
+          console.log("no data in response?");
+          console.log(serverResponse);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   newCard() {
