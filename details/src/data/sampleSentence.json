@@ -1,0 +1,93 @@
+{
+  "header": {
+    "snum": 1
+  },
+  "sentence": [
+    {
+      "id": 0,
+      "type": "gameid",
+      "word": ""
+    },
+    {
+      "id": 1,
+      "type": "intrj",
+      "word": "Zap"
+    },
+    {
+      "id": 2,
+      "type": "p_exc",
+      "word": "!"
+    },
+    {
+      "id": 3,
+      "type": "adj",
+      "word": "The"
+    },
+    {
+      "id": 4,
+      "type": "adj",
+      "word": "gay"
+    },
+    {
+      "id": 5,
+      "type": "noun",
+      "word": "wizard"
+    },
+    {
+      "id": 6,
+      "type": "adv",
+      "word": "quickly"
+    },
+    {
+      "id": 7,
+      "type": "verb",
+      "word": "cast"
+    },
+    {
+      "id": 8,
+      "type": "adj",
+      "word": "a"
+    },
+    {
+      "id": 9,
+      "type": "noun",
+      "word": "spell"
+    },
+    {
+      "id": 10,
+      "type": "prep",
+      "word": "on"
+    },
+    {
+      "id": 11,
+      "type": "pron",
+      "word": "his"
+    },
+    {
+      "id": 12,
+      "type": "noun",
+      "word": "wife"
+    },
+    {
+      "id": 13,
+      "type": "conj",
+      "word": "and"
+    },
+    {
+      "id": 14,
+      "type": "pron",
+      "word": "her"
+    },
+    {
+      "id": 15,
+      "type": "noun",
+      "word": "sister"
+    },
+    {
+      "id": 16,
+      "type": "p_prd",
+      "word": "."
+    }
+  ],
+  "cards": []
+}

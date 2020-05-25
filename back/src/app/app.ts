@@ -4,18 +4,21 @@ import bodyParser = require('koa-bodyparser');
 import logger = require('koa-logger');
 import json = require('koa-json');
 import cors = require('koa2-cors');
-const serve = require('koa-static');
-const mount = require('koa-mount');
+import serve = require('koa-static');
+import mount = require('koa-mount');
 import HttpStatus = require('http-status');
 import movieController from '../movie/movie.controller';
 
 const app: Koa = new Koa();
 const router = new Router();
 
-// to serve static pages
+
+app.use(serve('../site'));
+/* // to serve static pages
 const static_pages = new Koa();
-static_pages.use(serve(__dirname + "/details")); //serve the build directory
-app.use(mount("/", static_pages));
+static_pages.use(serve("/details")); //serve the build directory
+console.log(__dirname)
+app.use(mount("/", static_pages)); */
 
 // Middlewares
 app.use(cors()) // { allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'OPTION'] }
