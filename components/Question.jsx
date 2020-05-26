@@ -33,21 +33,20 @@ const QuestionPage = ({ showVal, setShow }) => {
       a <i>detail</i> like the adjective <b>dark</b>, and now I
       have a longer sentence, "<b>Dark</b> chocolate is delicious".</p>
       <p><strong>Can I see an example?</strong> <br />
-      Sure! Watch the video below or click <Link href="/posts/200418_playing_details">
-          <a rel="noopener noreferrer" target="_blank">here</a></Link> to read the rules.</p>
+      Sure! Watch the video below or click <a href="https://grumbly.games/posts/200418_playing_details" rel="noopener noreferrer" target="_blank">here</a> to read the rules.</p>
       <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" />
       <div name="learn" className="typeButtonDiv">
         <h3>Learn more about...</h3>
         <div className="typeButtons">
-          <Link href="/adjectives"><a rel="noopener noreferrer" target="_blank"><button className="adj">adjectives</button></a></Link>
-          <Link href="/nouns"><a rel="noopener noreferrer" target="_blank"><button className="noun">nouns</button></a></Link>
-          <Link href="/adverbs"><a rel="noopener noreferrer" target="_blank"><button className="adv">adverbs</button></a></Link>
-          <Link href="/verbs"><a rel="noopener noreferrer" target="_blank"><button className="verb">verbs</button></a></Link>
-          <Link href="/prepositions"><a rel="noopener noreferrer" target="_blank"><button className="prep">prepositions</button></a></Link>
-          <Link href="/conjunctions"><a rel="noopener noreferrer" target="_blank"><button className="conj">conjunctions</button></a></Link>
-          <Link href="/pronouns"><a rel="noopener noreferrer" target="_blank"><button className="pron">pronouns</button></a></Link>
-          <Link href="/interjections"><a rel="noopener noreferrer" target="_blank"><button className="intrj">interjections</button></a></Link>
-          <Link href="/punctuation"><a rel="noopener noreferrer" target="_blank"><button className="punc">punctuation</button></a></Link>
+          <a href="https://grumbly.games/adjectives" rel="noopener noreferrer" target="_blank"><button className="adj">adjectives</button></a>
+          <a href="https://grumbly.games/nouns" rel="noopener noreferrer" target="_blank"><button className="noun">nouns</button></a>
+          <a href="https://grumbly.games/adverbs" rel="noopener noreferrer" target="_blank"><button className="adv">adverbs</button></a>
+          <a href="https://grumbly.games/verbs" rel="noopener noreferrer" target="_blank"><button className="verb">verbs</button></a>
+          <a href="https://grumbly.games/prepositions" rel="noopener noreferrer" target="_blank"><button className="prep">prepositions</button></a>
+          <a href="https://grumbly.games/conjunctions" rel="noopener noreferrer" target="_blank"><button className="conj">conjunctions</button></a>
+          <a href="https://grumbly.games/pronouns" rel="noopener noreferrer" target="_blank"><button className="pron">pronouns</button></a>
+          <a href="https://grumbly.games/interjections" rel="noopener noreferrer" target="_blank"><button className="intrj">interjections</button></a>
+          <a href="https://grumbly.games/punctuation" rel="noopener noreferrer" target="_blank"><button className="punc">punctuation</button></a>
         </div>
       </div>
     </div>

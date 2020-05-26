@@ -50,8 +50,8 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
   const readableSentence = makeReadable({ sentence })
   console.log(readableSentence)
   const canvasURLstring = Buffer.from(gameAsString, 'utf8').toString('base64')
-  const gameURL = `https://grumbly.games/details/${canvasURLstring}`
-  const imageURL = `https://grumbly.games/api/${canvasURLstring}`
+  const gameURL = `https://details.grumbly.games/${canvasURLstring}`
+  const imageURL = `https://details.grumbly.games/api/${canvasURLstring}`
 
   return <div className="z2">
     <div className="sharing_popup">
@@ -373,20 +373,4 @@ const puncsAndSpaces = (wordObj) => {
 
 export default Sharing;
 
-{/*
-
-      <label htmlFor="my_comment">Enter your comment</label><br />
-      <textarea id="my_comment"
-        value={comment} onChange={() => changeComment(comment)}
-        name="my_comment" rows="4" />
-
-        .sharing_popup textarea {
-          box-sizing: border-box;
-          font: inherit;
-          margin: 0.5em 0;
-          width: 100%;
-        }
-
-
-*/}
 
