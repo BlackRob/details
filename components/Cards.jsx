@@ -118,7 +118,7 @@ const DrawInputDiv = ({ word, cardId, updateState }) => {
   useEffect(() => { newRef.current.focus() }, [])
   return <div className="input_div">
     <input type="text" defaultValue={word} size={Math.max(4, word.length)}
-      name={cardId} ref={newRef}
+      name={cardId} ref={newRef} autocapitalize="off"
       onKeyUp={(e) => { updateState(cardId, e.target.value); }}
     />
     <style jsx>
