@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "cp canvas_lib64/*so.1 node_modules/canvas/build/Release/ && next build ",
+    "start": "next start",
+    "export": "npm run build && next export"
   },
   "dependencies": {
+    "canvas": "^2.6.1",
+    "fonttrick": "file:fonttrick",
     "next": "9.4.2",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-share": "^4.1.0"
   }
 }
