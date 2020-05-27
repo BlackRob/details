@@ -30,6 +30,7 @@ body {
   background-color: var(--bodybg);
   color: black;
   height: 100%;
+  -ms-overflow-style: none;
 }
 
 * {
@@ -48,6 +49,7 @@ body {
   position: relative;
   overflow-y: scroll;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .container::-webkit-scrollbar {
   display: none;
@@ -75,6 +77,7 @@ body {
   position: relative;
   overflow-y: scroll;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .gameContent::-webkit-scrollbar {
   display: none;

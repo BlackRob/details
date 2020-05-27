@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styles from './HeaderPage.module.css';
-//import { ReactComponent as Gear } from '../../../public/gear.svg'
 
 
-// Clicking on the span opens an informative popup
+// Clicking on the span opens a configuration popup
 const PopUp = () => {
   const [show, setShow] = useState(false);
   return <div className={styles.header_punctuation}>
@@ -61,7 +60,7 @@ const PopUp = () => {
           padding: none;
           fill: var(--active_outline);
           transition: all 0.2s;
-          margin-top: 0.32em;
+          margin-top: 0.22em;
           width: 0.85em;
           height: 0.85em;
           margin-bottom: 0;
