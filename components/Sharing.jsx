@@ -282,6 +282,16 @@ const ClipFailedAdvice = ({ copyFailed, gameURL, gameAsString }) => {
       <p>{gameURL}</p>
       <p><b>The sentence itself</b></p>
       <p>{gameAsString}</p>
+      <style jsx>
+        {`
+          p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -ms-word-break: break-all;
+            word-break: break-word;
+          }
+        `}
+      </style>
     </>
   } else {
     return null
