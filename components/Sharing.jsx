@@ -250,7 +250,7 @@ const ClipboardButton = ({ toCopy, copied, setCopied, setCopyFailed }) => {
     className="react-share__ShareButton"
     onClick={(e) => {
       e.preventDefault();
-      navigator.clipboard.writeText({ toCopy }).then(function () {
+      navigator.clipboard.writeText(toCopy).then(function () {
         setCopied(true)
       }, function () {
         // clipboard write failed 
