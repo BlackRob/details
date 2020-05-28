@@ -9,7 +9,8 @@ const PopUp = () => {
     <button onClick={() => { setShow(true) }}>
       <svg alt="Gear by Aya Sofya from the Noun Project"
         xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
-        viewBox="0 0 100 100"><g transform="translate(0,-952.36218)">
+        viewBox="0 0 100 100" fillOpacity="1" stroke="none" marker="none" visibility="visible"
+        display="inline" overflow="visible" ><g transform="translate(0,-952.36218)">
           <path d="m 41.99461,957.36222 c -1.4459,0.0197 -2.6889,1.27519 -2.9375,2.4375 
         l -1.625,8.96872 c -3.4821,1.3103 -6.6953,3.1189 -9.5625,5.375 l -8.4688,-3.2812 
         c -1.3045,-0.5063 -2.9347,0.051 -3.6562,1.25 l -8.3438002,13.6562 
@@ -46,9 +47,7 @@ const PopUp = () => {
         z m 5.4688,18.00002 c -11.5624,0 -21,9.4375 -21,20.99996 0,11.5624 9.4376,20.9999 
         21,20.9999 11.5625,0 21,-9.4375 21,-20.9999 0,-11.56246 -9.4375,-20.99996 -21,-20.99996 
         z m 0,6 c 8.3198,0 15,6.6801 15,14.99996 0,8.3197 -6.6802,14.9999 -15,14.9999 
-        -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"
-            fillOpacity="1" stroke="none" marker="none" visibility="visible"
-            display="inline" overflow="visible" /></g></svg>
+        -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"/></g></svg>
     </button>
     <ExclamationPage showVal={show} setShow={() => { setShow(false) }} />
     <style jsx>

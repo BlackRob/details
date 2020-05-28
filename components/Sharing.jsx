@@ -44,11 +44,16 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
     })(window, document, 'script')
   }, []) */
 
+  // variable to show if copy to clipboard worked
+  const [copied, setCopied] = useState(false);
+  // variable to show info if copy to clipboard failed
+  const [copyFailed, setCopyFailed] = useState(false)
+
   //console.log(gameStateToStr({ sentence, cards }))
   const canvasDataURL = drawCanvas({ sentence, cards })
   const gameAsString = gameStateToStr({ sentence, cards })
   const readableSentence = makeReadable({ sentence })
-  console.log(readableSentence)
+  //console.log(readableSentence)
   const canvasURLstring = Buffer.from(gameAsString, 'utf8').toString('base64')
   const gameURL = `https://details.grumbly.games/${canvasURLstring}`
   const imageURL = `https://details.grumbly.games/api/${canvasURLstring}`
@@ -56,7 +61,7 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
   return <div className="z2">
     <div className="sharing_popup">
       <div className="z2_title">
-        Share your sentence! {wih}
+        Share your sentence!
         <span className="z2_hide" onClick={() => { setShowSharing(false) }}>x</span>
       </div>
       <img src={canvasDataURL} />
@@ -71,12 +76,13 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
         <TelegramShareButton children={<TelegramIcon size={32} round={true} />} url={gameURL} title="grumbly.games" />
         <WeiboShareButton children={<WeiboIcon size={32} round={true} />} url={gameURL} title="grumbly.games" image={imageURL} />
         <TwitterShareButton children={<TwitterIcon size={32} round={true} />} url={gameURL} hashtags={["ClickToPlay"]} />
-        <WhatsappShareButton children={<WhatsappIcon size={32} round={true} />} url={gameURL} title="grumbly.games" />
+        <WhatsappShareButton children={<WhatsappIcon size={32} round={true} />} url={gameURL} title={`${readableSentence}`} />
         {/* <div className='skype-share' data-href={gameURL} data-lang='en-US' data-text='' data-style='' >
           <img className="skypeShareLogo" src='/s_logo.svg' width="18px" height="18px" />
         </div> */}
-        <ClipboardButton toCopy={gameURL} />
+        <ClipboardButton toCopy={gameURL} copied={copied} setCopied={setCopied} setCopyFailed={setCopyFailed} />
       </div>
+      <ClipFailedAdvice copyFailed={copyFailed} gameURL={gameURL} gameAsString={gameAsString} />
     </div>
     <style jsx>
       {`
@@ -232,8 +238,7 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
   </div>
 }
 
-const ClipboardButton = ({ toCopy }) => {
-  const [copied, setCopied] = useState(false);
+const ClipboardButton = ({ toCopy, copied, setCopied, setCopyFailed }) => {
   let imgSrc = "/clipboard_unchecked.svg"
   let altText = "empty clipboard icon by Zach Bogart from the Noun Project"
   if (copied) {
@@ -245,7 +250,14 @@ const ClipboardButton = ({ toCopy }) => {
     className="react-share__ShareButton"
     onClick={(e) => {
       e.preventDefault();
-      updateClipboard({ newClip: toCopy, result: setCopied })
+      navigator.clipboard.writeText({ toCopy }).then(function () {
+        setCopied(true)
+      }, function () {
+        // clipboard write failed 
+        setCopyFailed(true)
+        console.log("copy to clipboard failed!")
+      });
+      //updateClipboard({ newClip: toCopy, result: setCopied })
     }}><img src={imgSrc} width="32" height="32" alt={altText} />
     <style jsx>
       {`
@@ -261,11 +273,31 @@ const ClipboardButton = ({ toCopy }) => {
   </button >;
 }
 
+const ClipFailedAdvice = ({ copyFailed, gameURL, gameAsString }) => {
+  if (copyFailed) {
+    return <>
+      <p>Oh no! It looks like "copy to clipboard" didn't work!</p>
+      <p>Maybe try to manually select and copy one of the strings below.</p>
+      <p><b>The game URL</b> --copy this to share the current game</p>
+      <p>{gameURL}</p>
+      <p><b>The sentence itself</b></p>
+      <p>{gameAsString}</p>
+    </>
+  } else {
+    return null
+  }
+}
+
 const updateClipboard = ({ newClip, result }) => {
+
+  {/*  const copyText = newClip;
+  copyText.select();
+  var copied = document.execCommand("copy");
+  result(copied) */}
   navigator.clipboard.writeText(newClip).then(function () {
     result(true)
   }, function () {
-    /* clipboard write failed */
+    // clipboard write failed 
     result(false)
     console.log("copy to clipboard failed!")
   });
