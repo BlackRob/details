@@ -1,5 +1,5 @@
-import { drawCanvas } from "../../../details/components/drawCanvas"
-import { stringIsValid, strToGameState } from '../../../details/components/gameStatePack'
+import { drawCanvas } from "../../../components/drawCanvas"
+import { stringIsValid, strToGameState } from '../../../components/gameStatePack'
 import fonttrick from 'fonttrick'
 
 
