@@ -187,7 +187,7 @@ class Game extends React.Component {
   }
 
   addToWR(cardId) {
-    this.setState({ workingCards: this.state.workingCards.concat([cardId]) });
+    this.setState({ workingCards: this.state.workingCards.concat([cardId]), setPlacing: false });
   }
 
   removeFromWR(cardId) {
