@@ -2,19 +2,26 @@ import React, { useEffect } from 'react';
 
 
 /////////////////////// working row content
-const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards, toggleWorking, undoable, undoSecondsLeft, winner, totalCardCount, sentenceUpdateCount }) => {
+const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards,
+  toggleWorking, undoable, undoSecondsLeft, winner,
+  switchPlacesWR, totalCardCount, sentenceUpdateCount }) => {
   let content = "";
   let rando = randomInterjection();
 
   if (undoable) {
-    content = <div className="working_row_message">Seconds left to change your mind: {undoSecondsLeft}</div>
+    content = <div className="working_row_message">
+      Seconds left to change your mind: {undoSecondsLeft}</div>
   } else if (winner) {
-    content = <div className="working_row_message">{rando}! &nbsp; You won! &nbsp; &nbsp; Cards inserted: {totalCardCount} &nbsp; &nbsp; Moves needed: {sentenceUpdateCount}</div>
+    content = <div className="working_row_message">{rando}! &nbsp;
+      You won! &nbsp; &nbsp; Cards inserted: {totalCardCount} &nbsp;
+      &nbsp; Moves needed: {sentenceUpdateCount}</div>
   }
 
   if (wR.length > 0) {
     const workingCards = wR.map(x => cards.find(y => y.id === x));
-    content = workingCards.map(z => <DrawWorkingCard element={z} key={z.id} updateState={updateState} removeFromWR={removeFromWR} toggleWorking={toggleWorking} />)
+    content = workingCards.map((z, index) => <DrawWorkingCard element={z} key={z.id}
+      updateState={updateState} removeFromWR={removeFromWR} switchPlacesWR={switchPlacesWR}
+      toggleWorking={toggleWorking} index={index} numCards={workingCards.length - 1} />)
   }
 
   return <div className="working_row_content">
@@ -47,11 +54,12 @@ const randomInterjection = () => {
   return coolInterjections[Math.floor(Math.random() * coolInterjections.length)];
 }
 
-const DrawWorkingCard = ({ element, updateState, removeFromWR, toggleWorking }) => {
+const DrawWorkingCard = ({ element, updateState, removeFromWR, toggleWorking, index, numCards, switchPlacesWR }) => {
   return <div className={element.type + " card"}>
     <DrawType wordType={element.type} />
     <DrawRemoveButton updateState={updateState} cardId={element.id} removeFromWR={removeFromWR} toggleWorking={toggleWorking} />
     <DrawInputDiv word={element.word} cardId={element.id} updateState={updateState} />
+    <DrawSwitchButton numCards={numCards} index={index} switchPlacesWR={switchPlacesWR} />
     <style jsx>
       {`    
         .card {
@@ -65,6 +73,7 @@ const DrawWorkingCard = ({ element, updateState, removeFromWR, toggleWorking }) 
           flex: 1 0 auto;
           color: black;
           border: 1px solid black;
+          position: relative;
         }
       `}
     </style>
@@ -113,6 +122,39 @@ const DrawRemoveButton = ({ updateState, cardId, removeFromWR, toggleWorking }) 
   </button>
 }
 
+const DrawSwitchButton = ({ numCards, index, switchPlacesWR }) => {
+  let returnValue = null
+  if (index < numCards) {
+    returnValue = <button tabIndex="-1"
+      onClick={(e) => {
+        e.preventDefault();
+        switchPlacesWR(index, index + 1);
+      }}>⇄
+      <style jsx>
+        {`
+        button {
+          position: absolute;
+          z-index: 2;
+          bottom: 0px;
+          right: calc(-0.5em - 2px);
+          width: 1em;
+          height: auto;
+          font-size: 110%;
+          color: rgba(0, 0, 0, 1);
+          border: none;
+          background: none;
+          border-radius: 0;
+          padding: 0;
+          padding-bottom: 0.2em;
+        }  
+      `}
+      </style>
+    </button>
+  }
+
+  return returnValue
+}
+
 const DrawInputDiv = ({ word, cardId, updateState }) => {
   const newRef = React.createRef()
   useEffect(() => { newRef.current.focus() }, [])
@@ -141,10 +183,13 @@ const DrawInputDiv = ({ word, cardId, updateState }) => {
           box-sizing: border-box;
           padding: 0px;
           overflow: hidden;
-          margin: 0px 4px 4px 4px;
+          margin: 0px 8px 4px 8px;
           padding: 1px 0px 1px 0px;
           background-color: rgba(255, 255, 255, 0);
           text-align: center;
+        }
+        .input_div input:focus {
+          background-color: rgba(255, 255, 255, 0.7);
         }
       `}
     </style>
@@ -187,11 +232,16 @@ const DrawCardButton = ({ type, addToWR, cards, toggleWorking }) => {
 
 
 /////////////////////// the whole shebang
-const DrawCards = ({ cards, onEdit, wR, toggleWorking, addToWR, removeFromWR, undoable, undoSecondsLeft, winner, totalCardCount, sentenceUpdateCount }) => {
+const DrawCards = ({ cards, onEdit, wR, toggleWorking, addToWR,
+  removeFromWR, switchPlacesWR, undoable, undoSecondsLeft,
+  winner, totalCardCount, sentenceUpdateCount }) => {
   return <div className="card_row">
     <div className="working_row">
       <div className="working_row_slot">
-        <DrawWorkingRowContent wR={wR} removeFromWR={removeFromWR} updateState={onEdit} cards={cards} toggleWorking={toggleWorking} undoable={undoable} undoSecondsLeft={undoSecondsLeft} winner={winner} totalCardCount={totalCardCount} sentenceUpdateCount={sentenceUpdateCount} />
+        <DrawWorkingRowContent wR={wR} removeFromWR={removeFromWR} updateState={onEdit}
+          cards={cards} toggleWorking={toggleWorking} undoable={undoable}
+          undoSecondsLeft={undoSecondsLeft} winner={winner} switchPlacesWR={switchPlacesWR}
+          totalCardCount={totalCardCount} sentenceUpdateCount={sentenceUpdateCount} />
         <div className="left_edge_effect"></div>
         <div className="right_edge_effect"></div>
       </div>

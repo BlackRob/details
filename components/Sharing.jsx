@@ -82,7 +82,7 @@ const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
         </div> */}
         <ClipboardButton toCopy={gameURL} copied={copied} setCopied={setCopied} setCopyFailed={setCopyFailed} />
       </div>
-      <ClipFailedAdvice copyFailed={copyFailed} gameURL={gameURL} gameAsString={gameAsString} />
+      <ClipFailedAdvice copyFailed={copyFailed} gameURL={gameURL} readableSentence={readableSentence} />
     </div>
     <style jsx>
       {`
@@ -273,7 +273,7 @@ const ClipboardButton = ({ toCopy, copied, setCopied, setCopyFailed }) => {
   </button >;
 }
 
-const ClipFailedAdvice = ({ copyFailed, gameURL, gameAsString }) => {
+const ClipFailedAdvice = ({ copyFailed, gameURL, readableSentence }) => {
   if (copyFailed) {
     return <>
       <p>Oh no! It looks like "copy to clipboard" didn't work!</p>
@@ -281,7 +281,7 @@ const ClipFailedAdvice = ({ copyFailed, gameURL, gameAsString }) => {
       <p><b>The game URL</b> --copy this to share the current game</p>
       <p>{gameURL}</p>
       <p><b>The sentence itself</b></p>
-      <p>{gameAsString}</p>
+      <p>{readableSentence}</p>
       <style jsx>
         {`
           p {

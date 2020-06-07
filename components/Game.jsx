@@ -36,6 +36,7 @@ class Game extends React.Component {
     this.clearWR = this.clearWR.bind(this);
     this.addToWR = this.addToWR.bind(this);
     this.removeFromWR = this.removeFromWR.bind(this);
+    this.switchPlacesWR = this.switchPlacesWR.bind(this);
     this.insert = this.insert.bind(this);
     this.setPlacing = this.setPlacing.bind(this);
     this.setLastCards = this.setLastCards.bind(this);
@@ -191,9 +192,20 @@ class Game extends React.Component {
 
   removeFromWR(cardId) {
     this.setState({ workingCards: this.state.workingCards.filter(x => x !== cardId) });
-    let anythingToPlace = false;
-    this.state.cards.forEach(x => { if (x.word.length > 0) { anythingToPlace = true } });
-    this.setPlacing(this.state.placing && anythingToPlace);
+    let anythingToPlace = true;
+    this.state.cards.forEach(x => { if (x.word.length === 0) { anythingToPlace = false } });
+    if (this.state.placing !== anythingToPlace) {
+      this.setPlacing(anythingToPlace);
+    }
+  }
+
+  switchPlacesWR(a, b) {
+    let wcCopy = this.state.workingCards
+    let newA = this.state.workingCards[b]
+    let newB = this.state.workingCards[a]
+    wcCopy[a] = newA
+    wcCopy[b] = newB
+    this.setState({ workingCards: wcCopy });
   }
 
   insert(index) {
@@ -286,6 +298,7 @@ class Game extends React.Component {
         toggleWorking={this.toggleWorking}
         addToWR={this.addToWR}
         removeFromWR={this.removeFromWR}
+        switchPlacesWR={this.switchPlacesWR}
         undoable={this.state.undoable}
         undoSecondsLeft={this.state.undoSecondsLeft}
         winner={this.state.winner}
