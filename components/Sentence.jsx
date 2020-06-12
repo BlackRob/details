@@ -114,11 +114,9 @@ const InsertZone = ({ placing, insert, index }) => {
     classToUse = classToUse + " bottom"
   }
 
-  const [highlight, setHighlight] = useState(false);
-
   return <div className={classToUse}
     onClick={(e) => insert(index)} >
-    <DrawCaret status={highlight} parentComponentClass={classToUse} index={index} />
+    <DrawCaret parentComponentClass={classToUse} index={index} />
     <style jsx>
       {`
       .hidden, .visible {

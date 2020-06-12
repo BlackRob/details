@@ -12,18 +12,18 @@ import { gameStateToStr } from "./gameStatePack"
 
 
 // Clicking on the span opens an informative popup
-const Sharing = ({ sentence, cards, showSharing, setShowSharing, wih }) => {
+const Sharing = ({ sentence, cards, showSharing, setShowSharing }) => {
   if (!showSharing) {
     return <></>
   } else {
     return <SharingPopUp sentence={sentence}
       cards={cards}
       setShowSharing={setShowSharing}
-      wih={wih} />
+    />
   }
 }
 
-const SharingPopUp = ({ sentence, cards, setShowSharing, wih }) => {
+const SharingPopUp = ({ sentence, cards, setShowSharing }) => {
   // have to run a script to get the skype button
   /* useEffect(() => {
     (function (r, d, s) {

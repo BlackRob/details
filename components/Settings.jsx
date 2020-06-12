@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './HeaderPage.module.css';
 
 
 // Clicking on the span opens a configuration popup
-const PopUp = () => {
+const PopUp = ({ gameMode, setGameMode }) => {
   const [show, setShow] = useState(false);
+  const popUpRef = useRef(null)
+
   return <div className={styles.header_punctuation}>
     <button onClick={() => { setShow(true) }}>
-      <svg alt="Gear by Aya Sofya from the Noun Project"
+      <svg alt="Gear by Aya Sofya from the Noun Project" ref={popUpRef}
+        onMouseEnter={() => {
+          popUpRef.current.style.animationPlayState = "running"
+          popUpRef.current.style.webkitAnimationPlayState = "running"
+          console.log("in")
+        }}
+        onMouseLeave={() => {
+          popUpRef.current.style.animationPlayState = "paused"
+          popUpRef.current.style.webkitAnimationPlayState = "paused"
+          console.log("out")
+        }}
         xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
         viewBox="0 0 100 100" fillOpacity="1" stroke="none" marker="none" visibility="visible"
         display="inline" overflow="visible" ><g transform="translate(0,-952.36218)">
@@ -49,7 +61,7 @@ const PopUp = () => {
         z m 0,6 c 8.3198,0 15,6.6801 15,14.99996 0,8.3197 -6.6802,14.9999 -15,14.9999 
         -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"/></g></svg>
     </button>
-    <ExclamationPage showVal={show} setShow={() => { setShow(false) }} />
+    <SettingsPage showVal={show} setShow={() => { setShow(false) }} gameMode={gameMode} setGameMode={setGameMode} />
     <style jsx>
       {`
         svg {
@@ -63,14 +75,17 @@ const PopUp = () => {
           width: 0.85em;
           height: 0.85em;
           margin-bottom: 0;
+          -webkit-animation: Gear-spin infinite 15s linear;
+          animation: Gear-spin infinite 15s linear;
+          -webkit-animation-play-state: paused;
+          animation-play-state: paused;
         }
         svg:visited {
           fill: var(--active_outline);
         }
         svg:hover {
-          fill: var(--logo_hover);
+          fill: var(--insert);
           cursor: pointer;
-          animation: Gear-spin infinite 15s linear;
         }
         svg:active {
           fill: darkslategray;
@@ -83,12 +98,20 @@ const PopUp = () => {
           transform: rotate(360deg);
           }
         }
+        @-webkit-keyframes Gear-spin {
+          from {
+            transform: rotate(0deg);
+          }
+        to {
+          transform: rotate(360deg);
+          }
+        }
       `}
     </style>
   </div>
 };
 
-const ExclamationPage = ({ showVal, setShow }) => {
+const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
   let showHide = styles.hidden;
   if (showVal) {
     showHide = styles.z2;
@@ -100,13 +123,65 @@ const ExclamationPage = ({ showVal, setShow }) => {
         Settings
       <span className={styles.z2_hide} onClick={setShow}>x</span>
       </div>
-      <p><strong>There are curently no configurable settings</strong></p>
-      <p><strong>Game mode:</strong> </p>
-      <p><strong>default / collaborative</strong> selected</p>
-      <p><strong>creative</strong> <i>coming soon!!!</i></p>
-      <p><strong>competitive</strong> <i>coming soon!!!</i></p>
+      <p><strong>Choose how you want to play:</strong> </p>
+      <div className="option"><GameModeButton buttonMode="collaborative" gameMode={gameMode} setGameMode={setGameMode} />
+        <strong>collaborative mode</strong>&nbsp;(default)</div>
+      <div className="option"><GameModeButton buttonMode="creative" gameMode={gameMode} setGameMode={setGameMode} />
+        <strong>creative mode</strong>&nbsp;</div>
+      <div className="option"><GameModeButton buttonMode="competitive" gameMode={gameMode} setGameMode={setGameMode} />
+        <strong>competitive mode </strong>&nbsp;<i>coming soon!!!</i></div>
     </div>
+    <style jsx>{`
+      .option {
+        margin-bottom: 1.2rem;
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      `}</style>
   </div>
+}
+
+const GameModeButton = ({ buttonMode, gameMode, setGameMode }) => {
+  let checkedOrNot = "not"
+  let symbol = " "
+  if (buttonMode === gameMode) {
+    checkedOrNot = "checked"
+    symbol = "✔"
+  }
+
+  let disabled = false
+  if (buttonMode === "competitive") {
+    disabled = true
+  }
+
+  return <><button className={checkedOrNot} onClick={() => { if (!disabled) { setGameMode(buttonMode) } }} >{symbol}</button>
+    <style jsx>{`
+      button {
+        width: 3vw;
+        height: 3vw;
+        font-size: 1.3rem;
+        line-height: 1rem;
+        text-align: center;
+        padding: 0;
+        padding-bottom: 0.1rem;
+        background-color: var(--mainbg);
+        border: 1.5px solid black;
+        border-radius: 0.5vmin;
+        margin-right: 2vw;
+      }
+      button.not:hover {
+        background-color: var(--active-outline);
+      }
+      .checked {
+        color: var(--insert);
+      }
+      button.checked:hover {
+        color: var(--insert);
+      }
+    `}</style>
+  </>
 }
 
 

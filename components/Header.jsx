@@ -3,12 +3,12 @@ import Question from './Question';
 import Settings from './Settings';
 import styles from './HeaderPage.module.css';
 
-// our header, which has nothing to do with gameplay
-export default ({ ...props }) => (
+// our beloved header
+export default ({ gameMode, setGameMode }) => (
   <header className={styles.App_header}>
     <div className={styles.Header_logo} >details</div>
 
     <Question />
-    <Settings />
+    <Settings gameMode={gameMode} setGameMode={setGameMode} />
   </header>
 )

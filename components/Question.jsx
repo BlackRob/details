@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'next/link'
 import styles from './HeaderPage.module.css';
 import YouTubeVid from './youTubeVid'
 
@@ -8,8 +7,13 @@ import YouTubeVid from './youTubeVid'
 const PopUp = () => {
   const [show, setShow] = useState(false);
   return <div className={styles.header_punctuation}>
-    <button onClick={() => { setShow(true) }}>?</button>
+    <button className="bigQuestion" onClick={() => { setShow(true) }}>?</button>
     <QuestionPage showVal={show} setShow={() => { setShow(false) }} />
+    <style jsx>{`
+      .bigQuestion:hover {
+        color: var(--insert)
+      }  
+    `}</style>
   </div>
 };
 

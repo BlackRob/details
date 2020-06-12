@@ -63,10 +63,10 @@ export async function getServerSideProps(context) {
     // contains the full state of a game _or_
     // it contains nonsense; this function handles both cases
     if (stringIsValid({ sentenceString: reqString })) {
-      console.log("string is valid", reqString)
+      //console.log("string is valid", reqString)
       returnString = encS
     } else {
-      console.log("string is invalid")
+      //console.log("string is invalid")
       returnString = encES
     }
     // following is for numbers, which aren't encoded
@@ -77,8 +77,8 @@ export async function getServerSideProps(context) {
       sentence: sentences[`_${context.query.game}`].sentence,
       cards: sentences[`_${context.query.game}`].cards
     }), 'utf8').toString('base64')
-    console.log("return string", returnString)
-    console.log(Buffer.from(returnString, 'base64').toString('utf8'))
+    //console.log("return string", returnString)
+    //console.log(Buffer.from(returnString, 'base64').toString('utf8'))
   } else {
     // if the number requested doesn't exist, respond with sentence 4
     // which states that the requested sentence doesn't exist

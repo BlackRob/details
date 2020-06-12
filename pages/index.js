@@ -1,4 +1,3 @@
-import DrawHeader from '../components/Header';
 import DrawGame from '../components/Game';
 import Head from 'next/head';
 
@@ -24,7 +23,6 @@ const Game = () => (
       <meta name="twitter:domain" content="https://grumbly.games/details" />
     </Head>
     <div className="gameContent">
-      <DrawHeader />
       <DrawGame />
     </div>
 

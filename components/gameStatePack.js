@@ -157,7 +157,7 @@ export const stringIsValid = ({ sentenceString }) => {
   let cArray = []
   // every good string will have two consecutive tildes
   // in it: if not, nonsense!
-  console.log(sentenceString)
+  //console.log(sentenceString)
   let sE = sentenceString.indexOf("~~")
   if (sE === -1) {
     console.log("no tildes")
@@ -174,14 +174,14 @@ export const stringIsValid = ({ sentenceString }) => {
     const sArrayRE = /^\d*[a-ms-z]\w*$/
     sArray.forEach((x) => {
       if (!sArrayRE.test(x)) {
-        console.log(x)
+        //console.log(x)
         good = false
       }
     })
     const cArrayRE = /^t*\d*[s-z]\w*$/
     cArray.forEach((x) => {
       if (!cArrayRE.test(x)) {
-        console.log(x)
+        //console.log(x)
         good = false
       }
     })

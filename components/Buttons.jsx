@@ -1,18 +1,34 @@
 import React from 'react';
 import Sharing from './Sharing';
 
-const UndoButton = ({ action, undoable }) => {
-  let optionalClass = "disabled";
-  if (undoable) {
-    optionalClass = "enabled";
-  }
-  return <button
-    className={optionalClass}
-    onClick={(e) => {
-      e.preventDefault();
-      action();
-    }}>undo
+const UndoButton = ({ action, undoStack, gameMode }) => {
+  let returnThis = null
+
+  if (gameMode === "creative") {
+    let optionalClass = "disabled"
+    if (undoStack.length > 0) {
+      optionalClass = "enabled"
+    }
+    returnThis = <button
+      className={optionalClass}
+      onClick={(e) => {
+        e.preventDefault()
+        action()
+      }}>undo
+    <style jsx>{`
+      button {
+        margin-left: 1em;
+        width: 6em;
+        flex: 0 0 auto;
+        color: var(--active_outline);
+        border-color: var(--active_outline);
+        font-size: 0.7em;
+        padding: 0.3em 0.4em;
+      } 
+    `}</style>
     </button>;
+  }
+  return returnThis
 }
 
 const NewGameButton = ({ action }) => {
@@ -22,21 +38,49 @@ const NewGameButton = ({ action }) => {
       e.preventDefault();
       action();
     }}>new game
-    </button>;
+    <style jsx>{`
+      button {
+        margin-right: 1em;
+        width: 6em;
+        flex: 0 0 auto;
+        color: var(--active_outline);
+        border-color: var(--active_outline);
+        font-size: 0.7em;
+        padding: 0.3em 0.4em;
+      } 
+    `}</style>
+  </button>;
 }
 
-const NewCardButton = ({ action, active }) => {
-  let enabledState = "enabled";
-  if (!active) {
-    enabledState = "disabled";
+const NewCardButton = ({ action, active, gameMode }) => {
+  let returnThis = null
+
+  if (gameMode !== "creative") {
+    let enabledState = "enabled";
+    if (!active) {
+      enabledState = "disabled";
+    }
+    return <button
+      className={enabledState}
+      onClick={(e) => {
+        e.preventDefault();
+        action();
+      }}>new card
+    <style jsx>{`
+      button {
+        margin-left: 1em;
+        width: 6em;
+        flex: 0 0 auto;
+        color: var(--active_outline);
+        border-color: var(--active_outline);
+        font-size: 0.7em;
+        padding: 0.3em 0.4em;
+      } 
+    `}</style>
+    </button>
   }
-  return <button
-    className={enabledState}
-    onClick={(e) => {
-      e.preventDefault();
-      action();
-    }}>new card
-    </button>;
+
+  return returnThis
 }
 
 const ShareButton = ({ action }) => {
@@ -46,23 +90,33 @@ const ShareButton = ({ action }) => {
       e.preventDefault();
       action(true);
     }}>share
-    </button>;
+    <style jsx>{`
+      button {
+        margin-left: 1em;
+        width: 6em;
+        flex: 0 0 auto;
+        color: var(--active_outline);
+        border-color: var(--active_outline);
+        font-size: 0.7em;
+        padding: 0.3em 0.4em;
+      }
+    `}</style>
+  </button>;
 }
 
 export default ({ ...props }) => (
   <div className="button_row">
-    <div className="leftbutt">
+    <div>
       <NewGameButton action={props.newGame} />
     </div>
-    <div className="rightbutt">
-      <UndoButton action={props.undo} undoable={props.undoable} />
-      <NewCardButton action={props.newCard} active={props.active} />
+    <div >
+      <UndoButton action={props.creativeUndoPop} undoStack={props.creativeUndo} gameMode={props.gameMode} />
+      <NewCardButton action={props.newCard} active={props.active} gameMode={props.gameMode} />
       <ShareButton action={props.setShowSharing} />
       <Sharing sentence={props.sentence}
         cards={props.cards}
         showSharing={props.showSharing}
         setShowSharing={props.setShowSharing}
-        wih={props.wih}
       />
     </div>
     <style jsx>{`
@@ -72,39 +126,10 @@ export default ({ ...props }) => (
         height: auto;
         padding: 2vmin 5vmin;
         width: 100%;
-        display: grid;
-        grid-template-columns: 1fr fit-content;
-        grid-template-rows: auto;
-        grid-template-areas: 'leftbutt rightbutt';
-      }
-
-      .leftbutt {
-        grid-area: leftbutt;
-        text-align: left;
-      }
-
-      .rightbutt {
-        grid-area: rightbutt;
-        text-align: right;
-      }
-    `}</style>
-    <style jsx global>{`
-      .rightbutt button {
-        margin-left: 1em;
-      }
-
-      .enabled, .disabled {
-        width: 6em;
-        color: var(--active_outline);
-        border-color: var(--active_outline);
-        font-size: 0.7em;
-        padding: 0.3em 0.4em;
-      }
-
-      button.enabled:hover, button.disabled:hover {
-        color: #000000;
-        background-color: #FFFFFF;
-        border-color: #FFFFFF;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
     `}</style>
   </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import DrawSentence from './Sentence';
 import DrawCards from './Cards';
 import DrawButtons from './Buttons';
+import DrawHeader from '../components/Header';
 import sentences from '../data/sentences.json';
 import { preInsertProcessing } from './preInsertProcessing';
 import { strToGameState } from './gameStatePack';
@@ -12,7 +13,7 @@ class Game extends React.Component {
     this.state = {
       active: false,            // game is currently being played
       cards: [],                // all word-types cards player has
-      gameMode: "default",      // default mode means new game chooses random sentence
+      gameMode: "collaborative",      // default mode means new game chooses random sentence
       lastCards: [],            // after a word gets inserted, old card state goes here (for undo)
       oldSentence: [],          // previous sentence
       placing: false,           // display is showing where a word can be inserted
@@ -24,11 +25,15 @@ class Game extends React.Component {
       undoSecondsLeft: 0,       // seconds left before undo turns false again
       winner: false,            // set when the game is won
       workingCards: [],         // word-type cards in the working row
-      windowInnerHeight: 0,
+      creativeUndo: [],         // creative mode has unlimited undo, we track separately
     };
 
     this.updateSentence = this.updateSentence.bind(this); // adds new sentence to history
     this.undo = this.undo.bind(this);
+    this.cardDec = this.cardDec.bind(this);
+    this.cardInc = this.cardInc.bind(this);
+    this.accept = this.accept.bind(this);
+    this.checkIfWon = this.checkIfWon.bind(this);
     this.newGame = this.newGame.bind(this);
     this.newCard = this.newCard.bind(this);
     this.editCard = this.editCard.bind(this);
@@ -38,17 +43,20 @@ class Game extends React.Component {
     this.removeFromWR = this.removeFromWR.bind(this);
     this.switchPlacesWR = this.switchPlacesWR.bind(this);
     this.insert = this.insert.bind(this);
+    this.setGameMode = this.setGameMode.bind(this);
     this.setPlacing = this.setPlacing.bind(this);
     this.setLastCards = this.setLastCards.bind(this);
     this.setUndoability = this.setUndoability.bind(this);
     this.setShowSharing = this.setShowSharing.bind(this);
+    this.creativeUndoPop = this.creativeUndoPop.bind(this);
   }
 
   componentDidMount() {
     //// copied from https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+    // I'm not sure if it does anything, but I don't want to remove it then 
+    // find out my height breaks on some device I haven't tested on
     // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01;
-    this.setState({ windowInnerHeight: window.innerHeight })
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     const defaultSentence = "1yTo~2ystart~3a~4yclick~5xthe~6m~7xnew~8zgame~9l~10zbutton~11a~12uor~13yclick~14xthe~15zquestion~16zmark~17yto~18ylearn~19whow~20yto~21yplay~22f~~"
@@ -64,7 +72,7 @@ class Game extends React.Component {
       // URL string only contains current cards and sentence, 
       // everthing else starts from scratch 
       temp.active = false
-      temp.gameMode = "default"
+      temp.gameMode = "collaborative"
       temp.lastCards = []
       temp.oldSentence = []
       temp.placing = false
@@ -75,12 +83,12 @@ class Game extends React.Component {
       temp.undoSecondsLeft = 0
       temp.winner = false
       temp.workingCards = []
-      //sessionStorage.setItem("currentGame", JSON.stringify(temp))
+      temp.creativeUndo = []
     } else {
       // if it doesn't exist, use default sentence
       temp = JSON.parse(strToGameState({ canvasURLstring: this.props.gameState }))
       temp.active = temp.cards.length > 0
-      temp.gameMode = "default"
+      temp.gameMode = "collaborative"
       temp.lastCards = []
       temp.oldSentence = []
       temp.placing = false
@@ -91,7 +99,7 @@ class Game extends React.Component {
       temp.undoSecondsLeft = 0
       temp.winner = false
       temp.workingCards = []
-      //sessionStorage.setItem("currentGame", JSON.stringify(temp))
+      temp.creativeUndo = []
     }
 
     this.setState({
@@ -109,49 +117,122 @@ class Game extends React.Component {
       undoSecondsLeft: temp.undoSecondsLeft,
       winner: temp.winner,
       workingCards: temp.workingCards,
+      creativeUndo: temp.creativeUndo,
     })
   }
 
   updateSentence(longerSentence) {
     this.setState({ sentence: longerSentence, oldSentence: this.state.sentence });
-    sessionStorage.setItem("currentGame", JSON.stringify(this.state))
   }
 
   // after placing a words in the sentence, the user has 7 seconds to
   // change their mind; after this the user is given a new card;
   // this function just handles the "undo" part
+  //// these functions don't get used in creative mode
   undo() {
     this.setState({ sentence: this.state.oldSentence, oldSentence: [], cards: this.state.lastCards, undoable: false });
   }
+  accept() {
+    this.setState({ undoable: false, undoSecondsLeft: 0 });
+    this.checkIfWon()
+  }
+
+  // in creative mode, we allow the removal of words, one at a time
+  // in reverse order to how they were inserted
+  creativeUndoPop() {
+    if (this.state.creativeUndo.length > 0) {
+      let newCreativeUndo = this.state.creativeUndo
+      let lastInserted = newCreativeUndo.pop()
+      let newSentence = this.state.sentence.filter(x => x.id !== lastInserted)
+      this.setState({
+        creativeUndo: newCreativeUndo,
+        sentence: newSentence,
+      });
+    }
+  }
 
   newGame() {
-    // for now, only one game mode, "default"
-    // but other modes might be added in future
-    let new_game = chooseNewGame(sentences, this.state.gameMode);
-
-    this.setState({
-      sentence: (new_game.sentence),
-    });
-    this.setPlacing(false);
-    this.clearWR();
-    // sometimes the game coming from server has cards, sometimes not
-    if (new_game.cards.length > 0) {
-      this.setState({ cards: new_game.cards })
+    // in creative mode, new game starts empty
+    // in default it chooses a starter sentence
+    if (this.state.gameMode === "creative") {
+      this.setState({
+        sentence: [
+          {
+            "id": 0,
+            "type": "head",
+            "word": ""
+          }
+        ],
+        oldSentence: [],
+        lastCards: [],
+        active: true,
+        winner: false,
+        creativeUndo: [],
+        cards: []
+      })
     } else {
-      let x = [];
-      // for now, every new game starts with five cards
-      for (var i = 0; i < 5; i++) {
-        x.push(newRandomCard(i));
+      let new_game = chooseNewGame(sentences, this.state.gameMode);
+
+      this.setState({
+        sentence: (new_game.sentence),
+      });
+      this.setPlacing(false);
+      this.clearWR();
+      // sometimes the game coming from server has cards, sometimes not
+      if (new_game.cards.length > 0) {
+        this.setState({ cards: new_game.cards })
+      } else {
+        let x = [];
+        // for now, every new game starts with five cards
+        for (var i = 0; i < 5; i++) {
+          x.push(newRandomCard(i));
+        }
+        this.setState({ cards: x, totalCardCount: 5, });
       }
-      this.setState({ cards: x, totalCardCount: 5, });
+      this.setState({ oldSentence: [], lastCards: [], active: true, winner: false, sentenceUpdateCount: 0 });
     }
-    this.setState({ oldSentence: [], lastCards: [], active: true, winner: false, sentenceUpdateCount: 0 });
   }
 
   newCard() {
+    let nextCardID = 0
+    this.state.cards.forEach((x) => { if (x > nextCardID) { nextCardID = x } })
+    nextCardID++
     this.setState({
-      cards: this.state.cards.concat([newRandomCard(this.state.totalCardCount)]),
+      cards: this.state.cards.concat([newRandomCard(nextCardID)]),
       totalCardCount: this.state.totalCardCount + 1,
+      sentenceUpdateCount: this.state.sentenceUpdateCount + 1
+    });
+  }
+
+  cardInc(type) {
+    let nextCardID = 0
+    this.state.cards.forEach((x) => { if (x.id > nextCardID) { nextCardID = x.id } })
+    nextCardID++
+    this.setState({
+      cards: this.state.cards.concat([
+        {
+          id: nextCardID,
+          type: type,
+          working: false,
+          word: '',
+        }]),
+      totalCardCount: this.state.totalCardCount + 1,
+    });
+  }
+  cardDec(type) {
+    // find all cards of a certain type that aren't being used
+    let numType = this.state.cards.filter(element => (element.type === type && !element.working))
+    // figure out which one has the highest ID
+    let lastInserted = 0
+    if (numType.length > 0) {
+      numType.forEach((x) => { if (x.id > lastInserted) { lastInserted = x.id } })
+    }
+    // filter out lastInserted
+    let newCardArray = this.state.cards.filter(x => x.id !== lastInserted)
+    // update array in state
+    this.setState({
+      cards: newCardArray,
+      totalCardCount: this.state.totalCardCount - 1,
     });
   }
 
@@ -164,9 +245,9 @@ class Game extends React.Component {
     let somethingWritten = true;
     x.forEach(element => {
       if (element.working === true && element.word.length === 0) {
-        console.log(element)
+        //console.log(element)
         somethingWritten = false
-        console.log(element.word, somethingWritten)
+        //console.log(element.word, somethingWritten)
       }
     })
     if (somethingWritten !== this.state.placing) {
@@ -187,7 +268,8 @@ class Game extends React.Component {
   }
 
   addToWR(cardId) {
-    this.setState({ workingCards: this.state.workingCards.concat([cardId]), setPlacing: false });
+    this.setState({ workingCards: this.state.workingCards.concat([cardId]) })
+    this.setPlacing(false)
   }
 
   removeFromWR(cardId) {
@@ -220,9 +302,18 @@ class Game extends React.Component {
     // some clean up needs to be done after words have been inserted into the sentence
     // make a clean (no content) copy of cards in case we need to undo
     this.setLastCards();
-    // note: some events (checking for a winner, scoring, adding a new card) are triggered in setUndoability
-    this.setUndoability();
+    // if playing a game, you have a 7 second window to undo an insertion, in case you see 
+    // a typo or something; this doesn't apply in creative mode
+    if (this.state.gameMode === "creative") {
+      let tempArray = []
+      toBeInserted.forEach(x => tempArray.push(x.id))
+      this.setState({ creativeUndo: this.state.creativeUndo.concat(tempArray) })
+    } else {
+      // note: some events (checking for a winner, scoring, adding a new card) are triggered in setUndoability
+      this.setUndoability();
+    }
     // filter to find cards (by id) that have not been placed into sentence
+    // --this removes the cards that were just inserted from the cards arrray
     this.setState({ cards: this.state.cards.filter(x => this.state.workingCards.findIndex(y => y === x.id) === -1) });
     this.clearWR();
   }
@@ -233,20 +324,26 @@ class Game extends React.Component {
       if (this.state.undoable && this.state.undoSecondsLeft > 0) {
         this.setState({ undoSecondsLeft: this.state.undoSecondsLeft - 1 });
       } else if (this.state.undoable && this.state.undoSecondsLeft === 0) {
+        // undo timer ran out
         this.setState({ undoable: false });
         clearInterval(interval);
-        this.setState({ oldSentence: [], sentenceUpdateCount: this.state.sentenceUpdateCount + 1 })
-        // check if we won the game, if not new card
-        if (this.state.cards.length === 0) {
-          this.setState({ winner: true, active: false, });
-        } else {
-          this.newCard();
-        }
+        this.setState({ oldSentence: [] })
+        // check if any cards left and act accordingly
+        this.checkIfWon()
       } else {
         this.setState({ undoSecondsLeft: 0 });
         clearInterval(interval);
       }
     }, 1000);
+  }
+
+  checkIfWon() {
+    // check if we won the game, if not new card
+    if (this.state.cards.length === 0) {
+      this.setState({ winner: true, active: false, sentenceUpdateCount: this.state.sentenceUpdateCount + 1 });
+    } else {
+      this.newCard();
+    }
   }
 
   setShowSharing(value) {
@@ -271,41 +368,56 @@ class Game extends React.Component {
     });
   }
 
+  setGameMode(aString) {
+    this.setState({ gameMode: aString })
+  }
+
   render() {
-    return <div className="Game">
-      <DrawButtons
-        undo={this.undo}
-        cards={this.state.cards}
-        sentence={this.state.sentence}
-        newGame={this.newGame}
-        newCard={this.newCard}
-        showSharing={this.state.showSharing}
-        setShowSharing={this.setShowSharing}
-        active={this.state.active}
-        undoable={this.state.undoable}
-        workingCards={this.state.workingCards}
-        wih={this.state.windowInnerHeight}
+    return <>
+      <DrawHeader
+        gameMode={this.state.gameMode}
+        setGameMode={this.setGameMode}
       />
-      <DrawSentence
-        sentence={this.state.sentence}
-        placing={this.state.placing}
-        insert={this.insert}
-      />
-      <DrawCards
-        cards={this.state.cards}
-        onEdit={this.editCard}
-        wR={this.state.workingCards}
-        toggleWorking={this.toggleWorking}
-        addToWR={this.addToWR}
-        removeFromWR={this.removeFromWR}
-        switchPlacesWR={this.switchPlacesWR}
-        undoable={this.state.undoable}
-        undoSecondsLeft={this.state.undoSecondsLeft}
-        winner={this.state.winner}
-        totalCardCount={this.state.totalCardCount}
-        sentenceUpdateCount={this.state.sentenceUpdateCount}
-      />
-      <style jsx>{`
+      <div className="Game">
+        <DrawButtons
+          cards={this.state.cards}
+          creativeUndo={this.state.creativeUndo}
+          creativeUndoPop={this.creativeUndoPop}
+          sentence={this.state.sentence}
+          newGame={this.newGame}
+          newCard={this.newCard}
+          showSharing={this.state.showSharing}
+          setShowSharing={this.setShowSharing}
+          active={this.state.active}
+          undoable={this.state.undoable}
+          workingCards={this.state.workingCards}
+          gameMode={this.state.gameMode}
+        />
+        <DrawSentence
+          sentence={this.state.sentence}
+          placing={this.state.placing}
+          insert={this.insert}
+        />
+        <DrawCards
+          accept={this.accept}
+          cards={this.state.cards}
+          cardDec={this.cardDec}
+          cardInc={this.cardInc}
+          gameMode={this.state.gameMode}
+          onEdit={this.editCard}
+          wR={this.state.workingCards}
+          toggleWorking={this.toggleWorking}
+          addToWR={this.addToWR}
+          removeFromWR={this.removeFromWR}
+          switchPlacesWR={this.switchPlacesWR}
+          undo={this.undo}
+          undoable={this.state.undoable}
+          undoSecondsLeft={this.state.undoSecondsLeft}
+          winner={this.state.winner}
+          totalCardCount={this.state.totalCardCount}
+          sentenceUpdateCount={this.state.sentenceUpdateCount}
+        />
+        <style jsx>{`
         .Game {
           display: grid;
           box-sizing: border-box;
@@ -319,7 +431,8 @@ class Game extends React.Component {
           text-align: center;
         }  
       `}</style>
-    </div>
+      </div>
+    </>
   }
 }
 
@@ -327,9 +440,9 @@ const newRandomCard = (newCardId) => {
   const rando = Math.floor(Math.random() * 1000);
   let type = null;
   switch (true) {
-    case (rando < 340): type = "noun"; break;
-    case (rando < 530): type = "verb"; break;
-    case (rando < 635): type = "adj"; break;
+    case (rando < 260): type = "noun"; break;
+    case (rando < 450): type = "verb"; break;
+    case (rando < 605): type = "adj"; break;
     case (rando < 700): type = "adv"; break;
     case (rando < 770): type = "pron"; break;
     case (rando < 890): type = "prep"; break;
@@ -353,7 +466,11 @@ const chooseNewGame = (sentences, mode) => {
       senties.push(key);
     }
   }
-  if (mode === "default") {
+  if (mode === "competitive") {
+    // not implemented yet, this is the same as default
+    let randomKey = Math.floor(Math.random() * senties.length);
+    returnValue = sentences[senties[randomKey]];
+  } else {
     let randomKey = Math.floor(Math.random() * senties.length);
     returnValue = sentences[senties[randomKey]];
   }
@@ -361,8 +478,5 @@ const chooseNewGame = (sentences, mode) => {
   return returnValue;
 }
 
-const writeSessionStorage = (gameState) => {
-  sessionStorage.setItem("currentGame", JSON.stringify(gameState))
-}
 
 export default Game;

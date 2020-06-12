@@ -1075,5 +1075,29 @@
       }
     ],
     "cards": []
+  },
+  "_1016": {
+    "header": {
+      "snum": 1016,
+      "stype": "exc"
+    },
+    "sentence": [
+      {
+        "id": 0,
+        "type": "head",
+        "word": ""
+      },
+      {
+        "id": 1,
+        "type": "noun",
+        "word": "Birds"
+      },
+      {
+        "id": 2,
+        "type": "p_exc",
+        "word": "!"
+      }
+    ],
+    "cards": []
   }
 }

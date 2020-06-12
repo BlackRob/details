@@ -152,8 +152,8 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
 
 export const tinyCanvas = ({ cards, wR }) => {
   // first thing, build sentence array from props
-  console.log(cards)
-  console.log(wR)
+  //console.log(cards)
+  //console.log(wR)
   let sentence = []
   wR.forEach(x => {
     sentence.push({

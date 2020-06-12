@@ -14,7 +14,7 @@ export default (req, res) => {      // { query: { img } }
 
   // we need to remove the initial "/api/square/" before we can use the req string
   const reqString64png = req.url.split('/')[3]
-  console.log(reqString64png)
+  //console.log(reqString64png)
   const reqString64 = reqString64png.substring(0, reqString64png.length - 4)
   // and also it's base64 encoded, so convert to utf8
   const reqString = Buffer.from(reqString64, 'base64').toString('utf8')
