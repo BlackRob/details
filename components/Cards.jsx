@@ -37,9 +37,6 @@ const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards,
           scrollbar-width: none;
           color: black;
         }
-        .working_row_content::-webkit-scrollbar {
-          display: none;
-        }
         .working_row_message {
           color: black;
         }
@@ -201,7 +198,7 @@ const DrawInputDiv = ({ word, cardId, updateState }) => {
   useEffect(() => { newRef.current.focus() }, [])
   return <div className="input_div">
     <input type="text" defaultValue={word} size={Math.max(4, word.length)}
-      name={cardId} ref={newRef} autocapitalize="off"
+      name={cardId} ref={newRef} autoCapitalize="off"
       onKeyUp={(e) => { updateState(cardId, e.target.value); }}
     />
     <style jsx>

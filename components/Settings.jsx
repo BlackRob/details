@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import styles from './HeaderPage.module.css';
 
 
 // Clicking on the span opens a configuration popup
@@ -7,18 +6,16 @@ const PopUp = ({ gameMode, setGameMode }) => {
   const [show, setShow] = useState(false);
   const popUpRef = useRef(null)
 
-  return <div className={styles.header_punctuation}>
+  return <div className="gearDiv">
     <button onClick={() => { setShow(true) }}>
       <svg alt="Gear by Aya Sofya from the Noun Project" ref={popUpRef}
         onMouseEnter={() => {
           popUpRef.current.style.animationPlayState = "running"
           popUpRef.current.style.webkitAnimationPlayState = "running"
-          console.log("in")
         }}
         onMouseLeave={() => {
           popUpRef.current.style.animationPlayState = "paused"
           popUpRef.current.style.webkitAnimationPlayState = "paused"
-          console.log("out")
         }}
         xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
         viewBox="0 0 100 100" fillOpacity="1" stroke="none" marker="none" visibility="visible"
@@ -71,10 +68,8 @@ const PopUp = ({ gameMode, setGameMode }) => {
           padding: none;
           fill: var(--active_outline);
           transition: all 0.2s;
-          margin-top: 0.22em;
           width: 0.85em;
           height: 0.85em;
-          margin-bottom: 0;
           -webkit-animation: Gear-spin infinite 15s linear;
           animation: Gear-spin infinite 15s linear;
           -webkit-animation-play-state: paused;
@@ -106,22 +101,35 @@ const PopUp = ({ gameMode, setGameMode }) => {
           transform: rotate(360deg);
           }
         }
+        button {
+          border: none;
+          padding: 0 0 0 5vmin;
+          margin: 0.22em 0 0 0;
+          font-weight: 300;
+          font-size: 1em;
+          color: var(--active_outline);
+          transition: all 0.2s;
+          width: auto;
+        }
+        button:hover {
+          color: var(--insert)
+        } 
       `}
     </style>
   </div>
 };
 
 const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
-  let showHide = styles.hidden;
+  let showHide = "hidden";
   if (showVal) {
-    showHide = styles.z2;
+    showHide = "z2";
   }
 
   return <div className={showHide}>
-    <div className={styles.z2_body}>
-      <div className={styles.z2_title}>
+    <div className="z2_body">
+      <div className="z2_title">
         Settings
-      <span className={styles.z2_hide} onClick={setShow}>x</span>
+      <span className="z2_hide" onClick={setShow}>x</span>
       </div>
       <p><strong>Choose how you want to play:</strong> </p>
       <div className="option"><GameModeButton buttonMode="collaborative" gameMode={gameMode} setGameMode={setGameMode} />
@@ -132,12 +140,62 @@ const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
         <strong>competitive mode </strong>&nbsp;<i>coming soon!!!</i></div>
     </div>
     <style jsx>{`
+      .z2 {
+        display: block;
+        box-sizing: border-box;
+        min-height: 100vh;
+        width: 100%;
+        margin: 0;
+        position: absolute; /* Stay in place */
+        z-index: 2; /* Sit on top */
+        left: 0;
+        top: 0;
+        padding: 20px 0px;
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 1rem;
+        overflow-y: scroll;
+        scrollbar-width: none;
+      }
+
+      .z2_body {
+        position: relative;
+        box-sizing: border-box;
+        width: 90%;
+        max-width: 960px;
+        text-align: left;
+        background: white;
+        border: 1px solid black;
+        color: black;
+        padding: 30px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .z2_title {
+        font-size: 1.5rem;
+        color: #444;
+        width: 100%;
+        line-height: 1.8rem;
+      }
+
+      .z2_hide {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: -0.5rem;
+      }
+      .z2_hide:hover {
+        cursor: pointer;
+      }
       .option {
         margin-bottom: 1.2rem;
         display: flex;
         width: 100%;
         justify-content: flex-start;
         align-items: center;
+      }
+      .hidden {
+        display: none;
       }
       `}</style>
   </div>

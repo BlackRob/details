@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import styles from './HeaderPage.module.css';
 import YouTubeVid from './youTubeVid'
 
 
 // Clicking on the span opens an informative popup
 const PopUp = () => {
   const [show, setShow] = useState(false);
-  return <div className={styles.header_punctuation}>
-    <button className="bigQuestion" onClick={() => { setShow(true) }}>?</button>
+  return <div>
+    <button onClick={() => { setShow(true) }}>?</button>
     <QuestionPage showVal={show} setShow={() => { setShow(false) }} />
     <style jsx>{`
-      .bigQuestion:hover {
+      button {
+        display: inline-block;
+        text-decoration: none;
+        border: none;
+        padding: 0;
+        padding-left: 5vmin;
+        font-weight: 300;
+        font-size: 1em;
+        color: var(--active_outline);
+        transition: all 0.2s;
+        width: auto;
+      }
+      button:hover {
         color: var(--insert)
       }  
     `}</style>
@@ -18,16 +29,16 @@ const PopUp = () => {
 };
 
 const QuestionPage = ({ showVal, setShow }) => {
-  let showHide = styles.hidden;
+  let showHide = "hidden";
   if (showVal) {
-    showHide = styles.z2;
+    showHide = "z2";
   }
 
   return <div className={showHide}>
-    <div className={styles.z2_body}>
-      <div className={styles.z2_title}>
+    <div className="z2_body">
+      <div className="z2_title">
         FAQ
-      <span className={styles.z2_hide} onClick={setShow}>x</span>
+      <span className="z2_hide" onClick={setShow}>x</span>
       </div>
       <p><strong>What is this?</strong> <br />It's a game to practice English grammar.</p>
       <p><strong>How do you play?</strong> <br />You
@@ -55,6 +66,53 @@ const QuestionPage = ({ showVal, setShow }) => {
       </div>
     </div>
     <style jsx>{`
+      .z2 {
+        display: block;
+        box-sizing: border-box;
+        min-height: 100vh;
+        width: 100%;
+        margin: 0;
+        position: absolute; /* Stay in place */
+        z-index: 2; /* Sit on top */
+        left: 0;
+        top: 0;
+        padding: 20px 0px;
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 1rem;
+        overflow-y: scroll;
+        scrollbar-width: none;
+      }
+
+      .z2_body {
+        position: relative;
+        box-sizing: border-box;
+        width: 90%;
+        max-width: 960px;
+        text-align: left;
+        background: white;
+        border: 1px solid black;
+        color: black;
+        padding: 30px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .z2_title {
+        font-size: 1.5rem;
+        color: #444;
+        width: 100%;
+        line-height: 1.8rem;
+      }
+
+      .z2_hide {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: -0.5rem;
+      }
+      .z2_hide:hover {
+        cursor: pointer;
+      }
       .typeButtonDiv {
         border: 1.5px solid black;
         border-radius: 7px;
@@ -94,12 +152,12 @@ const QuestionPage = ({ showVal, setShow }) => {
         filter: drop-shadow(0 0 0.4rem var(--logo_hover));
         color: black;
       }
-      button {
+      button:focus {
+        outline: 0;
       }
-      button:hover {
-        cursor: pointer;
+      .hidden {
+        display: none;
       }
-      button:focus {outline:0;}
     `}</style>
   </div>
 }

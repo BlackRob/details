@@ -116,7 +116,7 @@ const InsertZone = ({ placing, insert, index }) => {
 
   return <div className={classToUse}
     onClick={(e) => insert(index)} >
-    <DrawCaret parentComponentClass={classToUse} index={index} />
+    <DrawCaret index={index} />
     <style jsx>
       {`
       .hidden, .visible {
@@ -145,12 +145,7 @@ const InsertZone = ({ placing, insert, index }) => {
   </div>
 }
 
-const DrawCaret = ({ parentComponentClass, index }) => {
-  let activeClass = ""
-  if (parentComponentClass === "hidden") {
-    activeClass = "hidden"
-  }
-
+const DrawCaret = ({ index }) => {
   const bottomTriangle = <polygon points="13 38 37 38 25 13" />
   const topTriangle = <polygon points="13 13 37 13 25 38" />
   let polygon = bottomTriangle
@@ -158,7 +153,7 @@ const DrawCaret = ({ parentComponentClass, index }) => {
     polygon = topTriangle
   }
 
-  return <svg className={activeClass} width="100%" viewBox="0 0 50 50" version="1.1"
+  return <svg width="100%" viewBox="0 0 50 50" version="1.1"
     xmlns="http://www.w3.org/2000/svg" strokeLinejoin="round">
     {polygon}
     <style jsx>

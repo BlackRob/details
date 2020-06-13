@@ -168,6 +168,7 @@ class Game extends React.Component {
         active: true,
         winner: false,
         creativeUndo: [],
+        workingCards: [],
         cards: []
       })
     } else {
@@ -256,9 +257,12 @@ class Game extends React.Component {
   }
 
   toggleWorking(cardId) {
-    let updatedCards = this.state.cards.slice();
-    let cardIndex = updatedCards.findIndex(element => element.id === cardId);
-    updatedCards[cardIndex].working = !updatedCards[cardIndex].working;
+    let updatedCards = this.state.cards;
+    updatedCards.forEach(element => {
+      if (element.id === cardId) {
+        element.working = !element.working
+      }
+    })
     this.setState({ cards: updatedCards });
   }
 

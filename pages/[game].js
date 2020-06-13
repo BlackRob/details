@@ -32,7 +32,6 @@ const Game = ({ returnString }) => (
     </Head>
 
     <div className="gameContent">
-      <DrawHeader />
       <DrawGame gameState={Buffer.from(returnString, 'base64').toString('utf8')} />
     </div>
 
