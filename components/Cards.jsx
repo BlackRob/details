@@ -65,18 +65,21 @@ const KeepOrUndo = ({ undo, accept, undoSecondsLeft }) => {
         top: 0;
         left: 0;
         width: 100%;
-        height: 2.95em;
-        margin: 4px;
+        height: 3.5em;
+        padding: 0;
         display: flex;
         flex-direction: row;
-        align-items: stretch;
+        align-items: center;
         justify-content: space-evenly;
       }
       button {
         width: 40vw;
         height: auto;
+        margin: 0;
+        line-height: 1.5em;
         font-size: 0.7em;
-        padding: 0.3em 0.4em;
+        margin-top: -3px;
+        padding: 5px;
         color: var(--active_outline);
         background-color: var(--mainbg);
         border: 1.5px solid black;

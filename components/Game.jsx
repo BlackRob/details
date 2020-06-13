@@ -219,7 +219,7 @@ class Game extends React.Component {
         }]),
       totalCardCount: this.state.totalCardCount + 1,
     });
-    console.log("card inc: ", this.state.workingCards)
+    //console.log("card inc: ", this.state.workingCards)
   }
   cardDec(type) {
     // find all cards of a certain type that aren't being used
@@ -275,7 +275,7 @@ class Game extends React.Component {
   addToWR(cardId) {
     this.setState({ workingCards: this.state.workingCards.concat([cardId]) })
     this.setPlacing(false)
-    console.log("added to wR: ", this.state.workingCards)
+    //console.log("added to wR: ", this.state.workingCards)
   }
 
   removeFromWR(cardId) {
