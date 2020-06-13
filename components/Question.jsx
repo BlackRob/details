@@ -13,8 +13,8 @@ const PopUp = () => {
         display: inline-block;
         text-decoration: none;
         border: none;
-        padding: 0;
-        padding-left: 5vmin;
+        padding: 0 2vmin 0 7vmin;
+        _padding-left: 7vmin;
         font-weight: 300;
         font-size: 1em;
         color: var(--active_outline);

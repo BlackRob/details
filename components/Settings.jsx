@@ -103,7 +103,7 @@ const PopUp = ({ gameMode, setGameMode }) => {
         }
         button {
           border: none;
-          padding: 0 0 0 5vmin;
+          padding: 0 2vmin 0 7vmin;
           margin: 0.22em 0 0 0;
           font-weight: 300;
           font-size: 1em;

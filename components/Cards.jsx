@@ -37,6 +37,9 @@ const DrawWorkingRowContent = ({ wR, removeFromWR, updateState, cards,
           scrollbar-width: none;
           color: black;
         }
+        .working_row_content::-webkit-scrollbar {
+          display: none;
+        }
         .working_row_message {
           color: black;
         }

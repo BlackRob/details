@@ -196,7 +196,7 @@ class Game extends React.Component {
 
   newCard() {
     let nextCardID = 0
-    this.state.cards.forEach((x) => { if (x > nextCardID) { nextCardID = x } })
+    this.state.cards.forEach((x) => { if (x.id > nextCardID) { nextCardID = x.id } })
     nextCardID++
     this.setState({
       cards: this.state.cards.concat([newRandomCard(nextCardID)]),
@@ -219,6 +219,7 @@ class Game extends React.Component {
         }]),
       totalCardCount: this.state.totalCardCount + 1,
     });
+    console.log("card inc: ", this.state.workingCards)
   }
   cardDec(type) {
     // find all cards of a certain type that aren't being used
@@ -274,6 +275,7 @@ class Game extends React.Component {
   addToWR(cardId) {
     this.setState({ workingCards: this.state.workingCards.concat([cardId]) })
     this.setPlacing(false)
+    console.log("added to wR: ", this.state.workingCards)
   }
 
   removeFromWR(cardId) {
@@ -323,7 +325,7 @@ class Game extends React.Component {
   }
 
   setUndoability() {
-    this.setState({ undoable: true, undoSecondsLeft: 7, });
+    this.setState({ undoable: true, undoSecondsLeft: 700, });
     const interval = setInterval(() => {
       if (this.state.undoable && this.state.undoSecondsLeft > 0) {
         this.setState({ undoSecondsLeft: this.state.undoSecondsLeft - 1 });
