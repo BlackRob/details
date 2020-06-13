@@ -325,7 +325,7 @@ class Game extends React.Component {
   }
 
   setUndoability() {
-    this.setState({ undoable: true, undoSecondsLeft: 700, });
+    this.setState({ undoable: true, undoSecondsLeft: 7, });
     const interval = setInterval(() => {
       if (this.state.undoable && this.state.undoSecondsLeft > 0) {
         this.setState({ undoSecondsLeft: this.state.undoSecondsLeft - 1 });
