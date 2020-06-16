@@ -26,6 +26,11 @@ export default ({ gameMode, setGameMode }) => (
         text-align: left;
         flex: 1;
       }  
+      @media screen and (orientation: landscape) {
+        .app_header {
+          font-size: 8vmin;
+        } 
+      }
       `}
     </style>
   </header>

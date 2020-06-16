@@ -259,6 +259,11 @@ export default ({ sentence, placing, insert }) => (
           padding-top: 0.5em;
           padding-bottom: 0.5em;
           line-height: 1.6em;
+        } 
+        @media screen and (orientation: landscape) {
+          .active_sentence {
+            font-size: min(1.6em,7vmin);
+          } 
         }
       `}
     </style>
