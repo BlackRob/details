@@ -39,7 +39,7 @@ const AddCardsPopUp = ({ showAddCardsPopUp, showAddCards, cards, cardInc, cardDe
     </div>
     <style jsx>{`
       .card_button_row {
-        margin: 1.4em 1em;
+        margin: 1.4em 0em;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
