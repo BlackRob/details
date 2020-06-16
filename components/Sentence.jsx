@@ -253,7 +253,6 @@ export default ({ sentence, placing, insert }) => (
           flex-wrap: wrap;
           align-items: flex-start;
           justify-content: center;
-          font-family: Roboto;
           align-content: flex-start;
           font-size: 1.6em;
           padding: 12px;

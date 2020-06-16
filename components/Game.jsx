@@ -387,13 +387,17 @@ class Game extends React.Component {
       <div className="Game">
         <DrawButtons
           cards={this.state.cards}
+          cardDec={this.cardDec}
+          cardInc={this.cardInc}
+          toggleWorking={this.toggleWorking}
+          addToWR={this.addToWR}
           creativeUndo={this.state.creativeUndo}
           creativeUndoPop={this.creativeUndoPop}
           sentence={this.state.sentence}
           newGame={this.newGame}
           newCard={this.newCard}
-          showSharing={this.state.showSharing}
-          setShowSharing={this.setShowSharing}
+          //showSharing={this.state.showSharing}
+          //setShowSharing={this.setShowSharing}
           active={this.state.active}
           undoable={this.state.undoable}
           workingCards={this.state.workingCards}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   EmailShareButton, EmailIcon,
   FacebookShareButton, FacebookIcon,
@@ -24,42 +24,21 @@ const Sharing = ({ sentence, cards, showSharing, setShowSharing }) => {
 }
 
 const SharingPopUp = ({ sentence, cards, setShowSharing }) => {
-  // have to run a script to get the skype button
-  /* useEffect(() => {
-    (function (r, d, s) {
-      r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function (p) {
-        var js, sjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(p.id)) { return; }
-        js = d.createElement(s);
-        js.id = p.id;
-        js.src = p.scriptToLoad;
-        js.onload = p.callback
-        sjs.parentNode.insertBefore(js, sjs);
-      };
-      var p = {
-        scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
-        id: 'skype_web_sdk'
-      };
-      r.loadSkypeWebSdkAsync(p);
-    })(window, document, 'script')
-  }, []) */
-
   // variable to show if copy to clipboard worked
   const [copied, setCopied] = useState(false);
   // variable to show info if copy to clipboard failed
   const [copyFailed, setCopyFailed] = useState(false)
 
-  //console.log(gameStateToStr({ sentence, cards }))
   const canvasDataURL = drawCanvas({ sentence, cards })
   const gameAsString = gameStateToStr({ sentence, cards })
   const readableSentence = makeReadable({ sentence })
-  //console.log(readableSentence)
+
   const canvasURLstring = Buffer.from(gameAsString, 'utf8').toString('base64')
   const gameURL = `https://details.grumbly.games/${canvasURLstring}`
   const imageURL = `https://details.grumbly.games/api/${canvasURLstring}`
 
   return <div className="z2">
-    <div className="sharing_popup">
+    <div className="popup">
       <div className="z2_title">
         Share your sentence!
         <span className="z2_hide" onClick={() => { setShowSharing(false) }}>x</span>
@@ -77,146 +56,17 @@ const SharingPopUp = ({ sentence, cards, setShowSharing }) => {
         <WeiboShareButton children={<WeiboIcon size={32} round={true} />} url={gameURL} title="grumbly.games" image={imageURL} />
         <TwitterShareButton children={<TwitterIcon size={32} round={true} />} url={gameURL} hashtags={["ClickToPlay"]} />
         <WhatsappShareButton children={<WhatsappIcon size={32} round={true} />} url={gameURL} title={`${readableSentence}`} />
-        {/* <div className='skype-share' data-href={gameURL} data-lang='en-US' data-text='' data-style='' >
-          <img className="skypeShareLogo" src='/s_logo.svg' width="18px" height="18px" />
-        </div> */}
         <ClipboardButton toCopy={gameURL} copied={copied} setCopied={setCopied} setCopyFailed={setCopyFailed} />
       </div>
       <ClipFailedAdvice copyFailed={copyFailed} gameURL={gameURL} readableSentence={readableSentence} />
     </div>
-    <style jsx>
-      {`
-        .sharing_popup {
-          position: relative;
-          box-sizing: border-box;
-          width: 90%;
-          max-width: 960px;
-          text-align: left;
-          background: gainsboro;
-          border: 1px solid black;
-          color: black;
-          padding: 30px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .sharing_popup button {
-          display: inline-block;
-          text-decoration: none;
-          border: none;
-          box-sizing: border-box;
-          background-color: inherit;
-          padding: none;
-          font-weight: 300;
-          font-size: 1em;
-          color: var(--active_outline);
-          transition: all 0.2s;
-          width: auto;
-        }
-
-        .sharing_popup button:visited {
-          color: var(--active_outline);
-        }
-
-        .sharing_popup button:hover {
-          color: lightslategray;
-          cursor: pointer;
-        }
-
-        .sharing_popup button:active {
-          color: darkslategray;
-        }
-
-        .sharing_popup label {
-          font-size: 0.8em;
-        }
-
-        .sharing_popup img {
-          width: 100%; 
-          min-height: 100%;
-          margin: 0.8em 0;
-          box-shadow: 2px 2px 5px slategray;
-        }
-
-
+    <style jsx>{`
         .sharing_button_row {
           display: flex;
           align-items: center;
           justify-content: space-around;
           width: 100%;
           height: auto;
-        }
-        
-        .z2 {
-          display: block;
-          box-sizing: border-box;
-          min-height: 100vh;
-          width: 100%;
-          margin: 0;
-          position: absolute; /* Stay in place */
-          z-index: 2; /* Sit on top */
-          left: 0;
-          top: 0;
-          padding: 20px 0px;
-          background: rgba(0, 0, 0, 0.5);
-          font-size: 1rem;
-          overflow-y: scroll;
-          scrollbar-width: none;
-        }
-        .z2::-webkit-scrollbar {
-          display: none;
-        }
-
-        .z2_body {
-          position: relative;
-          box-sizing: border-box;
-          width: 90%;
-          max-width: 960px;
-          text-align: left;
-          background: white;
-          border: 1px solid black;
-          color: black;
-          padding: 30px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .z2_title {
-          font-size: 1.5rem;
-          color: #444;
-          width: 100%;
-          line-height: 1.8rem;
-        }
-
-        .z2_hide {
-          float: right;
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-top: -0.5rem;
-        }
-        .z2_hide:hover {
-          cursor: pointer;
-        } 
-        .skype-share {
-          margin: 0px;
-          width: 32px;
-          height: 32px;
-          padding: 0px;
-          border-radius: 50%;
-          background-color: #00AFF0;
-          color: white;
-        }
-        .skype-share img {
-          width: 18px;
-          height: 18px;
-          min-height: 18px;
-          margin: 7px;
-          box-shadow: none;
-        }
-        .skype-share:hover, .skype-share:focus {
-          outline: 0;
-          box-shadow: 0 0 3px 3px rgba(0, 0, 0, .5);
-          transition: all 0.2s;
         }
       `}
     </style>
@@ -268,6 +118,10 @@ const ClipboardButton = ({ toCopy, copied, setCopied, setCopyFailed }) => {
           height: 32px;
           padding: 0px;
         }
+        img {
+          margin: 0;
+          box-shadow: none;
+        }
       `}
     </style>
   </button >;
@@ -299,11 +153,6 @@ const ClipFailedAdvice = ({ copyFailed, gameURL, readableSentence }) => {
 }
 
 const updateClipboard = ({ newClip, result }) => {
-
-  {/*  const copyText = newClip;
-  copyText.select();
-  var copied = document.execCommand("copy");
-  result(copied) */}
   navigator.clipboard.writeText(newClip).then(function () {
     result(true)
   }, function () {

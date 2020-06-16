@@ -66,53 +66,6 @@ const QuestionPage = ({ showVal, setShow }) => {
       </div>
     </div>
     <style jsx>{`
-      .z2 {
-        display: block;
-        box-sizing: border-box;
-        min-height: 100vh;
-        width: 100%;
-        margin: 0;
-        position: absolute; /* Stay in place */
-        z-index: 2; /* Sit on top */
-        left: 0;
-        top: 0;
-        padding: 20px 0px;
-        background: rgba(0, 0, 0, 0.5);
-        font-size: 1rem;
-        overflow-y: scroll;
-        scrollbar-width: none;
-      }
-
-      .z2_body {
-        position: relative;
-        box-sizing: border-box;
-        width: 90%;
-        max-width: 960px;
-        text-align: left;
-        background: white;
-        border: 1px solid black;
-        color: black;
-        padding: 30px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .z2_title {
-        font-size: 1.5rem;
-        color: #444;
-        width: 100%;
-        line-height: 1.8rem;
-      }
-
-      .z2_hide {
-        float: right;
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-top: -0.5rem;
-      }
-      .z2_hide:hover {
-        cursor: pointer;
-      }
       .typeButtonDiv {
         border: 1.5px solid black;
         border-radius: 7px;

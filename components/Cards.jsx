@@ -381,7 +381,7 @@ const DrawCardButton = ({ type, addToWR, cards, toggleWorking }) => {
 }
 
 const DrawAvailableCards = ({ wR, addToWR, cards, toggleWorking, gameMode, cardInc, cardDec }) => {
-  let returnThis = null
+  /* let returnThis = null
   if (gameMode === "creative") {
     returnThis = <>
       <DrawCreativeButton type="adj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
@@ -393,18 +393,18 @@ const DrawAvailableCards = ({ wR, addToWR, cards, toggleWorking, gameMode, cardI
       <DrawCreativeButton type="prep" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
       <DrawCreativeButton type="intrj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
     </>
-  } else {
-    returnThis = <>
-      <DrawCardButton type="adj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="adv" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="conj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="pron" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="noun" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="verb" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="prep" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-      <DrawCardButton type="intrj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
-    </>
-  }
+  } else { */
+  let returnThis = <>
+    <DrawCardButton type="adj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="adv" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="conj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="pron" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="noun" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="verb" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="prep" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+    <DrawCardButton type="intrj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} />
+  </>
+  //}
 
   return returnThis
 }

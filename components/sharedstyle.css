@@ -138,7 +138,9 @@ button {
 button:hover {
   cursor: pointer;
 }
-button:focus {outline:0;}
+button:focus {
+  outline: 0;
+}
 
 .disabled {
   border: 2px solid gray;
@@ -151,7 +153,9 @@ button:focus {outline:0;}
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-
+.hidden {
+  display: none;
+}
 button.enabled:hover, button.disabled:hover {
   color: #000000;
   background-color: #FFFFFF;
@@ -162,8 +166,92 @@ a, a:visited {
   color: black;
 }
 a:hover, a:active {
-  color: var(--punc);
+  color: var(--insert);
 }
+
+.popup {
+  position: relative;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 960px;
+  text-align: left;
+  background: gainsboro;
+  border: 1px solid black;
+  color: black;
+  padding: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.popup button {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  background-color: inherit;
+  padding: none;
+  font-weight: 300;
+  font-size: 1em;
+  color: var(--active_outline);
+  transition: all 0.2s;
+  width: auto;
+}
+.popup label {
+  font-size: 0.8em;
+}
+.popup img {
+  width: 100%; 
+  min-height: 100%;
+  margin: 0.8em 0;
+  box-shadow: 2px 2px 5px slategray;
+}
+
+.z2 {
+  display: block;
+  box-sizing: border-box;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  position: absolute; /* Stay in place */
+  z-index: 2; /* Sit on top */
+  left: 0;
+  top: 0;
+  padding: 20px 0px;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+.z2::-webkit-scrollbar {
+  display: none;
+}
+.z2_body {
+  position: relative;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 960px;
+  text-align: left;
+  background: white;
+  border: 1px solid black;
+  color: black;
+  padding: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.z2_title {
+  font-size: 1.5rem;
+  color: #444;
+  width: 100%;
+  line-height: 1.8rem;
+}
+.z2_hide {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: -0.5rem;
+}
+.z2_hide:hover {
+  cursor: pointer;
+} 
 
 .adj {
   background-color: var(--adj);

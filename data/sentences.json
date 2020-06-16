@@ -1099,5 +1099,68 @@
       }
     ],
     "cards": []
+  },
+  "_1017": {
+    "header": {
+      "snum": 1017,
+      "stype": "sv"
+    },
+    "sentence": [
+      {
+        "id": 0,
+        "type": "head",
+        "word": ""
+      },
+      {
+        "id": 1,
+        "type": "noun",
+        "word": "Dogs"
+      },
+      {
+        "id": 2,
+        "type": "verb",
+        "word": "have"
+      },
+      {
+        "id": 3,
+        "type": "noun",
+        "word": "dreams"
+      },
+      {
+        "id": 4,
+        "type": "p_prd",
+        "word": "."
+      }
+    ],
+    "cards": []
+  },
+  "_1018": {
+    "header": {
+      "snum": 1018,
+      "stype": "sv"
+    },
+    "sentence": [
+      {
+        "id": 0,
+        "type": "head",
+        "word": ""
+      },
+      {
+        "id": 1,
+        "type": "pron",
+        "word": "He"
+      },
+      {
+        "id": 2,
+        "type": "verb",
+        "word": "was"
+      },
+      {
+        "id": 3,
+        "type": "p_prd",
+        "word": "."
+      }
+    ],
+    "cards": []
   }
 }
