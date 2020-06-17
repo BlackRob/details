@@ -46,10 +46,10 @@ const QuestionPage = ({ showVal, setShow }) => {
       <p><strong>What do you mean by "details"?</strong> <br />I mean details!
       If I have a sentence, "Chocolate is delicious", I can add
       a <i>detail</i> like the adjective <b>dark</b>, and now I
-      have a longer sentence, "<b>Dark</b> chocolate is delicious".</p>
+      have a longer sentence, "<b>Dark</b> chocolate is delicious".</p>{/* 
       <p><strong>Can I see an example?</strong> <br />
       Sure! Watch the video below or click <a href="https://grumbly.games/posts/200418_playing_details" rel="noopener noreferrer" target="_blank">here</a> to read the rules.</p>
-      <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" />
+      <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" /> */}
       <div name="learn" className="typeButtonDiv">
         <h3>Learn more about...</h3>
         <div className="typeButtons">
