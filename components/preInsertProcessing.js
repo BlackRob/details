@@ -26,23 +26,28 @@ export const preInsertProcessing = (cards, workingCards, maxCardId) => {
     }
     // check for articles, which can go in front of nouns, (the house)
     // adjectives (the yellow house), verbs (the burning yellow house),
-    // or adverbs (the rapidly burning yellow house) 
-    if (thisCard.type === "noun" || thisCard.type === "adj" || thisCard.type === "verb" || thisCard.type === "adv") {
+    // or adverbs (the rapidly burning yellow house)
+    if (
+      thisCard.type === "noun" ||
+      thisCard.type === "adj" ||
+      thisCard.type === "verb" ||
+      thisCard.type === "adv"
+    ) {
       let hasArticle = checkForArticle(werd);
       if (hasArticle) {
         toBeInserted.push({
           id: newCardId++,
           type: "adj",
           word: getArticle(werd),
-        })
+        });
         werd = removeArticle(werd);
       }
     }
-    // sometimes a word on a card has spaces in it; this can be 
+    // sometimes a word on a card has spaces in it; this can be
     // a mistake or intentional: either way, we split the "word"
     // into components based on spaces and add them as
     // individual words of the same type;
-    // this is important for verbs (which might have "to" or 
+    // this is important for verbs (which might have "to" or
     // auxiliary verbs), but also some other words have spaces
     // in them, like the pronoun "no one", or the nouns "real estate",
     // "swimming pool" or "post office"
@@ -61,16 +66,16 @@ export const preInsertProcessing = (cards, workingCards, maxCardId) => {
                 id: newCardId++,
                 type: "adv",
                 word: "not",
-              })
+              });
             } else {
               toBeInserted.push({
                 id: newCardId++,
                 type: thisCard.type,
                 word: x,
-              })
+              });
             }
           }
-        })
+        });
         werd = splitWerd[splitWerd.length - 1];
       }
     }
@@ -87,13 +92,13 @@ export const preInsertProcessing = (cards, workingCards, maxCardId) => {
           id: newCardId++,
           type: "adv",
           word: werd,
-        })
+        });
       } else {
         toBeInserted.push({
           id: newCardId++,
           type: thisCard.type,
           word: werd,
-        })
+        });
       }
     } else {
       // last character is punctuation
@@ -105,13 +110,13 @@ export const preInsertProcessing = (cards, workingCards, maxCardId) => {
           id: newCardId++,
           type: "adv",
           word: werd,
-        })
+        });
       } else {
         toBeInserted.push({
           id: newCardId++,
           type: thisCard.type,
           word: punctoo.newWerd,
-        })
+        });
       }
       // and finally, push punctuation
       toBeInserted.push({
@@ -120,13 +125,13 @@ export const preInsertProcessing = (cards, workingCards, maxCardId) => {
         word: punctoo.content,
       });
     }
-  })
+  });
 
   return toBeInserted;
-}
+};
 
 const getCardById = (cards, cardId) => {
-  let x = cards.filter(x => x.id === cardId);
+  let x = cards.filter((x) => x.id === cardId);
   let y = null;
   if (x.length === 1) {
     y = x[0];
@@ -135,48 +140,48 @@ const getCardById = (cards, cardId) => {
     console.log(x);
   }
   return y;
-}
+};
 
 // given a short string (werd) to check if it starts with punctuation
 const puncStartCheck = (werd) => {
   let punc = { type: "", content: "", newWerd: werd };
   switch (true) {
-    case (werd[0] === ","):
+    case werd[0] === ",":
       punc.type = "p_com";
       punc.content = ",";
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd[0] === ";"):
+    case werd[0] === ";":
       punc.type = "p_semi";
       punc.content = ";";
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd[0] === ":"):
-      punc.type = "p_col";
+    case werd[0] === ":":
+      punc.type = "p_cln";
       punc.content = ":";
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd[0] === "("):
+    case werd[0] === "(":
       punc.type = "p_parL";
       punc.content = "(";
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd[0] === "."):
+    case werd[0] === ".":
       punc.type = "p_prd";
       punc.content = ".";
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd.substring(0, 2) === "--"):
+    case werd.substring(0, 2) === "--":
       punc.type = "p_dbldashL";
       punc.content = "--";
       punc.newWerd = werd.slice(2).trim();
       break;
-    case (werd[0] === '"'):
+    case werd[0] === '"':
       punc.type = "p_Lqt";
       punc.content = '"';
       punc.newWerd = werd.slice(1).trim();
       break;
-    case (werd[0] === "'"):
+    case werd[0] === "'":
       punc.type = "p_Lsq";
       punc.content = "'";
       punc.newWerd = werd.slice(1).trim();
@@ -186,59 +191,59 @@ const puncStartCheck = (werd) => {
   }
 
   return punc;
-}
+};
 
 // given a short string (werd) to check if it ends with punctuation
 const puncEndCheck = (werd) => {
   let end = werd.length - 1;
   let punc = { type: "", content: "", newWerd: werd };
   switch (true) {
-    case (werd[end] === ","):
+    case werd[end] === ",":
       punc.type = "p_com";
       punc.content = ",";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === ";"):
+    case werd[end] === ";":
       punc.type = "p_semi";
       punc.content = ";";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === ":"):
+    case werd[end] === ":":
       punc.type = "p_cln";
       punc.content = ":";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === "!"):
+    case werd[end] === "!":
       punc.type = "p_exc";
       punc.content = "!";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === "."):
+    case werd[end] === ".":
       punc.type = "p_prd";
       punc.content = ".";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === "?"):
+    case werd[end] === "?":
       punc.type = "p_qm";
       punc.content = "?";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[end] === ")"):
+    case werd[end] === ")":
       punc.type = "p_parR";
       punc.content = ")";
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd.substring(werd.length - 2) === "--"):
+    case werd.substring(werd.length - 2) === "--":
       punc.type = "p_dbldashR";
       punc.content = "--";
       punc.newWerd = werd.slice(0, werd.length - 2).trim();
       break;
-    case (werd[end] === '"'):
+    case werd[end] === '"':
       punc.type = "p_Rqt";
       punc.content = '"';
       punc.newWerd = werd.slice(0, end).trim();
       break;
-    case (werd[0] === "'"):
+    case werd[0] === "'":
       punc.type = "p_Rsq";
       punc.content = "'";
       punc.newWerd = werd.slice(0, end).trim();
@@ -248,13 +253,13 @@ const puncEndCheck = (werd) => {
   }
 
   return punc;
-}
+};
 
 // just a test; articles need to be extracted
 const checkForArticle = (werd) => {
   const regex = /^(the |a |an )/i;
   return regex.test(werd);
-}
+};
 
 // this function will return the article as written,
 // possible capitalization anomalies are not "fixed";
@@ -275,7 +280,7 @@ const getArticle = (werd) => {
   }
 
   return article;
-}
+};
 
 // this function will return the word without the article;
 // we also know before this function gets called that
@@ -295,9 +300,9 @@ const removeArticle = (werd) => {
   }
 
   return bareWord.trim();
-}
+};
 
-// not using this code but might, so I'm saving it: 
+// not using this code but might, so I'm saving it:
 
 //
 /* // check if "to" infinitive
@@ -389,5 +394,3 @@ const checkForAuxVerbs = (werd) => {
   return regex.test(werd);
 }
 */
-
-
