@@ -60,7 +60,14 @@ const SharingPopUp = ({ sentence, cards, setShowSharing }) => {
             x
           </span>
         </div>
-        <Image src={canvasDataURL} alt="sentence as image" />
+        <div className="shareableImageContainer">
+          <Image
+            src={canvasDataURL}
+            height="628"
+            width="1200"
+            alt="sentence as image"
+          />
+        </div>
 
         <div className="sharing_button_row">
           <EmailShareButton

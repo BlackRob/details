@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
   --headerbg: #282c34;
@@ -8,23 +8,23 @@
   --logo_active: darkslategray;
   --disabled_gray: gray;
   --active_outline: lightgray;
-  --conj: yellow; 
+  --conj: yellow;
   --adj: lightskyblue;
   --noun: dodgerblue;
   --adv: pink;
-  --verb: #D85091;
+  --verb: #d85091;
   --intrj: orange;
   --prep: lime;
   --pron: fuchsia;
   --punc: lavender;
-  --insert: rgba(255,51,0 ,1);
+  --insert: rgba(255, 51, 0, 1);
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: calc(12px + 0.6vmin);
   background-color: var(--bodybg);
   color: black;
@@ -56,7 +56,7 @@ body {
 @media screen and (min-width: 960px) {
   .App {
     font-size: 24px;
-  } 
+  }
 }
 
 .gameContent {
@@ -82,9 +82,9 @@ body {
   display: none;
 }
 @media screen and (min-width: 960px) {
-    .gameContent {
-      font-size: 24px;
-    } 
+  .gameContent {
+    font-size: 24px;
+  }
 }
 
 figure {
@@ -95,7 +95,8 @@ figure {
   display: flex;
   flex-flow: column;
 }
-figure iframe, figure img {
+figure iframe,
+figure img {
   position: absolute;
   display: block;
   top: 0;
@@ -103,13 +104,15 @@ figure iframe, figure img {
   width: 100%;
   height: auto;
   border: 1px solid black;
-  box-shadow: 1px 1px 3px var(--headerbg) ;
+  box-shadow: 1px 1px 3px var(--headerbg);
 }
-figure a, figure a:visited {
+figure a,
+figure a:visited {
   color: black;
   text-decoration: none;
 }
-figure a:hover, figure a:active {
+figure a:hover,
+figure a:active {
   color: black;
 }
 
@@ -148,24 +151,27 @@ button:focus {
   pointer-events: none;
   cursor: not-allowed;
   opacity: 0.45;
-  -webkit-filter: opacity(.45);
-  filter: opacity(.45);
+  -webkit-filter: opacity(0.45);
+  filter: opacity(0.45);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 .hidden {
   display: none;
 }
-button.enabled:hover, button.disabled:hover {
+button.enabled:hover,
+button.disabled:hover {
   color: #000000;
-  background-color: #FFFFFF;
-  border-color: #FFFFFF;
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
-a, a:visited {
+a,
+a:visited {
   color: black;
 }
-a:hover, a:active {
+a:hover,
+a:active {
   color: var(--insert);
 }
 
@@ -199,7 +205,7 @@ a:hover, a:active {
   font-size: 0.8em;
 }
 .popup img {
-  width: 100%; 
+  width: 100%;
   min-height: 100%;
   margin: 0.8em 0;
   box-shadow: 2px 2px 5px slategray;
@@ -255,7 +261,15 @@ a:hover, a:active {
 }
 .z2_hide:hover {
   cursor: pointer;
-} 
+}
+.shareableImageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
 .adj {
   background-color: var(--adj);

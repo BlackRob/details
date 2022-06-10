@@ -2,6 +2,9 @@
   on a canvas, so that it can be shared as an image */
 import { registerFont, createCanvas } from "canvas";
 import path from "path";
+//registerFont(path.resolve("public/Roboto-Regular.ttf"), {
+//  family: "Roboto",
+//});
 
 // width and height are optional
 export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
@@ -22,11 +25,8 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
     cw = Math.floor(height * 1.91);
   }
 
-  registerFont(path.resolve("public/Roboto-Regular.ttf"), {
-    family: "Roboto",
-  });
   // this path is only used for api calls in development mode
-  let theFontPath = path.join(process.cwd(), "public/fonts/Roboto-Regular.ttf");
+  let theFontPath = path.join(process.cwd(), "public/Roboto-Regular.ttf");
   // when run in browser, registerfont isn't available,
   // but we don't need it; when run from an API call,
   // there is no css loaded, so we can't get fonts from @fontface
