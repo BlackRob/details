@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cp canvas_lib64/*so.1 node_modules/canvas/build/Release/ && next build ",
+    "build": "next build ",
     "start": "next start",
     "export": "npm run build && next export"
   },
@@ -15,5 +15,9 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-share": "^4.1.0"
+  },
+  "devDependencies": {
+    "eslint": "8.17.0",
+    "eslint-config-next": "12.1.6"
   }
 }
