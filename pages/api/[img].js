@@ -1,6 +1,6 @@
 import { drawCanvas } from "../../components/drawCanvas";
 import { stringIsValid, strToGameState } from "../../components/gameStatePack";
-import fonttrick from "fonttrick";
+//import fonttrick from "fonttrick";
 
 const drawImage = (req, res) => {
   // { query: { img } }

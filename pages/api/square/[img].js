@@ -3,7 +3,7 @@ import {
   stringIsValid,
   strToGameState,
 } from "../../../components/gameStatePack";
-import fonttrick from "fonttrick";
+//import fonttrick from "fonttrick";
 
 const square = (req, res) => {
   // { query: { img } }
