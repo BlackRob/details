@@ -129,13 +129,13 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   ctx.font = mFont;
   ctx.fillStyle = "lightgray";
   ctx.fillText("details", margin, rb - blo);
-  ctx.fillStyle = "dodgerblue";
+  ctx.fillStyle = "#73cef4";
   let gamesWidth = ctx.measureText("games").width;
   ctx.fillText("games", cw - margin - gamesWidth, rb - blo);
   ctx.fillStyle = "lavender";
   let dotWidth = ctx.measureText(".").width + lF / 9;
   ctx.fillText(".", cw - margin - dotWidth - gamesWidth, rb - blo);
-  ctx.fillStyle = "lightskyblue";
+  ctx.fillStyle = "#89f0d1";
   let grumblyWidth = ctx.measureText("grumbly").width;
   ctx.fillText(
     "grumbly",
@@ -428,28 +428,28 @@ const typeColor = (type) => {
   let color = "";
   switch (true) {
     case type === "conj":
-      color = "yellow";
+      color = "#ffe377";
       break;
     case type === "adj":
-      color = "lightskyblue";
+      color = "#89f0d1";
       break;
     case type === "noun":
-      color = "dodgerblue";
+      color = "#73cef4";
       break;
     case type === "adv":
-      color = "pink";
+      color = "#fcc8c8";
       break;
     case type === "verb":
-      color = "#D85091";
+      color = "#ff5cf8";
       break;
     case type === "intrj":
       color = "orange";
       break;
     case type === "prep":
-      color = "lime";
+      color = "#2cd946";
       break;
     case type === "pron":
-      color = "fuchsia";
+      color = "#c09aeb";
       break;
     default:
       color = "lavender";
