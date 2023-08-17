@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import YouTubeVid from "./youTubeVid";
+import YouTubeVid from "./youTubeVid.js";
 
 // Clicking on the span opens an informative popup
 const PopUp = () => {
