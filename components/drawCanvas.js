@@ -1,10 +1,13 @@
 /* this function redraws the current sentence and cards
   on a canvas, so that it can be shared as an image */
-import { registerFont, createCanvas } from "canvas";
-import path from "path";
+//import { registerFont, createCanvas } from "canvas";
+//import path from "path";
 //registerFont(path.resolve("public/Roboto-Regular.ttf"), {
 //  family: "Roboto",
 //});
+const { promises } = require("fs");
+const { join } = require("path");
+const { registerFont, createCanvas } = require("@napi-rs/canvas");
 
 // width and height are optional
 export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
