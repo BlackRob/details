@@ -440,7 +440,7 @@ const typeColor = (type) => {
       color = "#fcc8c8";
       break;
     case type === "verb":
-      color = "#ff5cf8";
+      color = "#ff5c8f";
       break;
     case type === "intrj":
       color = "orange";
