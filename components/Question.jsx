@@ -152,6 +152,31 @@ const QuestionPage = ({ showVal, setShow }) => {
             </a>
           </div>
         </div>
+
+        <p>
+          Did you know you there's an app version of details? It's not exactly
+          the same, but it's pretty cool.
+          <p className="option">
+            <a
+              href="
+              https://play.google.com/store/apps/details?id=com.details_reactnative"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Get the details app for Android!
+            </a>
+          </p>
+          <p className="option">
+            <a
+              href="
+            https://apps.apple.com/app/details-the-game/id6449182298"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Get the details app for iOS!
+            </a>
+          </p>
+        </p>
       </div>
       <style jsx>{`
         .typeButtonDiv {

@@ -1,26 +1,43 @@
-import React, { useState, useRef } from 'react';
-
+import React, { useState, useRef } from "react";
 
 // Clicking on the span opens a configuration popup
 const PopUp = ({ gameMode, setGameMode }) => {
   const [show, setShow] = useState(false);
-  const popUpRef = useRef(null)
+  const popUpRef = useRef(null);
 
-  return <div className="gearDiv">
-    <button onClick={() => { setShow(true) }}>
-      <svg alt="Gear by Aya Sofya from the Noun Project" ref={popUpRef}
-        onMouseEnter={() => {
-          popUpRef.current.style.animationPlayState = "running"
-          popUpRef.current.style.webkitAnimationPlayState = "running"
+  return (
+    <div className="gearDiv">
+      <button
+        onClick={() => {
+          setShow(true);
         }}
-        onMouseLeave={() => {
-          popUpRef.current.style.animationPlayState = "paused"
-          popUpRef.current.style.webkitAnimationPlayState = "paused"
-        }}
-        xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
-        viewBox="0 0 100 100" fillOpacity="1" stroke="none" marker="none" visibility="visible"
-        display="inline" overflow="visible" ><g transform="translate(0,-952.36218)">
-          <path d="m 41.99461,957.36222 c -1.4459,0.0197 -2.6889,1.27519 -2.9375,2.4375 
+      >
+        <svg
+          alt="Gear by Aya Sofya from the Noun Project"
+          ref={popUpRef}
+          onMouseEnter={() => {
+            popUpRef.current.style.animationPlayState = "running";
+            popUpRef.current.style.webkitAnimationPlayState = "running";
+          }}
+          onMouseLeave={() => {
+            popUpRef.current.style.animationPlayState = "paused";
+            popUpRef.current.style.webkitAnimationPlayState = "paused";
+          }}
+          xmlns="http://www.w3.org/2000/svg"
+          version="1.1"
+          x="0px"
+          y="0px"
+          viewBox="0 0 100 100"
+          fillOpacity="1"
+          stroke="none"
+          marker="none"
+          visibility="visible"
+          display="inline"
+          overflow="visible"
+        >
+          <g transform="translate(0,-952.36218)">
+            <path
+              d="m 41.99461,957.36222 c -1.4459,0.0197 -2.6889,1.27519 -2.9375,2.4375 
         l -1.625,8.96872 c -3.4821,1.3103 -6.6953,3.1189 -9.5625,5.375 l -8.4688,-3.2812 
         c -1.3045,-0.5063 -2.9347,0.051 -3.6562,1.25 l -8.3438002,13.6562 
         c -0.7065,1.1896 -0.4434,2.8655 0.5938,3.7813 l 6.7188002,5.9687 
@@ -56,67 +73,78 @@ const PopUp = ({ gameMode, setGameMode }) => {
         z m 5.4688,18.00002 c -11.5624,0 -21,9.4375 -21,20.99996 0,11.5624 9.4376,20.9999 
         21,20.9999 11.5625,0 21,-9.4375 21,-20.9999 0,-11.56246 -9.4375,-20.99996 -21,-20.99996 
         z m 0,6 c 8.3198,0 15,6.6801 15,14.99996 0,8.3197 -6.6802,14.9999 -15,14.9999 
-        -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"/></g></svg>
-    </button>
-    <SettingsPage showVal={show} setShow={() => { setShow(false) }} gameMode={gameMode} setGameMode={setGameMode} />
-    <style jsx>
-      {`
-        svg {
-          display: inline-block;
-          box-sizing: border-box;
-          background-color: inherit;
-          padding: none;
-          fill: var(--active_outline);
-          transition: all 0.2s;
-          width: 0.85em;
-          height: 0.85em;
-          -webkit-animation: Gear-spin infinite 15s linear;
-          animation: Gear-spin infinite 15s linear;
-          -webkit-animation-play-state: paused;
-          animation-play-state: paused;
-        }
-        svg:visited {
-          fill: var(--active_outline);
-        }
-        svg:hover {
-          fill: var(--insert);
-          cursor: pointer;
-        }
-        svg:active {
-          fill: darkslategray;
-        }
-        @keyframes Gear-spin {
-          from {
-            transform: rotate(0deg);
+        -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"
+            />
+          </g>
+        </svg>
+      </button>
+      <SettingsPage
+        showVal={show}
+        setShow={() => {
+          setShow(false);
+        }}
+        gameMode={gameMode}
+        setGameMode={setGameMode}
+      />
+      <style jsx>
+        {`
+          svg {
+            display: inline-block;
+            box-sizing: border-box;
+            background-color: inherit;
+            padding: none;
+            fill: var(--active_outline);
+            transition: all 0.2s;
+            width: 0.85em;
+            height: 0.85em;
+            -webkit-animation: Gear-spin infinite 15s linear;
+            animation: Gear-spin infinite 15s linear;
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused;
           }
-        to {
-          transform: rotate(360deg);
+          svg:visited {
+            fill: var(--active_outline);
           }
-        }
-        @-webkit-keyframes Gear-spin {
-          from {
-            transform: rotate(0deg);
+          svg:hover {
+            fill: var(--insert);
+            cursor: pointer;
           }
-        to {
-          transform: rotate(360deg);
+          svg:active {
+            fill: darkslategray;
           }
-        }
-        button {
-          border: none;
-          padding: 0 2vmin 0 7vmin;
-          margin: 0.22em 0 0 0;
-          font-weight: 300;
-          font-size: 1em;
-          color: var(--active_outline);
-          transition: all 0.2s;
-          width: auto;
-        }
-        button:hover {
-          color: var(--insert)
-        } 
-      `}
-    </style>
-  </div>
+          @keyframes Gear-spin {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+          @-webkit-keyframes Gear-spin {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+          button {
+            border: none;
+            padding: 0 2vmin 0 7vmin;
+            margin: 0.22em 0 0 0;
+            font-weight: 300;
+            font-size: 1em;
+            color: var(--active_outline);
+            transition: all 0.2s;
+            width: auto;
+          }
+          button:hover {
+            color: var(--insert);
+          }
+        `}
+      </style>
+    </div>
+  );
 };
 
 const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
@@ -125,72 +153,122 @@ const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
     showHide = "z2";
   }
 
-  return <div className={showHide}>
-    <div className="z2_body">
-      <div className="z2_title">
-        Settings
-      <span className="z2_hide" onClick={setShow}>x</span>
-      </div>
-      <p><strong>Choose how you want to play:</strong> </p>
-      <div className="option"><GameModeButton buttonMode="collaborative" gameMode={gameMode} setGameMode={setGameMode} />
-        <strong>collaborative mode</strong>&nbsp;(default)</div>
-      <div className="option"><GameModeButton buttonMode="creative" gameMode={gameMode} setGameMode={setGameMode} />
-        <strong>creative mode</strong>&nbsp;</div>
+  return (
+    <div className={showHide}>
+      <div className="z2_body">
+        <div className="z2_title">
+          Settings
+          <span className="z2_hide" onClick={setShow}>
+            x
+          </span>
+        </div>
+        <p>
+          <strong>Choose how you want to play:</strong>{" "}
+        </p>
+        <div className="option">
+          <GameModeButton
+            buttonMode="collaborative"
+            gameMode={gameMode}
+            setGameMode={setGameMode}
+          />
+          <strong>collaborative mode</strong>&nbsp;(default)
+        </div>
+        <div className="option">
+          <GameModeButton
+            buttonMode="creative"
+            gameMode={gameMode}
+            setGameMode={setGameMode}
+          />
+          <strong>creative mode</strong>&nbsp;
+        </div>
+        <div className="option">
+          <a
+            href="
+              https://play.google.com/store/apps/details?id=com.details_reactnative"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Get the details app for Android!
+          </a>
+        </div>
+        <div className="option">
+          <a
+            href="
+            https://apps.apple.com/app/details-the-game/id6449182298"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Get the details app for iOS!
+          </a>
+        </div>
+        {/* 
       <div className="option"><GameModeButton buttonMode="competitive" gameMode={gameMode} setGameMode={setGameMode} />
-        <strong>competitive mode </strong>&nbsp;<i>coming soon!!!</i></div>
-    </div>
-    <style jsx>{`
-      .option {
-        margin-bottom: 1.2rem;
-        display: flex;
-        width: 100%;
-        justify-content: flex-start;
-        align-items: center;
-      }
+        <strong>competitive mode </strong>&nbsp;<i>coming soon!!!</i></div> */}
+      </div>
+      <style jsx>{`
+        .option {
+          margin-bottom: 1.2rem;
+          display: flex;
+          width: 100%;
+          justify-content: flex-start;
+          align-items: center;
+        }
       `}</style>
-  </div>
-}
+    </div>
+  );
+};
 
 const GameModeButton = ({ buttonMode, gameMode, setGameMode }) => {
-  let checkedOrNot = "not"
-  let symbol = " "
+  let checkedOrNot = "not";
+  let symbol = " ";
   if (buttonMode === gameMode) {
-    checkedOrNot = "checked"
-    symbol = "✔"
+    checkedOrNot = "checked";
+    symbol = "✔";
   }
 
-  let disabled = false
+  let disabled = false;
   if (buttonMode === "competitive") {
-    disabled = true
+    disabled = true;
   }
 
-  return <><button className={checkedOrNot} onClick={() => { if (!disabled) { setGameMode(buttonMode) } }} >{symbol}</button>
-    <style jsx>{`
-      button {
-        width: 3vw;
-        height: 3vw;
-        font-size: 1.3rem;
-        line-height: 1rem;
-        text-align: center;
-        padding: 0;
-        padding-bottom: 0.1rem;
-        background-color: var(--mainbg);
-        border: 1.5px solid black;
-        border-radius: 0.5vmin;
-        margin-right: 2vw;
-      }
-      button.not:hover {
-        background-color: var(--active-outline);
-      }
-      .checked {
-        color: var(--insert);
-      }
-      button.checked:hover {
-        color: var(--insert);
-      }
-    `}</style>
-  </>
-}
-
+  return (
+    <>
+      <button
+        className={checkedOrNot}
+        onClick={() => {
+          if (!disabled) {
+            setGameMode(buttonMode);
+          }
+        }}
+      >
+        {symbol}
+      </button>
+      <style jsx>{`
+        button {
+          width: 3vw;
+          height: 3vw;
+          font-size: 1.3rem;
+          line-height: 1rem;
+          text-align: center;
+          padding: 0;
+          padding-bottom: 0.1rem;
+          background-color: var(--mainbg);
+          border: 1.5px solid black;
+          border-radius: 0.5vmin;
+          margin-right: 2vw;
+        }
+        button.not:hover {
+          background-color: var(--active-outline);
+        }
+        .checked {
+          color: var(--insert);
+        }
+        button.checked:hover {
+          color: var(--insert);
+        }
+      `}</style>
+    </>
+  );
+};
 
 export default PopUp;
