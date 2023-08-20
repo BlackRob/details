@@ -154,8 +154,8 @@ const QuestionPage = ({ showVal, setShow }) => {
         </div>
 
         <p>
-          Did you know you there's an app version of details? It's not exactly
-          the same, but it's pretty cool.
+          Did you know you there&#39;s an app version of details? It&#39;s not
+          exactly the same, but it&#39;s pretty cool.
           <p className="option">
             <a
               href="
