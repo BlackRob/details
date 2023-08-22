@@ -10,7 +10,7 @@ const Game = ({ returnString }) => (
     <Head>
       <title>&quot;details&quot;</title>
       <link rel="icon" href="/favicon.ico" />
-      <meta
+      {/*   <meta
         property="og:image"
         content={`https://grumbly.games/api/${returnString}`}
       />
@@ -23,7 +23,7 @@ const Game = ({ returnString }) => (
       <meta
         property="og:image"
         content={`https://grumbly.games/api/square/${returnString}.png`}
-      />
+      /> 
       <meta property="og:image:width" content="600" />
       <meta property="og:image:height" content="600" />
       <meta property="fb:app_id" content="220488252548780" />
@@ -51,7 +51,7 @@ const Game = ({ returnString }) => (
       <meta
         name="twitter:domain"
         content={`https://grumbly.games/details/${returnString}`}
-      />
+      /> */}
     </Head>
 
     <div className="gameContent">
