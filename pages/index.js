@@ -14,7 +14,7 @@ const Game = () => (
       <meta property="og:image:height" content="630" />
       <meta property="fb:app_id" content="220488252548780" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://grumbly.games/details" />
+      <meta property="og:url" content="https://details.grumbly.games/" />
       <meta property="og:title" content="click the image to play the game" />
       <meta
         property="og:description"
