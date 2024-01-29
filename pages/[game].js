@@ -5,6 +5,10 @@ import DrawGame from "../components/Game";
 import { stringIsValid, gameStateToStr } from "../components/gameStatePack";
 import Head from "next/head";
 
+("use client");
+
+import { ErrorBoundary } from "react-error-boundary";
+
 const Game = ({ returnString }) => (
   <div className="container">
     <Head>
@@ -54,11 +58,13 @@ const Game = ({ returnString }) => (
       /> */}
     </Head>
 
-    <div className="gameContent">
-      <DrawGame
-        gameState={Buffer.from(returnString, "base64").toString("utf8")}
-      />
-    </div>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <div className="gameContent">
+        <DrawGame
+          gameState={Buffer.from(returnString, "base64").toString("utf8")}
+        />
+      </div>
+    </ErrorBoundary>
 
     <style jsx>{``}</style>
   </div>
