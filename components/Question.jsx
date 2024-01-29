@@ -83,7 +83,7 @@ const QuestionPage = ({ showVal, setShow }) => {
           </a>{" "}
           to read the rules.
         </p>
-        <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" />
+        {/* <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" /> */}
         <div name="learn" className="typeButtonDiv">
           <h3>Learn more about...</h3>
           <div className="typeButtons">
@@ -153,7 +153,7 @@ const QuestionPage = ({ showVal, setShow }) => {
           </div>
         </div>
 
-        <p>
+        <div>
           Did you know you there&#39;s an app version of details? It&#39;s not
           exactly the same, but it&#39;s pretty cool.
           <p className="option">
@@ -176,7 +176,7 @@ const QuestionPage = ({ showVal, setShow }) => {
               Get the details app for iOS!
             </a>
           </p>
-        </p>
+        </div>
       </div>
       <style jsx>{`
         .typeButtonDiv {

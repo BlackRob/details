@@ -7,9 +7,6 @@ import sentences from "../data/sentences.json";
 import { preInsertProcessing } from "./preInsertProcessing";
 import { strToGameState } from "./gameStatePack";
 
-// temporarirly placing here from package.json
-// "vercel-build": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/ && npm run build",
-
 class Game extends React.Component {
   constructor(props) {
     super(props);

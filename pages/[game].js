@@ -1,6 +1,6 @@
 import sentences from "../data/sentences.json";
 import React from "react";
-import DrawHeader from "../components/Header";
+//import DrawHeader from "../components/Header";
 import DrawGame from "../components/Game";
 import { stringIsValid, gameStateToStr } from "../components/gameStatePack";
 import Head from "next/head";
@@ -79,12 +79,12 @@ export async function getServerSideProps(context) {
 
   // page requested ("game") may be a number corresponding to
   // a particular starter sentence or reflect a game state
-  // or be garbage: first checck, is it a number?
+  // or be garbage: first check, is it a number?
   if (isNaN(context.query.game)) {
     // most likely case is the "game" requested is from
     // someone clicking a shared link, which means the link
     // contains the full state of a game _or_
-    // it contains nonsense; this function handles both cases
+    // it contains nonsense; this test handles both cases
     if (stringIsValid({ sentenceString: reqString })) {
       //console.log("string is valid", reqString)
       returnString = encS;
