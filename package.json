@@ -1,20 +1,18 @@
 {
   "name": "details",
-  "version": "1.0.2",
+  "version": "1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/ && npm run build",
     "export": "npm run build && next export"
   },
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.0.11",
     "@types/react": "^18.2.48",
     "canvas": "^2.11.0",
-    "fonttrick": "file:fonttrick",
     "frontmatter-markdown-loader": "^3.7.0",
     "next": "^12.1.6",
     "react": "^18.1.0",

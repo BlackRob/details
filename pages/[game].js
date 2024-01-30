@@ -14,45 +14,38 @@ const Game = ({ returnString }) => (
     <Head>
       <title>&quot;details&quot;</title>
       <link rel="icon" href="/favicon.ico" />
+
+      {/* <!-- Facebook Meta Tags --> */}
+      <meta
+        property="og:url"
+        content={`https://details.grumbly.games/${returnString}`}
+      />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="click the image to play the game" />
+      <meta property="og:description" content="og:description text" />
       <meta
         property="og:image"
         content={`http://details.grumbly.games/api/${returnString}.png`}
       />
+
+      {/* <!-- Twitter Meta Tags --> */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="twitter:domain" content="details.grumbly.games" />
       <meta
-        property="og:image:url"
-        content={`https://details.grumbly.games/api/${returnString}`}
+        property="twitter:url"
+        content={`https://details.grumbly.games/${returnString}`}
+      />
+      <meta name="twitter:title" content="" />
+      <meta name="twitter:description" content="" />
+      <meta
+        name="twitter:image"
+        content={`http://details.grumbly.games/api/square/${returnString}.png`}
       />
       {/* 
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta
-        property="og:image"
-        content={`https://details.grumbly.games/api/square/${returnString}.png`}
-      />
       <meta property="og:image:width" content="600" />
       <meta property="og:image:height" content="600" /> */}
-      <meta property="fb:app_id" content="220488252548780" />
-      <meta property="og:type" content="website" />
-      {/*       <meta property="og:url" content="https://details.grumbly.games/" />
-       */}{" "}
-      <meta property="og:title" content="click the image to play the game" />
-      <meta
-        property="og:description"
-        content="details is a grammar game where you add words to make a sentence longer"
-      />
-      {/* 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="click the image to play the game" />
-      <meta
-        name="twitter:description"
-        content="it's a game where you make sentences longer"
-      />
-      <meta
-        name="twitter:image"
-        content={`https://details.grumbly.games/api/${returnString}`}
-      />
-      <meta property="twitter:domain" content="details.grumbly.games" />
-      <meta property="twitter:url" content="https://details.grumbly.games/" /> */}
     </Head>
 
     <div className="gameContent">

@@ -10,8 +10,11 @@ export default (req, res) => {
     process.cwd() + "/.next/server/font-manifest.json"
   );
 
-  let message = "\n__process.cwd_returns\n" + process.cwd() + "\n";
-  "\n__1__process.cwd\n" +
+  let message =
+    "\n__process.cwd_returns " +
+    process.cwd() +
+    "\n" +
+    "\n__1__process.cwd\n" +
     poop1.join("\n") +
     "\n__2__process.cwd/.next/server/\n" +
     poop2.join("\n") +
