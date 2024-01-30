@@ -9,18 +9,13 @@ import path from "path";
 
 if (registerFont !== undefined) {
   console.log("registerFont is not undefined");
-  //let theFontPath = path.join(process.cwd(), "./public/roboto-regular.ttf");
-  let message = registerFont(
-    path.join(process.cwd(), "/public/Roboto-Regular.ttf"),
-    {
-      family: "Roboto",
-    }
-  );
+  registerFont(path.join(process.cwd(), "/public/Roboto-Regular.ttf"), {
+    family: "Roboto",
+  });
   console.log(path.join(process.cwd(), "/public/Roboto-Regular.ttf"));
 }
 
 const square = (req, res) => {
-  // { query: { img } }
   // some constants
   const fallbackString =
     "1xThe~2ysent~3zlink~4yis~5wnot~6xa~7xvalid~8zsentence~9f~~";

@@ -17,7 +17,10 @@ const Game = ({ returnString }) => (
       />
       <meta property="og:type" content="website" />
       <meta property="og:title" content="click the image to play the game" />
-      <meta property="og:description" content="og:description text" />
+      <meta
+        property="og:description"
+        content="make a sentence longer by adding details"
+      />
       <meta property="fb:app_id" content="220488252548780" />
       <meta
         property="og:image"
@@ -31,8 +34,11 @@ const Game = ({ returnString }) => (
         property="twitter:url"
         content={`https://details.grumbly.games/${returnString}`}
       />
-      <meta name="twitter:title" content="" />
-      <meta name="twitter:description" content="" />
+      <meta name="twitter:title" content="click the image to play the game" />
+      <meta
+        name="twitter:description"
+        content="make a sentence longer by adding details"
+      />
       <meta
         name="twitter:image"
         content={`http://details.grumbly.games/api/square/${returnString}.png`}
