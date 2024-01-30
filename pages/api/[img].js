@@ -41,7 +41,7 @@ const drawImage = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: "/Roboto-Regular.ttf",
+      fontPath: "/roboto-regular.ttf",
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
@@ -51,7 +51,7 @@ const drawImage = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: "/Roboto-Regular.ttf",
+      fontPath: "/roboto-regular.ttf",
     });
   }
 
