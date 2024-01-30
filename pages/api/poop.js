@@ -7,7 +7,7 @@ export default (req, res) => {
   let poop3 = fs.readdirSync(path.join(process.cwd(), "node_modules/"));
   let poop4 = fs.readdirSync(path.join(process.cwd(), "public/"));
   let poop5 = fs.readFileSync(
-    process.cwd() + ".next/server/font-manifest.json"
+    process.cwd() + "/.next/server/font-manifest.json"
   );
 
   let message =
