@@ -3,7 +3,7 @@ import { stringIsValid, strToGameState } from "../../components/gameStatePack";
 //import fonttrick from "fonttrick";
 import path from "path";
 
-//registerFont(path.resolve("/Roboto-Regular.ttf"), { family: "Roboto" });
+registerFont(path.resolve("/Roboto-Regular.ttf"), { family: "Roboto" });
 
 const drawImage = (req, res) => {
   // { query: { img } }

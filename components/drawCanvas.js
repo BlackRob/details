@@ -2,9 +2,10 @@
   on a canvas, so that it can be shared as an image */
 import { registerFont, createCanvas } from "canvas";
 import path from "path";
-/* registerFont(path.resolve("public/Roboto-Regular.ttf"), {
+// this line needs to be commented to run in dev mode
+registerFont(path.resolve("public/Roboto-Regular.ttf"), {
   family: "Roboto",
-}); */
+});
 
 // width and height are optional
 export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
