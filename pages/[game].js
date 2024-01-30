@@ -16,17 +16,17 @@ const Game = ({ returnString }) => (
       <link rel="icon" href="/favicon.ico" />
       <meta
         property="og:image"
-        content={`http://grumbly.games/api/${returnString}`}
+        content={`http://details.grumbly.games/api/${returnString}`}
       />
       <meta
         property="og:image:secure_url"
-        content={`https://grumbly.games/api/${returnString}`}
+        content={`https://details.grumbly.games/api/${returnString}`}
       />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta
         property="og:image"
-        content={`https://grumbly.games/api/square/${returnString}.png`}
+        content={`https://details.grumbly.games/api/square/${returnString}.png`}
       />
       <meta property="og:image:width" content="600" />
       <meta property="og:image:height" content="600" />
@@ -46,7 +46,7 @@ const Game = ({ returnString }) => (
       />
       <meta
         name="twitter:image"
-        content={`https://grumbly.games/api/${returnString}`}
+        content={`https://details.grumbly.games/api/${returnString}`}
       />
       <meta property="twitter:domain" content="details.grumbly.games" />
       <meta property="twitter:url" content="https://details.grumbly.games/" />
