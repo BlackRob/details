@@ -4,22 +4,22 @@ import path from "path";
 export default (req, res) => {
   let poop1 = fs.readdirSync(process.cwd());
   let poop2 = fs.readdirSync(path.join(process.cwd(), ".next/server/"));
-  let poop3 = fs.readdirSync(path.join(process.cwd(), ".next/server/chunks/"));
-  let poop4 = fs.readdirSync(path.join(process.cwd(), ".next/cache/"));
+  let poop3 = fs.readdirSync(path.join(process.cwd(), "node/modules/"));
+  let poop4 = fs.readdirSync(path.join(process.cwd(), "public/"));
   let poop5 = fs.readFileSync(
-    path.join(process.cwd(), ".next/server/font-manifest.json")
+    process.cwd() + ".next/server/font-manifest.json"
   );
 
   let message =
-    "process.cwd\n" +
+    "\n1_process.cwd\n" +
     poop1.join("\n") +
-    "process.cwd/.next/server/\n" +
+    "\n2_process.cwd/.next/server/\n" +
     poop2.join("\n") +
-    "process.cwd/.next/server/chunks\n" +
+    "\n3_process.cwd/node_modules/\n" +
     poop3.join("\n") +
-    "process.cwd/.next/cache/\n" +
+    "\n4_process.cwd/public/\n" +
     poop4.join("\n");
-  "process.cwd/.next/server/font-manifest.json\n" + poop5.join("\n");
+  "\n5_process.cwd/.next/server/font-manifest.json\n" + poop5.join();
   console.log(message);
 
   res.statusCode = 200;
