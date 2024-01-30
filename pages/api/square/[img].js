@@ -48,7 +48,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: "/Roboto-Regular.ttf",
+      //fontPath: "/Roboto-Regular.ttf",
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
@@ -58,7 +58,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: "/Roboto-Regular.ttf",
+      //fontPath: "/Roboto-Regular.ttf",
     });
   }
 

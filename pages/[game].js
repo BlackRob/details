@@ -1,13 +1,8 @@
 import sentences from "../data/sentences.json";
 import React from "react";
-//import DrawHeader from "../components/Header";
 import DrawGame from "../components/Game";
 import { stringIsValid, gameStateToStr } from "../components/gameStatePack";
 import Head from "next/head";
-
-//("use client");
-
-//import { ErrorBoundary } from "react-error-boundary";
 
 const Game = ({ returnString }) => (
   <div className="container">
@@ -23,6 +18,7 @@ const Game = ({ returnString }) => (
       <meta property="og:type" content="website" />
       <meta property="og:title" content="click the image to play the game" />
       <meta property="og:description" content="og:description text" />
+      <meta property="fb:app_id" content="220488252548780" />
       <meta
         property="og:image"
         content={`http://details.grumbly.games/api/${returnString}.png`}
