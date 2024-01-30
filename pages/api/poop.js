@@ -2,22 +2,24 @@ import fs from "fs";
 import path from "path";
 
 export default (req, res) => {
-  let poop1 = fs.readdirSync(path.join(process.cwd(), ".next/"));
+  let poop1 = fs.readdirSync(process.cwd());
   let poop2 = fs.readdirSync(path.join(process.cwd(), ".next/server/"));
-  let poop3 = fs.readdirSync(path.join(process.cwd(), ".next/server/pages/"));
-  let poop4 = fs.readdirSync(
-    path.join(process.cwd(), ".next/server/pages/api/")
+  let poop3 = fs.readdirSync(path.join(process.cwd(), ".next/server/chunks/"));
+  let poop4 = fs.readdirSync(path.join(process.cwd(), "cache"));
+  let poop5 = fs.readFileSync(
+    path.join(process.cwd(), ".next/server/font-manifest.json")
   );
 
   let message =
-    "" +
+    "process.cwd\n" +
     poop1.join("\n") +
-    "\n_____\n" +
+    "process.cwd/.next/server/\n" +
     poop2.join("\n") +
-    "\n_____\n" +
+    "process.cwd/.next/server/chunks\n" +
     poop3.join("\n") +
-    "\n_____\n" +
+    "process.cwd/cache/\n" +
     poop4.join("\n");
+  "process.cwd/.next/server/font-manifest.json\n" + poop5.join("\n");
   console.log(message);
 
   res.statusCode = 200;
