@@ -27,7 +27,7 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   }
 
   // this path is only used for api calls in development mode
-  let theFontPath = path.join(process.cwd(), "./public/Roboto-Regular.ttf");
+  let theFontPath = path.join(process.cwd(), "/public/Roboto-Regular.ttf");
   // when run in browser, registerfont isn't available,
   // but we don't need it; when run from an API call,
   // there is no css loaded, so we can't get fonts from @fontface
@@ -39,9 +39,9 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   // /tmp then returns its absolute path; the function in the api
   // then passes that path here so we can load the font from it
   if (registerFont !== undefined) {
-    if (process.env.NODE_ENV === "production") {
-      theFontPath = fontPath;
-    }
+    //if (process.env.NODE_ENV === "production") {
+    //  theFontPath = fontPath;
+    //}
     registerFont(theFontPath, { family: "Roboto" });
   }
   const canvas = createCanvas(cw, ch);

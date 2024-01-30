@@ -8,8 +8,8 @@ import path from "path";
   family: "Roboto",
 }); */
 if (registerFont !== undefined) {
-  let theFontPath = path.join(process.cwd(), "./public/Roboto-Regular.ttf");
-  registerFont(path.join(process.cwd(), "./public/Roboto-Regular.ttf"), {
+  //let theFontPath = path.join(process.cwd(), "/public/Roboto-Regular.ttf");
+  registerFont(path.join(process.cwd(), "/public/Roboto-Regular.ttf"), {
     family: "Roboto",
   });
 }

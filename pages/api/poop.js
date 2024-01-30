@@ -10,16 +10,18 @@ export default (req, res) => {
     process.cwd() + "/.next/server/font-manifest.json"
   );
 
-  let message =
-    "\n1_process.cwd\n" +
+  let message = "\n__process.cwd_returns\n" + process.cwd() + "\n";
+  "\n__1__process.cwd\n" +
     poop1.join("\n") +
-    "\n2_process.cwd/.next/server/\n" +
+    "\n__2__process.cwd/.next/server/\n" +
     poop2.join("\n") +
-    "\n3_process.cwd/node_modules/\n" +
+    "\n__3__process.cwd/node_modules/\n" +
     poop3.join("\n") +
-    "\n4_process.cwd/public/\n" +
-    poop4.join("\n");
-  "\n5_process.cwd/.next/server/font-manifest.json\n" + poop5.join();
+    "\n__4__process.cwd/public/\n" +
+    poop4.join("\n") +
+    "\n5_process.cwd/.next/server/font-manifest.json\n" +
+    poop5;
+
   console.log(message);
 
   res.statusCode = 200;

@@ -10,10 +10,13 @@ import path from "path";
 if (registerFont !== undefined) {
   console.log("registerFont is not undefined");
   //let theFontPath = path.join(process.cwd(), "./public/roboto-regular.ttf");
-  let message = registerFont(path.join(process.cwd(), "./roboto-regular.ttf"), {
-    family: "Roboto",
-  });
-  console.log(path.join(process.cwd(), "./public/roboto-regular.ttf"));
+  let message = registerFont(
+    path.join(process.cwd(), "/public/Roboto-Regular.ttf"),
+    {
+      family: "Roboto",
+    }
+  );
+  console.log(path.join(process.cwd(), "/public/Roboto-Regular.ttf"));
 }
 
 const square = (req, res) => {
