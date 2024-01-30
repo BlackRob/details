@@ -1,6 +1,6 @@
 import { drawCanvas } from "../../components/drawCanvas";
 import { stringIsValid, strToGameState } from "../../components/gameStatePack";
-//import fonttrick from "fonttrick";
+import fonttrick from "fonttrick";
 
 const drawImage = (req, res) => {
   // { query: { img } }
@@ -23,6 +23,7 @@ const drawImage = (req, res) => {
 
   if (stringIsValid({ sentenceString: reqString })) {
     let data = JSON.parse(strToGameState({ canvasURLstring: reqString }));
+    console.log("from api, string is valid");
     output = drawCanvas({
       sentence: data.sentence,
       cards: data.cards,
@@ -32,6 +33,7 @@ const drawImage = (req, res) => {
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
+    console.log("from api, string is not valid");
     output = drawCanvas({
       sentence: data.sentence,
       cards: data.cards,
