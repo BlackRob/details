@@ -1,6 +1,9 @@
 import { drawCanvas } from "../../components/drawCanvas";
 import { stringIsValid, strToGameState } from "../../components/gameStatePack";
-import fonttrick from "fonttrick";
+//import fonttrick from "fonttrick";
+import path from "path";
+
+//registerFont(path.resolve("/Roboto-Regular.ttf"), { family: "Roboto" });
 
 const drawImage = (req, res) => {
   // { query: { img } }
@@ -29,7 +32,7 @@ const drawImage = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: fonttrick(),
+      //fontPath: "/Roboto-Regular.ttf",
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
@@ -39,7 +42,7 @@ const drawImage = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: fonttrick(),
+      //fontPath: "/Roboto-Regular.ttf",
     });
   }
 

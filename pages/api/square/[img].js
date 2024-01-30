@@ -3,7 +3,7 @@ import {
   stringIsValid,
   strToGameState,
 } from "../../../components/gameStatePack";
-import fonttrick from "fonttrick";
+//import fonttrick from "fonttrick";
 
 const square = (req, res) => {
   // { query: { img } }
@@ -34,7 +34,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: fonttrick(),
+      //fontPath: fonttrick(),
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
@@ -44,7 +44,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      fontPath: fonttrick(),
+      //fontPath: fonttrick(),
     });
   }
 
