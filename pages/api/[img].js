@@ -1,9 +1,18 @@
 import { drawCanvas } from "../../components/drawCanvas";
+import { registerFont } from "canvas";
 import { stringIsValid, strToGameState } from "../../components/gameStatePack";
 //import fonttrick from "fonttrick";
 import path from "path";
 
-registerFont(path.resolve("/Roboto-Regular.ttf"), { family: "Roboto" });
+/* registerFont(path.resolve("../public/Roboto-Regular.ttf"), {
+  family: "Roboto",
+}); */
+if (registerFont !== undefined) {
+  let theFontPath = path.join(process.cwd(), "./public/Roboto-Regular.ttf");
+  registerFont(path.join(process.cwd(), "./public/Roboto-Regular.ttf"), {
+    family: "Roboto",
+  });
+}
 
 const drawImage = (req, res) => {
   // { query: { img } }

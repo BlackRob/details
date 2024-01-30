@@ -1,9 +1,18 @@
 import { drawCanvas } from "../../../components/drawCanvas";
+import { registerFont } from "canvas";
 import {
   stringIsValid,
   strToGameState,
 } from "../../../components/gameStatePack";
+import path from "path";
 //import fonttrick from "fonttrick";
+
+if (registerFont !== undefined) {
+  let theFontPath = path.join(process.cwd(), "./public/Roboto-Regular.ttf");
+  registerFont(path.join(process.cwd(), "./public/Roboto-Regular.ttf"), {
+    family: "Roboto",
+  });
+}
 
 const square = (req, res) => {
   // { query: { img } }
