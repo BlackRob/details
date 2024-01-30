@@ -16,7 +16,7 @@ const Game = ({ returnString }) => (
       <link rel="icon" href="/favicon.ico" />
       <meta
         property="og:image"
-        content={`https://grumbly.games/api/${returnString}`}
+        content={`http://grumbly.games/api/${returnString}`}
       />
       <meta
         property="og:image:secure_url"
