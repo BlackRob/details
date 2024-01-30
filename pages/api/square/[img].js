@@ -8,8 +8,8 @@ import path from "path";
 //import fonttrick from "fonttrick";
 
 if (registerFont !== undefined) {
-  console.log("refisterFont is not undefined");
-  let theFontPath = path.join(process.cwd(), "./public/roboto-regular.ttf");
+  console.log("registerFont is not undefined");
+  //let theFontPath = path.join(process.cwd(), "./public/roboto-regular.ttf");
   let message = registerFont(path.join(process.cwd(), "./roboto-regular.ttf"), {
     family: "Roboto",
   });
