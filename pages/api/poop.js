@@ -4,7 +4,7 @@ import path from "path";
 export default (req, res) => {
   let poop1 = fs.readdirSync(process.cwd());
   let poop2 = fs.readdirSync(path.join(process.cwd(), ".next/server/"));
-  let poop3 = fs.readdirSync(path.join(process.cwd(), "node/modules/"));
+  let poop3 = fs.readdirSync(path.join(process.cwd(), "node_modules/"));
   let poop4 = fs.readdirSync(path.join(process.cwd(), "public/"));
   let poop5 = fs.readFileSync(
     process.cwd() + ".next/server/font-manifest.json"
