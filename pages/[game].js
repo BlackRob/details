@@ -32,30 +32,24 @@ const Game = ({ returnString }) => (
       <meta property="og:image:height" content="600" />
       <meta property="fb:app_id" content="220488252548780" />
       <meta property="og:type" content="website" />
-      <meta
-        property="og:url"
-        content={`https://grumbly.games/details/${returnString}`}
-      />
+      <meta property="og:url" content="https://details.grumbly.games/" />
       <meta property="og:title" content="click the image to play the game" />
       <meta
         property="og:description"
         content="details is a grammar game where you add words to make a sentence longer"
       />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="click to play details" />
+      <meta name="twitter:title" content="click the image to play the game" />
       <meta
         name="twitter:description"
         content="it's a game where you make sentences longer"
       />
-      <meta name="twitter:creator" content="@GrumblyGames" />
       <meta
         name="twitter:image"
         content={`https://grumbly.games/api/${returnString}`}
       />
-      <meta
-        name="twitter:domain"
-        content={`https://grumbly.games/details/${returnString}`}
-      />
+      <meta property="twitter:domain" content="details.grumbly.games" />
+      <meta property="twitter:url" content="https://details.grumbly.games/" />
     </Head>
 
     <div className="gameContent">
