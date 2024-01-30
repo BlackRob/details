@@ -8,10 +8,15 @@ import path from "path";
 //import fonttrick from "fonttrick";
 
 if (registerFont !== undefined) {
+  console.log("refisterFont is not undefined");
   let theFontPath = path.join(process.cwd(), "./public/Roboto-Regular.ttf");
-  registerFont(path.join(process.cwd(), "./public/Roboto-Regular.ttf"), {
-    family: "Roboto",
-  });
+  let message = registerFont(
+    path.join(process.cwd(), "./public/Roboto-Regular.ttf"),
+    {
+      family: "Roboto",
+    }
+  );
+  console.log(message);
 }
 
 const square = (req, res) => {
@@ -43,7 +48,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      //fontPath: fonttrick(),
+      fontPath: "/Roboto-Regular.ttf",
     });
   } else {
     let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
@@ -53,7 +58,7 @@ const square = (req, res) => {
       cards: data.cards,
       width: imageWidth,
       height: imageHeight,
-      //fontPath: fonttrick(),
+      fontPath: "/Roboto-Regular.ttf",
     });
   }
 
