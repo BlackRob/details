@@ -2,20 +2,11 @@ import fs from "fs";
 import path from "path";
 
 export default (req, res) => {
-  let poop1 = fs.readdirSync(
-    path.join(
-      process.cwd(),
-      "node_modules/next/dist/next-server/lib/router/utils/"
-    )
-  );
-  let poop2 = fs.readdirSync(
-    path.join(process.cwd(), "node_modules/next/dist/next-server/server/lib/")
-  );
-  let poop3 = fs.readdirSync(
-    path.join(process.cwd(), "node_modules/next/dist/compiled/")
-  );
+  let poop1 = fs.readdirSync(path.join(process.cwd(), ".next/"));
+  let poop2 = fs.readdirSync(path.join(process.cwd(), ".next/server/"));
+  let poop3 = fs.readdirSync(path.join(process.cwd(), ".next/server/pages/"));
   let poop4 = fs.readdirSync(
-    path.join(process.cwd(), ".next/serverless/pages/api/")
+    path.join(process.cwd(), ".next/server/pages/api/")
   );
 
   let message =
