@@ -5,7 +5,7 @@ export default (req, res) => {
   let poop1 = fs.readdirSync(process.cwd());
   let poop2 = fs.readdirSync(path.join(process.cwd(), ".next/server/"));
   let poop3 = fs.readdirSync(path.join(process.cwd(), ".next/server/chunks/"));
-  let poop4 = fs.readdirSync(path.join(process.cwd(), "cache"));
+  let poop4 = fs.readdirSync(path.join(process.cwd(), ".next/cache/"));
   let poop5 = fs.readFileSync(
     path.join(process.cwd(), ".next/server/font-manifest.json")
   );
@@ -17,7 +17,7 @@ export default (req, res) => {
     poop2.join("\n") +
     "process.cwd/.next/server/chunks\n" +
     poop3.join("\n") +
-    "process.cwd/cache/\n" +
+    "process.cwd/.next/cache/\n" +
     poop4.join("\n");
   "process.cwd/.next/server/font-manifest.json\n" + poop5.join("\n");
   console.log(message);
