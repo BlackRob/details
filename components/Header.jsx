@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Question from "./Question";
 import Settings from "./Settings";
 
@@ -6,9 +7,9 @@ import Settings from "./Settings";
 const OurBelovedHeader = ({ gameMode, setGameMode }) => (
   <header className="app_header">
     <div className="header_logo">
-      <a className="homeLink" href="/">
-        details
-      </a>
+      <Link href="/" replace>
+        <a className="homeLink">details</a>
+      </Link>
     </div>
 
     <Question />
