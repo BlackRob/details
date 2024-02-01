@@ -67,7 +67,7 @@ class Game extends React.Component {
     // from it; we don't want to force a player to start from
     // scratch just because they click away to look up a "conjunction"
     if (!this.props.hasOwnProperty("gameState")) {
-      console.log("This is a new game");
+      //console.log("This is a new game");
       // we were not currently playing a game, this is a new one
       // gameState only exists when game is started from link
       temp = JSON.parse(strToGameState({ canvasURLstring: defaultSentence }));
@@ -88,11 +88,11 @@ class Game extends React.Component {
       temp.creativeUndo = [];
     } else {
       // if it doesn't exist, use default sentence
-      console.log(this.props.gameState);
+      //console.log(this.props.gameState);
       temp = JSON.parse(
         strToGameState({ canvasURLstring: this.props.gameState })
       );
-      console.log(temp);
+      //console.log(temp);
       temp.active = temp.cards.length > 0;
       temp.gameMode = "collaborative";
       temp.lastCards = [];
@@ -284,9 +284,9 @@ class Game extends React.Component {
     let somethingWritten = true;
     x.forEach((element) => {
       if (element.working === true && element.word.length === 0) {
-        //console.log(element)
+        // console.log(element);
         somethingWritten = false;
-        //console.log(element.word, somethingWritten)
+        // console.log(element.word, somethingWritten);
       }
     });
     if (somethingWritten !== this.state.placing) {

@@ -5,7 +5,11 @@ import Settings from "./Settings";
 // our beloved header
 const OurBelovedHeader = ({ gameMode, setGameMode }) => (
   <header className="app_header">
-    <div className="header_logo">details</div>
+    <div className="header_logo">
+      <a className="homeLink" href="/">
+        details
+      </a>
+    </div>
 
     <Question />
     <Settings gameMode={gameMode} setGameMode={setGameMode} />
@@ -26,6 +30,21 @@ const OurBelovedHeader = ({ gameMode, setGameMode }) => (
           color: var(--active_outline);
           text-align: left;
           flex: 1;
+        }
+        .homeLink {
+          display: inline-block;
+          text-decoration: none;
+          border: none;
+          _padding: 0 2vmin 0 7vmin;
+          _padding-left: 7vmin;
+          font-weight: 300;
+          font-size: 1em;
+          color: var(--active_outline);
+          transition: all 0.2s;
+          width: auto;
+        }
+        .homeLink:hover {
+          color: var(--insert);
         }
         @media screen and (orientation: landscape) {
           .app_header {

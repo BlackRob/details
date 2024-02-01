@@ -39,6 +39,7 @@ const DrawWorkingRowContent = ({
 
   if (wR.length > 0) {
     const workingCards = wR.map((x) => cards.find((y) => y.id === x));
+    //console.log(workingCards);
     content = workingCards.map((z, index) => (
       <DrawWorkingCard
         element={z}
@@ -303,8 +304,14 @@ const DrawSwitchButton = ({ numCards, index, switchPlacesWR }) => {
 const DrawInputDiv = ({ word, cardId, updateState }) => {
   const newRef = React.createRef();
   useEffect(() => {
+    //console.log("used effect to change focus, " + word);
     newRef.current.focus();
-  }, [newRef]);
+  }, []);
+
+  //const handleFocus = (event) => {
+  //  console.log("Input field is focused " + cardId);
+  //};
+
   return (
     <div className="input_div">
       <input
@@ -312,7 +319,10 @@ const DrawInputDiv = ({ word, cardId, updateState }) => {
         defaultValue={word}
         size={Math.max(4, word.length)}
         name={cardId}
+        key={cardId}
         ref={newRef}
+        //onFocus={handleFocus}
+        //autoFocus="autoFocus"
         autoCapitalize="off"
         onKeyUp={(e) => {
           updateState(cardId, e.target.value);

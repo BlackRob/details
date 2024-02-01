@@ -56,6 +56,32 @@ const QuestionPage = ({ showVal, setShow }) => {
           </span>
         </div>
         <p>
+          <strong>
+            Did you know you there&#39;s an app version of details? It&#39;s not
+            exactly the same, but it&#39;s pretty cool.
+          </strong>
+        </p>
+        <p className="storelink">
+          <a
+            href="
+              https://play.google.com/store/apps/details?id=com.details_reactnative"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Get the details app for Android!
+          </a>
+        </p>
+        <p className="storelink">
+          <a
+            href="
+            https://apps.apple.com/app/details-the-game/id6449182298"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Get the details app for iOS!
+          </a>
+        </p>
+        <p>
           <strong>What is this?</strong> <br />
           It&apos;s a game to practice English grammar.
         </p>
@@ -152,31 +178,6 @@ const QuestionPage = ({ showVal, setShow }) => {
             </a>
           </div>
         </div>
-
-        <div>
-          Did you know you there&#39;s an app version of details? It&#39;s not
-          exactly the same, but it&#39;s pretty cool.
-          <p className="option">
-            <a
-              href="
-              https://play.google.com/store/apps/details?id=com.details_reactnative"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Get the details app for Android!
-            </a>
-          </p>
-          <p className="option">
-            <a
-              href="
-            https://apps.apple.com/app/details-the-game/id6449182298"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Get the details app for iOS!
-            </a>
-          </p>
-        </div>
       </div>
       <style jsx>{`
         .typeButtonDiv {
@@ -223,6 +224,10 @@ const QuestionPage = ({ showVal, setShow }) => {
         }
         .hidden {
           display: none;
+        }
+        .storelink {
+          width: 100%;
+          text-align: center;
         }
       `}</style>
     </div>
