@@ -109,7 +109,7 @@ const QuestionPage = ({ showVal, setShow }) => {
           </a>{" "}
           to read the rules.
         </p>
-        {/* <YouTubeVid vidID="kb7NS16W1BA" caption="placeholder video" /> */}
+        <YouTubeVid vidID="8qAy85pGBKs" caption=" " />
         <div name="learn" className="typeButtonDiv">
           <h3>Learn more about...</h3>
           <div className="typeButtons">
@@ -180,6 +180,9 @@ const QuestionPage = ({ showVal, setShow }) => {
         </div>
       </div>
       <style jsx>{`
+        strong {
+          font-size: 1.1em;
+        }
         .typeButtonDiv {
           border: 1.5px solid black;
           border-radius: 7px;
