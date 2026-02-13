@@ -1,8 +1,10 @@
 import DrawGame from "../components/Game";
 import Head from "next/head";
+import { Box } from "@mantine/core";
 
 const Game = () => (
-  <div className="container">
+  // CHANGED: bg="black" ensures the sides/background are purely black
+  <Box w="100vw" h="100vh" bg="black">
     <Head>
       <title>&quot;details&quot;</title>
       <link rel="icon" href="/favicon.ico" />
@@ -41,12 +43,9 @@ const Game = () => (
       <meta property="og:image:height" content="630" />
       <meta property="fb:app_id" content="220488252548780" />
     </Head>
-    <div className="gameContent">
-      <DrawGame />
-    </div>
 
-    <style jsx>{``}</style>
-  </div>
+    <DrawGame />
+  </Box>
 );
 
 export default Game;

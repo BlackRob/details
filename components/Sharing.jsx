@@ -1,274 +1,353 @@
-import React, { useState } from "react";
-import {
-  EmailShareButton,
-  EmailIcon,
-  FacebookShareButton,
-  FacebookIcon,
-  TelegramShareButton,
-  TelegramIcon,
-  WeiboShareButton,
-  WeiboIcon,
-  TwitterShareButton,
-  TwitterIcon,
-  WhatsappShareButton,
-  WhatsappIcon,
-} from "react-share";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
+import {
+  Modal,
+  Stack,
+  Text,
+  Box,
+  Button,
+  CopyButton,
+  SegmentedControl,
+  Center,
+  Group,
+  Loader,
+} from "@mantine/core";
+import {
+  IconCopy,
+  IconCheck,
+  IconShare,
+  IconMovie,
+  IconPhoto,
+} from "@tabler/icons-react";
 import { drawCanvas } from "./drawCanvas";
+import { generateVideo } from "./generateVideo";
 import { gameStateToStr } from "./gameStatePack";
 
-// Clicking on the span opens an informative popup
-const Sharing = ({ sentence, cards, showSharing, setShowSharing }) => {
-  if (!showSharing) {
-    return <></>;
-  } else {
-    return (
-      <SharingPopUp
-        sentence={sentence}
-        cards={cards}
-        setShowSharing={setShowSharing}
-      />
-    );
-  }
-};
-
-const SharingPopUp = ({ sentence, cards, setShowSharing }) => {
-  // variable to show if copy to clipboard worked
-  const [copied, setCopied] = useState(false);
-  // variable to show info if copy to clipboard failed
-  const [copyFailed, setCopyFailed] = useState(false);
-
-  const canvasDataURL = drawCanvas({ sentence, cards });
-  const gameAsString = gameStateToStr({ sentence, cards });
-  const readableSentence = makeReadable({ sentence });
-
-  const canvasURLstring = Buffer.from(gameAsString, "utf8").toString("base64");
-  const gameURL = `https://details.grumbly.games/${canvasURLstring}`;
-  const imageURL = `https://details.grumbly.games/api/${canvasURLstring}`;
-
+const Sharing = ({
+  sentence,
+  cards,
+  undoStack,
+  showSharing,
+  setShowSharing,
+}) => {
   return (
-    <div className="z2">
-      <div className="popup">
-        <div className="z2_title">
+    <Modal
+      opened={showSharing}
+      onClose={() => setShowSharing(false)}
+      title={
+        <Text fw={700} size="1.7rem">
           Share your sentence!
-          <span
-            className="z2_hide"
-            onClick={() => {
-              setShowSharing(false);
-            }}
-          >
-            x
-          </span>
-        </div>
-        <div className="shareableImageContainer">
-          <Image
-            src={canvasDataURL}
-            height="628"
-            width="1200"
-            alt="sentence as image"
-          />
-        </div>
-
-        <div className="sharing_button_row">
-          <EmailShareButton
-            url={gameURL}
-            subject="I'm playing details"
-            body={`Click the link to play.
-          
-          Current sentence:
-          ${readableSentence}`}
-          >
-            <EmailIcon size={32} round={true} />
-          </EmailShareButton>
-          <FacebookShareButton url={gameURL} hashtag="ClickToPlay">
-            <FacebookIcon size={32} round={true} />
-          </FacebookShareButton>
-          <TelegramShareButton url={gameURL} title="grumbly.games">
-            <TelegramIcon size={32} round={true} />
-          </TelegramShareButton>
-          <WeiboShareButton
-            url={gameURL}
-            title="grumbly.games"
-            image={imageURL}
-          >
-            <WeiboIcon size={32} round={true} />
-          </WeiboShareButton>
-          <TwitterShareButton url={gameURL} hashtags={["ClickToPlay"]}>
-            <TwitterIcon size={32} round={true} />
-          </TwitterShareButton>
-          <WhatsappShareButton url={gameURL} title={`${readableSentence}`}>
-            <WhatsappIcon size={32} round={true} />
-          </WhatsappShareButton>
-          <ClipboardButton
-            toCopy={gameURL}
-            copied={copied}
-            setCopied={setCopied}
-            setCopyFailed={setCopyFailed}
-          />
-        </div>
-        <ClipFailedAdvice
-          copyFailed={copyFailed}
-          gameURL={gameURL}
-          readableSentence={readableSentence}
-        />
-      </div>
-      <style jsx>
-        {`
-          .sharing_button_row {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            width: 100%;
-            height: auto;
-          }
-        `}
-      </style>
-      <style jsx global>
-        {`
-          button[class="react-share__ShareButton"] {
-            margin: 0px;
-            width: 32px;
-            height: 32px;
-            padding: 0px;
-            border-radius: 50%;
-          }
-          button[class="react-share__ShareButton"]:hover,
-          button[class="react-share__ShareButton"]:focus {
-            outline: 0;
-            box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.5);
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-const ClipboardButton = ({ toCopy, copied, setCopied, setCopyFailed }) => {
-  let imgSrc = "/clipboard_unchecked.svg";
-  let altText = "empty clipboard icon by Zach Bogart from the Noun Project";
-  if (copied) {
-    imgSrc = "/clipboard_checked.svg";
-    altText = "checked clipboard icon by Zach Bogart from the Noun Project";
-  }
-
-  return (
-    <button
-      className="react-share__ShareButton"
-      onClick={(e) => {
-        e.preventDefault();
-        navigator.clipboard.writeText(toCopy).then(
-          function () {
-            setCopied(true);
-          },
-          function () {
-            // clipboard write failed
-            setCopyFailed(true);
-            console.log("copy to clipboard failed!");
-          }
-        );
-        //updateClipboard({ newClip: toCopy, result: setCopied })
+        </Text>
+      }
+      centered
+      size="md"
+      radius="md"
+      padding="xl"
+      closeButtonProps={{
+        size: "xl",
+        iconSize: 30,
       }}
     >
-      <Image src={imgSrc} width="32" height="32" alt={altText} />
-      <style jsx>
-        {`
-          button {
-            border: none;
-            margin: 0px;
-            width: 32px;
-            height: 32px;
-            padding: 0px;
-          }
-          img {
-            margin: 0;
-            box-shadow: none;
-          }
-        `}
-      </style>
-    </button>
+      {showSharing && (
+        <SharingBody sentence={sentence} cards={cards} undoStack={undoStack} />
+      )}
+    </Modal>
   );
 };
 
-const ClipFailedAdvice = ({ copyFailed, gameURL, readableSentence }) => {
-  if (copyFailed) {
-    return (
-      <>
-        <p>
-          Oh no! It looks like &quot;copy to clipboard&quot; didn&apos;t work!
-        </p>
-        <p>Maybe try to manually select and copy one of the strings below.</p>
-        <p>
-          <b>The game URL</b> --copy this to share the current game
-        </p>
-        <p>{gameURL}</p>
-        <p>
-          <b>The sentence itself</b>
-        </p>
-        <p>{readableSentence}</p>
-        <style jsx>
-          {`
-            p {
-              overflow-wrap: break-word;
-              word-wrap: break-word;
-              -ms-word-break: break-all;
-              word-break: break-word;
-            }
-          `}
-        </style>
-      </>
-    );
-  } else {
-    return null;
-  }
-};
+const SharingBody = ({ sentence, cards, undoStack }) => {
+  const [shareType, setShareType] = useState("image");
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
 
-const updateClipboard = ({ newClip, result }) => {
-  navigator.clipboard.writeText(newClip).then(
-    function () {
-      result(true);
-    },
-    function () {
-      // clipboard write failed
-      result(false);
-      console.log("copy to clipboard failed!");
+  // 1. Generate Static Image (Instant)
+  const { canvasDataURL, gameURL, readableSentence } = useMemo(() => {
+    const canvasDataURL = drawCanvas({ sentence, cards });
+    const gameAsString = gameStateToStr({ sentence, cards });
+    const readableSentence = makeReadable({ sentence });
+
+    const canvasURLstring = Buffer.from(gameAsString, "utf8").toString(
+      "base64",
+    );
+    const gameURL = `https://details.grumbly.games/${canvasURLstring}`;
+
+    return { canvasDataURL, gameURL, readableSentence };
+  }, [sentence, cards]);
+
+  // 2. Generate Video (Async on mount)
+  useEffect(() => {
+    let active = true;
+    let generatedUrl = null;
+
+    const runGen = async () => {
+      setIsGeneratingVideo(true);
+      try {
+        const safeStack = undoStack || [];
+        const blob = await generateVideo(sentence, cards, safeStack);
+
+        if (active) {
+          generatedUrl = URL.createObjectURL(blob);
+          setVideoUrl(generatedUrl);
+
+          const file = new File([blob], "details-game.mp4", {
+            type: "video/mp4",
+          });
+          setVideoFile(file);
+        }
+      } catch (e) {
+        console.error("Video gen failed", e);
+      } finally {
+        if (active) setIsGeneratingVideo(false);
+      }
+    };
+
+    runGen();
+
+    return () => {
+      active = false;
+      // FIX: Clean up the specific URL created by this effect run
+      if (generatedUrl) URL.revokeObjectURL(generatedUrl);
+    };
+  }, [sentence, cards, undoStack]);
+
+  const handleNativeShare = async () => {
+    const shareData = {
+      title: "details",
+      text: readableSentence,
+    };
+
+    if (shareType === "image") {
+      shareData.url = gameURL;
+    } else if (shareType === "video" && videoFile) {
+      if (navigator.canShare && navigator.canShare({ files: [videoFile] })) {
+        shareData.files = [videoFile];
+      } else {
+        console.warn(
+          "Browser does not support file sharing, sharing link instead.",
+        );
+        shareData.url = gameURL;
+      }
     }
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error("Error sharing:", err);
+      }
+    } else {
+      alert("Web Share not supported. Please use the Copy Link button.");
+    }
+  };
+
+  return (
+    <Stack gap="lg" align="center">
+      {/* Media Display Area */}
+      <Box
+        w="100%"
+        mw={{ base: "100%", sm: "340px" }}
+        mx="auto"
+        style={{
+          borderRadius: "8px",
+          overflow: "hidden",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+          display: "flex",
+          position: "relative",
+          aspectRatio: "1 / 1",
+          backgroundColor: "#282c34",
+        }}
+      >
+        {/* 1. STATIC IMAGE VIEW */}
+        <Box
+          style={{
+            display: shareType === "image" ? "block" : "none",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Image
+            src={canvasDataURL}
+            width={1080}
+            height={1080}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              display: "block",
+            }}
+            alt="sentence as image"
+          />
+        </Box>
+
+        {/* 2. VIDEO VIEW */}
+        <Box
+          style={{
+            display: shareType === "video" ? "block" : "none",
+            width: "100%",
+            height: "100%",
+            position: "relative",
+          }}
+        >
+          {videoUrl ? (
+            <video
+              src={videoUrl}
+              controls
+              autoPlay
+              loop
+              playsInline
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          ) : (
+            <>
+              <Image
+                src={canvasDataURL}
+                width={1080}
+                height={1080}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  display: "block",
+                  opacity: 0.5,
+                }}
+                alt="generating video preview"
+              />
+              <Center
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  zIndex: 10,
+                }}
+              >
+                <Stack align="center" gap="xs">
+                  <Loader color="white" type="bars" />
+                  <Text
+                    c="white"
+                    size="xs"
+                    fw={500}
+                    style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8)" }}
+                  >
+                    Rendering Video...
+                  </Text>
+                </Stack>
+              </Center>
+            </>
+          )}
+        </Box>
+      </Box>
+
+      {/* Toggles */}
+      <SegmentedControl
+        value={shareType}
+        onChange={setShareType}
+        color="blue"
+        radius="xl"
+        size="md"
+        data={[
+          {
+            value: "image",
+            label: (
+              <Group gap={12} wrap="nowrap" justify="center" px={4}>
+                <IconPhoto size={20} />
+                <Text fw={500}>Image</Text>
+              </Group>
+            ),
+          },
+          {
+            value: "video",
+            label: (
+              <Group gap={12} wrap="nowrap" justify="center" px={4}>
+                <IconMovie size={20} />
+                <Text fw={500}>Video</Text>
+              </Group>
+            ),
+          },
+        ]}
+      />
+
+      {/* Buttons */}
+      <Stack w="100%" gap="sm">
+        <Button
+          size="lg"
+          radius="md"
+          color="blue"
+          leftSection={
+            shareType === "image" ? (
+              <IconPhoto size={22} />
+            ) : (
+              <IconMovie size={22} />
+            )
+          }
+          rightSection={<IconShare size={22} style={{ opacity: 0.6 }} />}
+          onClick={handleNativeShare}
+          loading={shareType === "video" && isGeneratingVideo}
+          disabled={shareType === "video" && !videoFile}
+          fullWidth
+        >
+          Share&nbsp;
+          <span
+            style={{
+              display: "inline-block",
+              width: "3.6rem", // Slightly reduced width, no margins
+              textAlign: "center",
+            }}
+          >
+            {shareType === "image" ? "Image" : "Video"}
+          </span>
+        </Button>
+
+        <CopyButton value={gameURL} timeout={2000}>
+          {({ copied, copy }) => (
+            <Button
+              size="md"
+              radius="md"
+              color={copied ? "teal" : "gray"}
+              variant="light"
+              onClick={copy}
+              leftSection={
+                copied ? <IconCheck size={20} /> : <IconCopy size={20} />
+              }
+              fullWidth
+            >
+              {copied ? "Copied!" : "Copy Link"}
+            </Button>
+          )}
+        </CopyButton>
+      </Stack>
+    </Stack>
   );
 };
 
 const makeReadable = ({ sentence }) => {
-  // produce a readable string for some methods of sharing
   let inArray = Object.keys(sentence);
-
   let x = null;
   let y = null;
   let next = null;
   let outputArray = inArray.map((id) => {
-    // if it's a word, get ready to add it to the sentence
     if (
-      sentence[id].type === "noun" ||
-      sentence[id].type === "verb" ||
-      sentence[id].type === "pron" ||
-      sentence[id].type === "adj" ||
-      sentence[id].type === "adv" ||
-      sentence[id].type === "intrj" ||
-      sentence[id].type === "conj" ||
-      sentence[id].type === "prep"
+      ["noun", "verb", "pron", "adj", "adv", "intrj", "conj", "prep"].includes(
+        sentence[id].type,
+      )
     ) {
       x = sentence[id].word;
       y = "";
-      // if we're not at the end of the array, and the next word is a word type
-      // (not punctuation) then add a space
       next = (parseInt(id) + 1).toString();
       if (
         parseInt(id) + 1 < inArray.length &&
-        (sentence[next].type === "noun" ||
-          sentence[next].type === "verb" ||
-          sentence[next].type === "pron" ||
-          sentence[next].type === "adj" ||
-          sentence[next].type === "adv" ||
-          sentence[next].type === "intrj" ||
-          sentence[next].type === "conj" ||
-          sentence[next].type === "prep")
+        [
+          "noun",
+          "verb",
+          "pron",
+          "adj",
+          "adv",
+          "intrj",
+          "conj",
+          "prep",
+        ].includes(sentence[next].type)
       ) {
         y = " ";
       }
@@ -280,22 +359,15 @@ const makeReadable = ({ sentence }) => {
   });
 
   let outputString = outputArray.join("");
-
   outputString = outputString.replace(/\s+/g, " ");
-
-  // probably still have an extra space at end of sentence
   if (outputString[outputString.length - 1] === " ") {
     outputString = outputString.substring(0, outputString.length - 1);
   }
-
   return outputString;
 };
 
 const puncsAndSpaces = (wordObj) => {
-  // look at the type and either return the word and a space
-  // or punctuation and a space or whatever as needed
   let output = null;
-
   let x = wordObj.type;
   switch (true) {
     case x === "head":
@@ -346,7 +418,6 @@ const puncsAndSpaces = (wordObj) => {
     default:
       output = ``;
   }
-
   return output;
 };
 

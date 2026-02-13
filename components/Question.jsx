@@ -1,240 +1,162 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  Modal,
+  ActionIcon,
+  Title,
+  Text,
+  Button,
+  Group,
+  Stack,
+  Divider,
+} from "@mantine/core";
+import { IconHelp } from "@tabler/icons-react";
 import YouTubeVid from "./youTubeVid.js";
 
-// Clicking on the span opens an informative popup
 const PopUp = () => {
-  const [show, setShow] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
+
   return (
-    <div>
-      <button
-        onClick={() => {
-          setShow(true);
+    <>
+      <ActionIcon variant="subtle" color="gray" size={52} onClick={open}>
+        <IconHelp size="2.5rem" stroke={1.5} />
+      </ActionIcon>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="About details ..."
+        size="lg"
+        padding="xl" // <--- Adds more breathing room around the edges
+        overlayProps={{ opacity: 0.5, blur: 4 }}
+        styles={{
+          title: {
+            fontSize: "1.8rem",
+            fontWeight: 700,
+          },
+          close: {
+            color: "black",
+            width: "44px", // Bigger click area
+            height: "44px", // Bigger click area
+
+            // Force the internal SVG icon to be larger
+            "& svg": {
+              width: "28px !important",
+              height: "28px !important",
+            },
+
+            transition: "background-color 0.2s",
+          },
         }}
       >
-        ?
-      </button>
-      <QuestionPage
-        showVal={show}
-        setShow={() => {
-          setShow(false);
-        }}
-      />
-      <style jsx>{`
-        button {
-          display: inline-block;
-          text-decoration: none;
-          border: none;
-          padding: 0 2vmin 0 7vmin;
-          _padding-left: 7vmin;
-          font-weight: 300;
-          font-size: 1em;
-          color: var(--active_outline);
-          transition: all 0.2s;
-          width: auto;
-        }
-        button:hover {
-          color: var(--insert);
-        }
-      `}</style>
-    </div>
-  );
-};
-
-const QuestionPage = ({ showVal, setShow }) => {
-  let showHide = "hidden";
-  if (showVal) {
-    showHide = "z2";
-  }
-
-  return (
-    <div className={showHide}>
-      <div className="z2_body">
-        <div className="z2_title">
-          FAQ
-          <span className="z2_hide" onClick={setShow}>
-            x
-          </span>
-        </div>
-        <p>
-          <strong>
-            Did you know you there&#39;s an app version of details? It&#39;s not
-            exactly the same, but it&#39;s pretty cool.
-          </strong>
-        </p>
-        <p className="storelink">
-          <a
-            href="
-              https://play.google.com/store/apps/details?id=com.details_reactnative"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Get the details app for Android!
-          </a>
-        </p>
-        <p className="storelink">
-          <a
-            href="
-            https://apps.apple.com/app/details-the-game/id6449182298"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Get the details app for iOS!
-          </a>
-        </p>
-        <p>
-          <strong>What is this?</strong> <br />
-          It&apos;s a game to practice English grammar.
-        </p>
-        <p>
-          <strong>How do you play?</strong> <br />
-          You start with a simple sentence, then make it longer by adding
-          details.
-        </p>
-        <p>
-          <strong>What do you mean by &quot;details&quot;?</strong> <br />I mean
-          details! If I have a sentence, &quot;Chocolate is delicious&quot;, I
-          can add a <i>detail</i> like the adjective <b>dark</b>, and now I have
-          a longer sentence, &quot;<b>Dark</b> chocolate is delicious&quot;.
-        </p>
-
-        <p>
-          <strong>Can I see an example?</strong> <br />
-          Sure! Watch the video below or click{" "}
-          <a
-            href="https://grumbly.games/posts/200418_playing_details"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            here
-          </a>{" "}
-          to read the rules.
-        </p>
-        <YouTubeVid vidID="8qAy85pGBKs" caption=" " />
-        <div name="learn" className="typeButtonDiv">
-          <h3>Learn more about...</h3>
-          <div className="typeButtons">
-            <a
-              href="https://grumbly.games/adjectives"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="adj">adjectives</button>
-            </a>
-            <a
-              href="https://grumbly.games/nouns"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="noun">nouns</button>
-            </a>
-            <a
-              href="https://grumbly.games/adverbs"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="adv">adverbs</button>
-            </a>
-            <a
-              href="https://grumbly.games/verbs"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="verb">verbs</button>
-            </a>
-            <a
-              href="https://grumbly.games/prepositions"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="prep">prepositions</button>
-            </a>
-            <a
-              href="https://grumbly.games/conjunctions"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="conj">conjunctions</button>
-            </a>
-            <a
-              href="https://grumbly.games/pronouns"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="pron">pronouns</button>
-            </a>
-            <a
-              href="https://grumbly.games/interjections"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="intrj">interjections</button>
-            </a>
-            <a
-              href="https://grumbly.games/punctuation"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <button className="punc">punctuation</button>
-            </a>
+        <Stack gap="lg">
+          {/* FAQ Section */}
+          <div>
+            <Title order={3} size="h4" mb={5}>
+              What is this?
+            </Title>
+            <Text size="md">It&apos;s a game to practice English grammar.</Text>
           </div>
-        </div>
-      </div>
-      <style jsx>{`
-        strong {
-          font-size: 1.1em;
-        }
-        .typeButtonDiv {
-          border: 1.5px solid black;
-          border-radius: 7px;
-          padding: 8px;
-          text-align: center;
-          position: -webkit-sticky;
-          position: sticky;
-          top: 30px;
-          margin-top: 20px;
-          font-size: 16px;
-        }
-        .typeButtons {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .typeButtons a {
-          flex: 0 0 100%;
-          display: inline-block;
-          min-width: fit-content;
-          max-width: 150px;
-          padding: 1vmin 2vmin;
-        }
-        .typeButtons button {
-          font-size: 1.15em;
-          border: 1.5px solid black;
-          width: 100%;
-          border-radius: 0.5vmin;
-          font-weight: 300;
-          color: black;
-          transition: all 0.2s;
-        }
-        .typeButtons button:hover,
-        .typeButtons button:focus,
-        .typeButtons button:active {
-          border-color: var(--logo_active);
-          filter: drop-shadow(0 0 0.4rem var(--logo_hover));
-          color: black;
-        }
-        button:focus {
-          outline: 0;
-        }
-        .hidden {
-          display: none;
-        }
-        .storelink {
-          width: 100%;
-          text-align: center;
-        }
-      `}</style>
-    </div>
+
+          <div>
+            <Title order={3} size="h4" mb={5}>
+              How do you play?
+            </Title>
+            <Text size="md">
+              You start with a simple sentence, then make it longer by adding
+              details.
+            </Text>
+          </div>
+
+          <div>
+            <Title order={3} size="h4" mb={5}>
+              What do you mean by &quot;details&quot;?
+            </Title>
+            <Text size="md" lh={1.6}>
+              I mean details! If I have a sentence, &quot;Chocolate is
+              delicious&quot;, I can add a <i>detail</i> like the adjective{" "}
+              <b>dark</b>, and now I have a longer sentence, &quot;<b>Dark</b>{" "}
+              chocolate is delicious&quot;.
+            </Text>
+          </div>
+
+          <div>
+            <Title order={3} size="h4" mb={5}>
+              Can I see an example?
+            </Title>
+            <Text size="md" mb="xs">
+              Sure! Watch the video below or click{" "}
+              <a
+                href="https://grumbly.games/posts/200418_playing_details"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit", textDecoration: "underline" }}
+              >
+                here
+              </a>{" "}
+              to read the rules.
+            </Text>
+
+            <YouTubeVid vidID="8qAy85pGBKs" caption=" " />
+          </div>
+
+          <Divider my="sm" />
+
+          {/* Grammar Buttons Section */}
+          <Stack align="center" gap="xs">
+            <Title order={4}>Learn more about...</Title>
+
+            <Group justify="center" gap="xs">
+              <GrammarBtn type="adj" href="adjectives">
+                adjectives
+              </GrammarBtn>
+              <GrammarBtn type="noun" href="nouns">
+                nouns
+              </GrammarBtn>
+              <GrammarBtn type="adv" href="adverbs">
+                adverbs
+              </GrammarBtn>
+              <GrammarBtn type="verb" href="verbs">
+                verbs
+              </GrammarBtn>
+              <GrammarBtn type="prep" href="prepositions">
+                prepositions
+              </GrammarBtn>
+              <GrammarBtn type="conj" href="conjunctions">
+                conjunctions
+              </GrammarBtn>
+              <GrammarBtn type="pron" href="pronouns">
+                pronouns
+              </GrammarBtn>
+              <GrammarBtn type="intrj" href="interjections">
+                interjections
+              </GrammarBtn>
+              <GrammarBtn type="punc" href="punctuation">
+                punctuation
+              </GrammarBtn>
+            </Group>
+          </Stack>
+        </Stack>
+      </Modal>
+    </>
   );
 };
+
+// Helper component
+const GrammarBtn = ({ type, href, children }) => (
+  <Button
+    component="a"
+    href={`https://grumbly.games/${href}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    color={type}
+    variant="filled"
+    size="sm"
+    radius="sm"
+    style={{ color: "black" }}
+  >
+    {children}
+  </Button>
+);
 
 export default PopUp;

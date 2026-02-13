@@ -1,24 +1,10 @@
-/* this function redraws the current sentence and cards
-  on a canvas, so that it can be shared as an image 
-  OPTIMIZED FOR STATIC IMAGES (Square 1080x1080) */
+/* this function draws the SQUARE video frames
+   It includes the move counter and is optimized for 1080x1080 resolution. */
 
-export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
-  // CHANGED: Default to SQUARE 1080x1080
-  let cw = 1080;
-  let ch = 1080;
-
-  if (width && !height) {
-    cw = width;
-    ch = width; // Force square if only width given
-  }
-  if (height && width) {
-    cw = width;
-    ch = height;
-  }
-  if (height && !width) {
-    ch = height;
-    cw = height;
-  }
+export const drawVideoFrame = ({ sentence, cards, moveCount = 0 }) => {
+  // HARDCODED SQUARE RESOLUTION FOR VIDEO
+  const cw = 1080;
+  const ch = 1080;
 
   // --- ENVIRONMENT DETECTION ---
   let canvas, ctx, registerFont;
@@ -47,13 +33,15 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
     ctx = canvas.getContext("2d");
   }
 
+  // Calculate Fonts based on Width
   let sF = Math.floor(cw / 40);
   let mF = Math.floor(cw / 30);
   let lF = Math.floor(cw / 20);
 
+  // Font strings
+  const sFont = `${sF}px Roboto, sans-serif`;
   const mFont = `${mF}px Roboto, sans-serif`;
   let lFontString = `${lF}px Roboto, sans-serif`;
-  const sFont = `${sF}px Roboto, sans-serif`;
 
   const margin = cw / 60;
   const top_banner_height = cw / 18;
@@ -79,7 +67,12 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   let numRows = printArray[printArray.length - 1].row;
   sentence_height = numRows * rh + rm * (numRows - 1);
 
-  while (sentence_height > space4sentence) {
+  // Safety loop to prevent freezing on long sentences
+  let safety = 0;
+  // Ensure we have a minimum positive space to avoid infinite negative loops
+  const safeSpace = Math.max(space4sentence, 100);
+
+  while (sentence_height > safeSpace && safety < 100) {
     lF = Math.floor(lF * 0.85);
     rm = rm * 0.85;
     rh = rh * 0.85;
@@ -90,6 +83,7 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
     printArray = prePrintSentence(sentence, rm, rh, cw, wpr, margin, ctx);
     numRows = printArray[printArray.length - 1].row;
     sentence_height = numRows * rh + rm * (numRows - 1);
+    safety++;
   }
 
   let working_height =
@@ -105,9 +99,11 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   //////////////////////////////////// start drawing //////////////////////////
   let rb = top_banner_height;
 
+  // Background
   ctx.fillStyle = "#282c34";
   ctx.fillRect(0, 0, cw, canvas.height);
 
+  // Header
   ctx.font = mFont;
   ctx.fillStyle = "lightgray";
   ctx.fillText("details", margin, rb - blo);
@@ -127,14 +123,23 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
 
   rb += top_bottom_sentence_margin;
 
+  // Sentence
   ctx.font = lFontString;
   printSentence(printArray, rb, wpr, blo, cw, ctx);
   rb += sentence_height;
 
   rb += top_bottom_sentence_margin;
 
-  // NO MOVE COUNTER HERE (Clean Static Image)
+  // --- MOVE COUNTER (Always ON for Video) ---
+  ctx.save();
+  ctx.fillStyle = "lightgray";
+  ctx.textAlign = "right";
+  ctx.font = `${sF}px Roboto, sans-serif`;
+  const moveText = `moves: ${moveCount}`;
+  ctx.fillText(moveText, cw - margin, rb - sF / 2);
+  ctx.restore();
 
+  // Card Row
   printCardRow(cards, margin, rb, cw, card_row_height, sFont, ctx);
   rb += card_row_height;
 
@@ -143,69 +148,7 @@ export const drawCanvas = ({ sentence, cards, width, height, fontPath }) => {
   return canvas.toDataURL();
 };
 
-export const tinyCanvas = ({ cards, wR }) => {
-  let sentence = [];
-  wR.forEach((x) => {
-    sentence.push({
-      id: x,
-      type: cards[x].type,
-      word: cards[x].word,
-    });
-  });
-
-  let cw = 100;
-  let ch = 100;
-  let canvas, ctx;
-
-  if (typeof window === "undefined") {
-    const { createCanvas } = require("canvas");
-    canvas = createCanvas(cw, ch);
-    ctx = canvas.getContext("2d");
-  } else {
-    canvas = document.createElement("canvas");
-    canvas.width = cw;
-    canvas.height = ch;
-    ctx = canvas.getContext("2d");
-  }
-
-  let lF = Math.floor(cw / 10);
-  let lFont = `${lF}px Roboto, sans-serif`;
-  const margin = 0;
-  let top_bottom_sentence_margin = 5;
-  let sentence_height = 0;
-
-  let rm = lF / 3.5;
-  let rh = lF * 1.4;
-  let blo = lF / 3;
-  let wpr = lF / 3.5;
-
-  ctx.font = lFont;
-  let printArray = prePrintSentence(sentence, rm, rh, cw, wpr, margin, ctx);
-  let numRows = printArray[printArray.length - 1].row;
-  sentence_height = numRows * rh + rm * (numRows - 1);
-
-  let working_height =
-    top_bottom_sentence_margin + sentence_height + top_bottom_sentence_margin;
-
-  if (typeof window === "undefined") {
-    canvas.height = working_height;
-  } else {
-    canvas.height = working_height;
-    ctx = canvas.getContext("2d");
-  }
-
-  ctx.font = lFont;
-
-  let rb = 0;
-  rb += top_bottom_sentence_margin;
-
-  ctx.font = lFont;
-  printSentence(printArray, rb, wpr, blo, cw, ctx);
-  rb += sentence_height;
-  rb += top_bottom_sentence_margin;
-
-  return canvas.toDataURL();
-};
+// --- HELPER FUNCTIONS ---
 
 const prePrintSentence = (sentence, rm, rh, cw, wpr, margin, ctx) => {
   let printArray = sentence.map((word) => ({
@@ -233,7 +176,10 @@ const prePrintSentence = (sentence, rm, rh, cw, wpr, margin, ctx) => {
       currentRow += 1;
       printArray[i].row = currentRow;
       currentRowWidth = printArray[i].width + wpr;
-      if (isPunc(printArray[i + 1].type)) {
+
+      // FIX: Check if next word exists before checking if it's punctuation
+      // The previous code crashed here when wrapping the LAST word of a sentence.
+      if (i + 1 < printArray.length && isPunc(printArray[i + 1].type)) {
         printArray[i + 1].row = currentRow;
         currentRowWidth = currentRowWidth + printArray[i + 1].width;
         i++;

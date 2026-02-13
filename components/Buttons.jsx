@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button, Group } from "@mantine/core";
 import Sharing from "./Sharing";
 import AddCardsPopUp from "./AddCardsPopUp";
 
@@ -7,7 +8,7 @@ const UndoButton = ({ action, undoStack, gameMode }) => {
 
   if (gameMode === "creative") {
     let optionalClass = "disabled";
-    if (undoStack.length > 0) {
+    if (undoStack && undoStack.length > 0) {
       optionalClass = "enabled";
     }
     returnThis = (
@@ -94,56 +95,43 @@ const AddCardsButton = ({ showAddCardsPopUp, gameMode }) => {
 
 const NewGameButton = ({ action }) => {
   return (
-    <button
-      className="enabled"
+    <Button
+      size="md"
+      radius="sm"
+      w="8rem"
       onClick={(e) => {
         e.preventDefault();
         action();
       }}
     >
       new game
-      <style jsx>{`
-        button {
-          margin-right: 1em;
-          width: 6em;
-          flex: 0 0 auto;
-          color: var(--active_outline);
-          border-color: var(--active_outline);
-          font-size: 0.7em;
-          padding: 0.3em 0.4em;
-        }
-      `}</style>
-    </button>
+    </Button>
   );
 };
 
 const NewCardButton = ({ action, active, gameMode }) => {
   if (gameMode !== "creative") {
-    let enabledState = "enabled";
-    if (!active) {
-      enabledState = "disabled";
-    }
+    const disabledStyle = {
+      backgroundColor: "#343a40",
+      color: "#868e96",
+      border: "1px solid #343a40",
+      opacity: 0.6,
+    };
+
     return (
-      <button
-        className={enabledState}
+      <Button
+        disabled={!active}
+        size="md"
+        radius="sm"
+        w="8rem"
         onClick={(e) => {
           e.preventDefault();
           action();
         }}
+        style={!active ? disabledStyle : undefined}
       >
         new card
-        <style jsx>{`
-          button {
-            margin-left: 1em;
-            width: 6em;
-            flex: 0 0 auto;
-            color: var(--active_outline);
-            border-color: var(--active_outline);
-            font-size: 0.7em;
-            padding: 0.3em 0.4em;
-          }
-        `}</style>
-      </button>
+      </Button>
     );
   } else {
     return <></>;
@@ -152,26 +140,17 @@ const NewCardButton = ({ action, active, gameMode }) => {
 
 const ShareButton = ({ action }) => {
   return (
-    <button
-      className="enabled"
+    <Button
+      size="md"
+      radius="sm"
+      w="8rem"
       onClick={(e) => {
         e.preventDefault();
         action(true);
       }}
     >
       share
-      <style jsx>{`
-        button {
-          margin-left: 1em;
-          width: 6em;
-          flex: 0 0 auto;
-          color: var(--active_outline);
-          border-color: var(--active_outline);
-          font-size: 0.7em;
-          padding: 0.3em 0.4em;
-        }
-      `}</style>
-    </button>
+    </Button>
   );
 };
 
@@ -179,18 +158,30 @@ const Buttons = ({ ...props }) => {
   const [showSharing, setShowSharing] = useState(false);
   const [showAddCards, setShowAddCards] = useState(false);
 
+  // Determine the best available history stack to pass to the video generator.
+  // 1. props.fullHistory: The ideal complete game history passed from the parent.
+  // 2. props.creativeUndo: Fallback for creative mode if fullHistory isn't set.
+  // 3. []: An empty array as a final safe fallback.
+  const videoHistoryStack = props.fullHistory || props.creativeUndo || [];
+
   return (
-    <div className="button_row">
-      <div>
-        <NewGameButton action={props.newGame} />
-      </div>
-      <div>
+    <Group
+      justify="space-between"
+      w="100%"
+      align="center"
+      py="xs"
+      px="lg"
+      style={{ gridArea: "top" }}
+    >
+      <NewGameButton action={props.newGame} />
+      <Group justify="flex-end" gap="xs">
         <AddCardsButton
           showAddCardsPopUp={setShowAddCards}
           gameMode={props.gameMode}
         />
         <UndoButton
           action={props.creativeUndoPop}
+          // Undo button still specifically needs the creative stack
           undoStack={props.creativeUndo}
           gameMode={props.gameMode}
         />
@@ -200,12 +191,16 @@ const Buttons = ({ ...props }) => {
           gameMode={props.gameMode}
         />
         <ShareButton action={setShowSharing} />
+
         <Sharing
           sentence={props.sentence}
           cards={props.cards}
+          // CHANGED: Use the determined complete history stack
+          undoStack={videoHistoryStack}
           showSharing={showSharing}
           setShowSharing={setShowSharing}
         />
+
         <AddCardsPopUp
           showAddCardsPopUp={setShowAddCards}
           showAddCards={showAddCards}
@@ -213,21 +208,8 @@ const Buttons = ({ ...props }) => {
           cardInc={props.cardInc}
           cardDec={props.cardDec}
         />
-      </div>
-      <style jsx>{`
-        .button_row {
-          grid-area: top;
-          box-sizing: border-box;
-          height: auto;
-          padding: 2vmin 5vmin;
-          width: 100%;
-          text-align: center;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      `}</style>
-    </div>
+      </Group>
+    </Group>
   );
 };
 

@@ -1,4 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import {
+  SimpleGrid,
+  UnstyledButton,
+  Button,
+  Stack,
+  Paper,
+  Text,
+  ActionIcon,
+  Group,
+  Center,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconX, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 /////////////////////// working row content
 const DrawWorkingRowContent = ({
@@ -30,16 +43,23 @@ const DrawWorkingRowContent = ({
     );
   } else if (winner) {
     content = (
-      <div className="working_row_message">
-        {rando}! &nbsp; You won! &nbsp; &nbsp; Cards inserted: {totalCardCount}{" "}
-        &nbsp; &nbsp; Moves needed: {sentenceUpdateCount}
-      </div>
+      <Center w="100%" h="100%">
+        <Text
+          c="#282c34"
+          fw={800}
+          size="1.8rem"
+          ta="center"
+          style={{ lineHeight: 1.2 }}
+        >
+          {rando}! You won!
+          <Text span display="block" size="1.1rem" fw={500} mt={4} c="dimmed">
+            Cards: {totalCardCount} &nbsp; Moves: {sentenceUpdateCount}
+          </Text>
+        </Text>
+      </Center>
     );
-  }
-
-  if (wR.length > 0) {
+  } else if (wR.length > 0) {
     const workingCards = wR.map((x) => cards.find((y) => y.id === x));
-    //console.log(workingCards);
     content = workingCards.map((z, index) => (
       <DrawWorkingCard
         element={z}
@@ -49,7 +69,7 @@ const DrawWorkingRowContent = ({
         switchPlacesWR={switchPlacesWR}
         toggleWorking={toggleWorking}
         index={index}
-        numCards={workingCards.length - 1}
+        numCards={workingCards.length}
       />
     ));
   }
@@ -60,20 +80,20 @@ const DrawWorkingRowContent = ({
       <style jsx>
         {`
           .working_row_content {
-            width: fit-content;
-            margin: 1px;
+            width: 100%;
+            height: 100%;
             display: flex;
-            overflow-x: scroll;
+            overflow-x: auto;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             scrollbar-width: none;
             color: black;
+            gap: 6px;
+            padding: 0 16px;
+            box-sizing: border-box;
           }
           .working_row_content::-webkit-scrollbar {
             display: none;
-          }
-          .working_row_message {
-            color: black;
           }
         `}
       </style>
@@ -83,61 +103,52 @@ const DrawWorkingRowContent = ({
 
 const KeepOrUndo = ({ undo, accept, undoSecondsLeft }) => {
   return (
-    <div className="undoOrAccept">
-      <button
+    <Group w="100%" justify="center" gap="lg">
+      <Button
         onClick={(e) => {
           e.preventDefault();
           undo();
         }}
+        // CHANGED: Removed color="red" to use default blue (matches New Game)
+        // CHANGED: size="md" and radius="sm" to match New Game button
+        size="md"
+        radius="sm"
+        w="40%"
+        maw="200px"
+        h="3.5rem"
       >
-        Undo
-        <br />
-        {undoSecondsLeft}
-      </button>
-      <button
+        <Stack gap={0} align="center">
+          <Text size="sm" fw={800} lh={1.2}>
+            undo
+          </Text>
+          <Text size="xs" fw={500} lh={1} style={{ opacity: 0.8 }}>
+            {undoSecondsLeft}s
+          </Text>
+        </Stack>
+      </Button>
+
+      <Button
         onClick={(e) => {
           e.preventDefault();
           accept();
         }}
+        // CHANGED: Removed color="green" to use default blue (matches New Game)
+        size="md"
+        radius="sm"
+        w="40%"
+        maw="200px"
+        h="3.5rem"
       >
-        Accept
-        <br />
-        new sentence
-      </button>
-      <style jsx>{`
-        .undoOrAccept {
-          position: absolute;
-          z-index: 1;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 3.5em;
-          padding: 0;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-evenly;
-        }
-        button {
-          width: 40vw;
-          height: auto;
-          margin: 0;
-          line-height: 1.5em;
-          font-size: 0.7em;
-          margin-top: -3px;
-          padding: 5px;
-          color: var(--active_outline);
-          background-color: var(--mainbg);
-          border: 1.5px solid black;
-          border-radius: 0.5vmin;
-          max-width: 150px;
-        }
-        button:hover {
-          background-color: var(--active-outline);
-          color: black;
-        }
-      `}</style>
-    </div>
+        <Stack gap={0} align="center">
+          <Text size="sm" fw={800} lh={1.2}>
+            accept
+          </Text>
+          <Text size="xs" fw={500} lh={1} style={{ opacity: 0.8 }}>
+            new sentence
+          </Text>
+        </Stack>
+      </Button>
+    </Group>
   );
 };
 
@@ -168,409 +179,204 @@ const DrawWorkingCard = ({
   numCards,
   switchPlacesWR,
 }) => {
-  return (
-    <div className={element.type + " card"}>
-      <DrawType wordType={element.type} />
-      <DrawRemoveButton
-        updateState={updateState}
-        cardId={element.id}
-        removeFromWR={removeFromWR}
-        toggleWorking={toggleWorking}
-      />
-      <DrawInputDiv
-        word={element.word}
-        cardId={element.id}
-        updateState={updateState}
-      />
-      <DrawSwitchButton
-        numCards={numCards}
-        index={index}
-        switchPlacesWR={switchPlacesWR}
-      />
-      <style jsx>
-        {`
-          .card {
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-rows: auto 1fr;
-            grid-template-areas: "tl tr" "b b";
-            margin: 0px 1px;
-            width: fit-content;
-            flex: 1 0 auto;
-            color: black;
-            border: 1px solid black;
-            position: relative;
-          }
-        `}
-      </style>
-    </div>
-  );
-};
+  const inputRef = useRef(null);
+  const theme = useMantineTheme();
 
-const DrawType = ({ wordType }) => {
-  return (
-    <div className="typename">
-      {wordType}
-      <style jsx>
-        {`
-          .typename {
-            grid-area: tl;
-            margin-left: 0.3em;
-            margin-bottom: 0px;
-            padding: 0.2em 0.4em;
-            font-size: 0.6em;
-            text-align: left;
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-const DrawRemoveButton = ({
-  updateState,
-  cardId,
-  removeFromWR,
-  toggleWorking,
-}) => {
-  return (
-    <button
-      tabIndex="-1"
-      onClick={(e) => {
-        e.preventDefault();
-        updateState(cardId, "");
-        toggleWorking(cardId);
-        removeFromWR(cardId);
-      }}
-    >
-      x
-      <style jsx>
-        {`
-          button {
-            grid-area: tr;
-            margin: 0.4em;
-            margin-top: 0px;
-            width: auto;
-            height: 100%;
-            color: black;
-            padding: 0px;
-            border: none;
-          }
-        `}
-      </style>
-    </button>
-  );
-};
-
-const DrawSwitchButton = ({ numCards, index, switchPlacesWR }) => {
-  let returnValue = null;
-  if (index < numCards) {
-    returnValue = (
-      <button
-        tabIndex="-1"
-        onClick={(e) => {
-          e.preventDefault();
-          switchPlacesWR(index, index + 1);
-        }}
-      >
-        ⇄
-        <style jsx>
-          {`
-            button {
-              position: absolute;
-              z-index: 2;
-              bottom: 0px;
-              right: calc(-0.5em - 2px);
-              width: 1em;
-              height: auto;
-              font-size: 110%;
-              color: rgba(0, 0, 0, 1);
-              border: none;
-              background: none;
-              border-radius: 0;
-              padding: 0;
-              padding-bottom: 0.2em;
-            }
-          `}
-        </style>
-      </button>
-    );
-  }
-
-  return returnValue;
-};
-
-const DrawInputDiv = ({ word, cardId, updateState }) => {
-  const newRef = React.createRef();
   useEffect(() => {
-    //console.log("used effect to change focus, " + word);
-    newRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, []);
 
-  //const handleFocus = (event) => {
-  //  console.log("Input field is focused " + cardId);
-  //};
+  const fontStyles = {
+    fontSize: "1.5rem",
+    fontWeight: 600,
+    fontFamily: "inherit",
+    letterSpacing: "normal",
+  };
+
+  const cardColor = theme.colors[element.type]?.[0] || "#eee";
 
   return (
-    <div className="input_div">
-      <input
-        type="text"
-        defaultValue={word}
-        size={Math.max(4, word.length)}
-        name={cardId}
-        key={cardId}
-        ref={newRef}
-        //onFocus={handleFocus}
-        //autoFocus="autoFocus"
-        autoCapitalize="off"
-        onKeyUp={(e) => {
-          updateState(cardId, e.target.value);
-        }}
-      />
-      <style jsx>
-        {`
-          .input_div {
-            grid-area: b;
-            display: flex;
-            flex-grow: 1;
-            width: auto;
-            align-content: center;
-            justify-content: center;
-          }
-          .input_div input {
-            border: none;
-            border-bottom: black solid 1px;
-            font: inherit;
-            width: 97%;
-            font-size: 1em;
-            box-sizing: border-box;
-            padding: 0px;
-            overflow: hidden;
-            margin: 0px 8px 4px 8px;
-            padding: 1px 0px 1px 0px;
-            background-color: rgba(255, 255, 255, 0);
-            text-align: center;
-          }
-          .input_div input:focus {
-            background-color: rgba(255, 255, 255, 0.7);
-            outline: none;
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-/////////////////////// creative mode card buttons
-const DrawCreativeButton = ({
-  type,
-  addToWR,
-  cards,
-  toggleWorking,
-  inc,
-  dec,
-}) => {
-  let activeClass = "none";
-  let downArrowStyle = "grayArrow";
-  let numType = [];
-  if (Array.isArray(cards)) {
-    numType = cards.filter(
-      (element) => element.type === type && !element.working
-    );
-  }
-  if (numType.length > 0) {
-    activeClass = type;
-    downArrowStyle = "hoverableArrow";
-  }
-
-  return (
-    <div className={`creativeButton ${activeClass}`}>
-      <button
-        className="display"
-        onClick={(e) => {
-          e.preventDefault();
-          let top = numType[numType.length - 1];
-          toggleWorking(top.id);
-          addToWR(top.id);
-        }}
-      >
-        {type}
-        <br /> {numType.length}
-      </button>
-      <button className="upButt hoverableArrow" onClick={() => inc(type)}>
-        <svg
-          className="arrowUpButt"
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-          x="0px"
-          y="0px"
-          viewBox="0 0 50 35"
+    <Paper
+      shadow="sm"
+      radius="sm"
+      withBorder
+      style={{
+        backgroundColor: cardColor,
+        borderColor: "black",
+        width: "auto",
+        minWidth: "8rem",
+        height: "5.5rem",
+        display: "flex",
+        flexDirection: "column",
+        padding: "3px",
+        flexShrink: 0,
+      }}
+    >
+      <Group justify="space-between" align="start" mb={2}>
+        <Text
+          size="0.6rem"
+          fw={700}
+          tt="uppercase"
+          style={{ opacity: 0.7, paddingLeft: "2px", lineHeight: 1 }}
         >
-          <path d="M25 0 L45 35 L5 35 z" />
-        </svg>
-      </button>
-      <button
-        className={`downButt ${downArrowStyle}`}
-        onClick={() => dec(type)}
-      >
-        <svg
-          className="arrowDownButt"
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-          x="0px"
-          y="0px"
-          viewBox="0 0 50 35"
+          {element.type}
+        </Text>
+        <ActionIcon
+          size="xs"
+          variant="transparent"
+          color="black"
+          onClick={(e) => {
+            e.preventDefault();
+            updateState(element.id, "");
+            toggleWorking(element.id);
+            removeFromWR(element.id);
+          }}
+          style={{ opacity: 0.6 }}
         >
-          <path d="M25 35 L45 0 L5 0 z" />
-        </svg>
-      </button>
-      <style jsx>
-        {`
-          .creativeButton {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-rows: auto auto;
-            grid-template-areas: "l tr" "l br";
-            padding: calc(0.1em + 1.6px);
-            margin: 0;
-            width: 11%;
-            border: none;
-            border-radius: 0.5vmin;
-          }
-          .display {
-            grid-area: l;
-            padding: 0 0.1em;
-            height: 100%;
-            border: none;
-            margin: 0;
-            width: 100%;
-            font-size: 0.7em;
-          }
-          .upButt,
-          .downButt {
-            width: 3vw;
-            max-width: 25px;
-            margin: 0;
-            padding: 0;
-            border: none;
-            fill: white;
-            stroke-width: 1;
-            stroke: black;
-          }
-          .upButt {
-            grid-area: tr;
-            padding-bottom: 1.6px;
-          }
-          .downButt {
-            grid-area: br;
-            padding-top: 1.6px;
-          }
-          .arrowUpButt {
-            width: 100%;
-          }
-          .arrowUpButt:hover {
-            fill: var(--insert);
-          }
-          .arrowDownButt {
-            width: 100%;
-          }
-          .none {
-            border: 2px solid rgba(128, 128, 128, 0.45);
-            color: rgba(128, 128, 128, 0.45);
-            padding: 0.1em;
-            pointer-events: none;
-            -webkit-box-shadow: none;
-            box-shadow: none;
-          }
-          .none button {
-            color: rgba(128, 128, 128, 0.45);
-          }
-          .grayArrow {
-            fill: rgba(128, 128, 128, 0.45);
-            stroke: var(--mainbg);
-            cursor: not-allowed;
-          }
-          .hoverableArrow {
-            fill: white;
-            pointer-events: auto;
-          }
-          .hoverableArrow:hover {
-            fill: var(--insert);
-          }
-        `}
-      </style>
-    </div>
+          <IconX size="0.9rem" stroke={3} />
+        </ActionIcon>
+      </Group>
+
+      <Center style={{ flex: 1, padding: "0 4px" }}>
+        <div
+          style={{
+            display: "inline-grid",
+            alignItems: "center",
+            justifyItems: "center",
+          }}
+        >
+          <span
+            style={{
+              ...fontStyles,
+              gridArea: "1/1",
+              visibility: "hidden",
+              whiteSpace: "pre",
+              height: 0,
+              overflow: "hidden",
+            }}
+          >
+            {element.word || " "}
+          </span>
+
+          <input
+            ref={inputRef}
+            type="text"
+            size={1}
+            defaultValue={element.word}
+            autoComplete="off"
+            autoCapitalize="off"
+            onKeyUp={(e) => updateState(element.id, e.target.value)}
+            style={{
+              ...fontStyles,
+              gridArea: "1/1",
+              width: "100%",
+              minWidth: 0,
+              textAlign: "center",
+              background: "transparent",
+              border: "none",
+              borderBottom: "1px solid black",
+              color: "black",
+              outline: "none",
+              padding: "0px",
+              marginBottom: "2px",
+            }}
+          />
+        </div>
+      </Center>
+
+      <Group justify="space-between" mt={0}>
+        <ActionIcon
+          size="sm"
+          variant="transparent"
+          color="black"
+          disabled={index === 0}
+          onClick={(e) => {
+            e.preventDefault();
+            switchPlacesWR(index, index - 1);
+          }}
+          style={{ opacity: index === 0 ? 0.2 : 0.7 }}
+        >
+          <IconChevronLeft size="1.2rem" stroke={2.5} />
+        </ActionIcon>
+
+        <ActionIcon
+          size="sm"
+          variant="transparent"
+          color="black"
+          disabled={index === numCards - 1}
+          onClick={(e) => {
+            e.preventDefault();
+            switchPlacesWR(index, index + 1);
+          }}
+          style={{ opacity: index === numCards - 1 ? 0.2 : 0.7 }}
+        >
+          <IconChevronRight size="1.2rem" stroke={2.5} />
+        </ActionIcon>
+      </Group>
+    </Paper>
   );
 };
 
 /////////////////////// default card buttons
 const DrawCardButton = ({ type, addToWR, cards, toggleWorking }) => {
-  let activeClass = "disabled";
+  const theme = useMantineTheme();
+
   let numType = [];
   if (Array.isArray(cards)) {
     numType = cards.filter(
-      (element) => element.type === type && !element.working
+      (element) => element.type === type && !element.working,
     );
   }
-  if (numType.length > 0) {
-    activeClass = type;
-  }
+  const count = numType.length;
+  const active = count > 0;
+
+  const activeColor = theme.colors[type]?.[0] || "#eee";
 
   return (
-    <>
-      <button
-        className={activeClass}
-        onClick={(e) => {
-          e.preventDefault();
+    <UnstyledButton
+      onClick={(e) => {
+        e.preventDefault();
+        if (active) {
           let top = numType[numType.length - 1];
           toggleWorking(top.id);
           addToWR(top.id);
+        }
+      }}
+      disabled={!active}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <Paper
+        shadow="sm"
+        radius="sm"
+        withBorder
+        style={{
+          backgroundColor: active ? activeColor : "#343a40",
+          borderColor: active ? "black" : "#343a40",
+          height: "4.5rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: active ? 1 : 0.6,
+          color: active ? "black" : "#868e96",
         }}
       >
-        {type}
-        <br /> {numType.length}
-      </button>
-      <style jsx>
-        {`
-          button {
-            padding: 0.1em;
-            border: 1px solid;
-            font-size: 0.7em;
-            height: 100%;
-            width: 10%;
-            margin: 3px 0px;
-          }
-        `}
-      </style>
-    </>
+        <Text size="xs" fw={700} tt="uppercase" style={{ lineHeight: 1 }}>
+          {type}
+        </Text>
+        <Text size="xl" fw={900} style={{ lineHeight: 1, marginTop: "4px" }}>
+          {count}
+        </Text>
+      </Paper>
+    </UnstyledButton>
   );
 };
 
-const DrawAvailableCards = ({
-  wR,
-  addToWR,
-  cards,
-  toggleWorking,
-  gameMode,
-  cardInc,
-  cardDec,
-}) => {
-  /* let returnThis = null
-  if (gameMode === "creative") {
-    returnThis = <>
-      <DrawCreativeButton type="adj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="adv" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="conj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="pron" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="noun" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="verb" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="prep" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-      <DrawCreativeButton type="intrj" wR={wR} addToWR={addToWR} cards={cards} toggleWorking={toggleWorking} gameMode={gameMode} inc={cardInc} dec={cardDec} />
-    </>
-  } else { */
-  let returnThis = (
-    <>
+const DrawAvailableCards = ({ wR, addToWR, cards, toggleWorking }) => {
+  return (
+    <SimpleGrid cols={8} spacing={5} w="100%">
       <DrawCardButton
         type="adj"
         wR={wR}
@@ -627,11 +433,8 @@ const DrawAvailableCards = ({
         cards={cards}
         toggleWorking={toggleWorking}
       />
-    </>
+    </SimpleGrid>
   );
-  //}
-
-  return returnThis;
 };
 
 /////////////////////// the whole shebang
@@ -684,24 +487,22 @@ const DrawCards = ({
           addToWR={addToWR}
           cards={cards}
           toggleWorking={toggleWorking}
-          gameMode={gameMode}
-          cardInc={cardInc}
-          cardDec={cardDec}
         />
       </div>
+
       <style jsx>
         {`
           .card_row {
             grid-area: bot;
             display: grid;
             width: 100%;
-            padding: 0px 5vmin;
+            padding: 0px 8px;
             height: auto;
             text-align: center;
           }
           .working_row {
             padding: 2px 0vmin;
-            height: 3.5em;
+            height: 7rem;
             width: 100%;
             position: relative;
           }
@@ -727,6 +528,7 @@ const DrawCards = ({
               rgba(255, 255, 255, 0)
             );
             pointer-events: none;
+            z-index: 10;
           }
           .right_edge_effect {
             position: absolute;
@@ -739,63 +541,16 @@ const DrawCards = ({
               rgba(255, 255, 255, 0)
             );
             pointer-events: none;
+            z-index: 10;
           }
 
           .available_cards {
             display: flex;
-            margin-top: 2px;
+            margin-top: 6px;
             margin-bottom: 4px;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-          }
-
-          .adj {
-            background-color: var(--adj);
-            color: black;
-            border-color: black;
-          }
-
-          .noun {
-            background-color: var(--noun);
-            color: black;
-            border-color: black;
-          }
-
-          .adv {
-            background-color: var(--adv);
-            color: black;
-            border-color: black;
-          }
-
-          .verb {
-            background-color: var(--verb);
-            color: black;
-            border-color: black;
-          }
-
-          .conj {
-            background-color: var(--conj);
-            color: black;
-            border-color: black;
-          }
-
-          .prep {
-            background-color: var(--prep);
-            color: black;
-            border-color: black;
-          }
-
-          .pron {
-            background-color: var(--pron);
-            color: black;
-            border-color: black;
-          }
-
-          .intrj {
-            background-color: var(--intrj);
-            color: black;
-            border-color: black;
           }
         `}
       </style>

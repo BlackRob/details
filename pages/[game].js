@@ -19,7 +19,7 @@ const Game = ({ returnString }) => (
       <meta property="og:title" content="click the image to play the game" />
       <meta
         property="og:description"
-        content="make a sentence longer by adding details"
+        content="make the sentence better by adding details"
       />
       <meta property="fb:app_id" content="220488252548780" />
       <meta
@@ -37,7 +37,7 @@ const Game = ({ returnString }) => (
       <meta name="twitter:title" content="click the image to play the game" />
       <meta
         name="twitter:description"
-        content="make a sentence longer by adding details"
+        content="make the sentence better by adding details"
       />
       <meta
         name="twitter:image"

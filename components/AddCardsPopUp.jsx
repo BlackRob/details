@@ -1,177 +1,181 @@
-import React from 'react';
+import React from "react";
+import {
+  Modal,
+  Stack,
+  Text,
+  SimpleGrid,
+  Paper,
+  Group,
+  ActionIcon,
+  Center,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconPlus, IconMinus } from "@tabler/icons-react";
 
+const AddCardsPopUp = ({
+  showAddCardsPopUp,
+  showAddCards,
+  cards,
+  cardInc,
+  cardDec,
+}) => {
+  const cardTypes = [
+    "adj",
+    "adv",
+    "conj",
+    "pron",
+    "noun",
+    "verb",
+    "prep",
+    "intrj",
+  ];
 
-const AddCardsPopUp = ({ showAddCardsPopUp, showAddCards, cards, cardInc, cardDec }) => {
-  let showHide = "hidden"
-  if (showAddCards) {
-    showHide = "z2";
-  }
+  return (
+    <Modal
+      opened={showAddCards}
+      onClose={() => showAddCardsPopUp(false)}
+      centered
+      // CHANGED: Use 'lg' instead of fixed 55rem to respect screen width on mobile
+      size="lg"
+      padding="xl"
+      overlayProps={{ opacity: 0.5, blur: 4 }}
+      styles={{
+        body: { paddingTop: 0 },
+        header: { paddingBottom: 0 },
+        close: {
+          color: "black",
+          width: "44px",
+          height: "44px",
+          "& svg": { width: "28px !important", height: "28px !important" },
+          transition: "background-color 0.2s",
+        },
+      }}
+    >
+      <Stack align="center" mt={0}>
+        <Text
+          ta="center"
+          fw={600}
+          style={{ fontSize: "1.4rem", lineHeight: 1.2 }}
+          mb="xl"
+        >
+          Choose your cards
+        </Text>
 
-  return <div className={showHide}>
-    <div className="popup">
-      <div className="z2_title">
-        Add cards for building or sharing your sentence
-        <span className="z2_hide" onClick={() => { showAddCardsPopUp(false) }}>x</span>
-      </div>
+        <SimpleGrid
+          // CHANGED: Responsive columns (2 on mobile, 4 on desktop)
+          // This prevents the buttons from getting squashed.
+          cols={{ base: 2, sm: 4 }}
+          spacing="lg"
+          w="100%"
+        >
+          {cardTypes.map((type) => (
+            <DrawAddCardButton
+              key={type}
+              type={type}
+              cardInc={cardInc}
+              cards={cards}
+              cardDec={cardDec}
+            />
+          ))}
+        </SimpleGrid>
+      </Stack>
+    </Modal>
+  );
+};
 
-      <div className="card_button_row">
-        <div className="row4">
-          <div className="row2">
-            <DrawAddCardButton type="adj" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-            <DrawAddCardButton type="adv" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-          </div>
-          <div className="row2">
-            <DrawAddCardButton type="conj" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-            <DrawAddCardButton type="pron" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-          </div>
-        </div>
-        <div className="row4">
-          <div className="row2">
-            <DrawAddCardButton type="noun" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-            <DrawAddCardButton type="verb" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-          </div>
-          <div className="row2">
-            <DrawAddCardButton type="prep" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-            <DrawAddCardButton type="intrj" cardInc={cardInc} cards={cards} cardDec={cardDec} />
-          </div>
-        </div>
-      </div>
-    </div>
-    <style jsx>{`
-      .card_button_row {
-        margin: 1.4em 0em;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-around;
-        width: 100%;
-        height: auto;
-      }
-      .row4 {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-around;
-      }
-      .row2 {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-around;
-      }
-    `}</style>
-  </div>
-}
-
-/////////////////////// creative mode add card buttons
 const DrawAddCardButton = ({ type, cardInc, cards, cardDec }) => {
-  let activeClass = "none";
-  let downArrowStyle = "grayArrow"
+  const theme = useMantineTheme();
+
   let numType = [];
   if (Array.isArray(cards)) {
-    numType = cards.filter(element => (element.type === type && !element.working))
-  };
-  if (numType.length > 0) {
-    activeClass = type;
-    downArrowStyle = "hoverableArrow"
+    numType = cards.filter(
+      (element) => element.type === type && !element.working,
+    );
   }
+  const count = numType.length;
+  const isActive = count > 0;
 
-  return <div className={`add_card_button ${activeClass}`}>
-    <button className="display" onClick={(e) => {
-      e.preventDefault();
-      let top = numType[numType.length - 1];
-      toggleWorking(top.id)
-      addToWR(top.id);
-    }}>
-      {type}<br /> {numType.length}</button>
-    <button className="upButt hoverableArrow" onClick={() => cardInc(type)}>
-      <svg className="arrowUpButt" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
-        viewBox="0 0 50 35"><path d="M25 0 L45 35 L5 35 z" /></svg>
-    </button>
-    <button className={`downButt ${downArrowStyle}`} onClick={() => cardDec(type)}>
-      <svg className="arrowDownButt" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px"
-        viewBox="0 0 50 35"><path d="M25 35 L45 0 L5 0 z" /></svg>
-    </button>
-    <style jsx>
-      {`
-        .add_card_button {
-          display: grid;
-          grid-template-columns: 1fr auto;
-          grid-template-rows: auto auto;
-          grid-template-areas: 'l tr' 'l br';
-          padding: 0.1em;
-          margin: 0.4em;
-          width: 8em;
-          border: 1.5px solid black;
-          border-radius: 0.5vmin;
-        }
-        .display {
-          grid-area: l;
-          padding: 0 0.1em;
-          height: 100%;
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-          width: 100%;
-          font-size: 1.2em;
-          color: black;
-        }
-        .upButt, .downButt {
-          width: 3em;
-          max-width: 35px;
-          margin: 0;
-          padding: 0;
-          border: none;
-          fill: white;
-          stroke-width: 1.5;
-          stroke: black;
-        }
-        .upButt {
-          grid-area: tr;
-          padding-bottom: 1.6px;
-        }
-        .downButt {
-          grid-area: br;
-          padding-top: 1.6px;
-        }
-        .arrowUpButt {
-          width: 100%;
-        }
-        .arrowUpButt:hover {
-          fill: var(--insert);
-        }
-        .arrowDownButt {
-          width: 100%;
-        }
-        .none {
-          border: 1.5px solid rgba(128,128,128,0.45);
-          color: rgba(128,128,128,0.45);
-          padding: 0.1em;
-          pointer-events: none;
-          -webkit-box-shadow: none;
-          box-shadow: none;
-        }
-        .none button {
-          color: rgba(128,128,128,0.45);
-        }
-        .grayArrow {
-          fill: rgba(128,128,128,0.45);
-          stroke: var(--mainbg);
-          cursor: not-allowed;
-        }
-        .hoverableArrow {
-          fill: white;
-          pointer-events: auto;
-        }
-        .hoverableArrow:hover {
-          fill: var(--insert);
-        }
-      `}
-    </style>
-  </div>
-}
+  // CHANGED: Pull color directly from theme instead of CSS class
+  const activeColor = theme.colors[type]?.[0] || "#eee";
 
+  return (
+    <Paper
+      shadow="sm"
+      radius="md"
+      withBorder
+      style={{
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        // CHANGED: Use theme color if active, simple gray if not
+        backgroundColor: isActive ? activeColor : "#f8f9fa",
+        borderColor: isActive ? "black" : "#dee2e6",
+        borderWidth: isActive ? "2px" : "1px",
+        height: "8rem",
+      }}
+    >
+      {/* Top Section: Display Label & Count */}
+      <Center
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          cursor: "default",
+          color: "black",
+        }}
+      >
+        <Text
+          fw={800}
+          size="1.1rem"
+          tt="uppercase"
+          style={{ opacity: 0.7 }}
+          mb="xs"
+          mt="sm"
+        >
+          {type}
+        </Text>
+        <Text fw={900} size="2.2rem" lh={1}>
+          {count}
+        </Text>
+      </Center>
 
-export default AddCardsPopUp
+      {/* Bottom Section: Buttons */}
+      <Group
+        gap={0}
+        grow
+        h="3rem"
+        wrap="nowrap" // CHANGED: Prevent buttons from wrapping on very small screens
+        style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}
+      >
+        <ActionIcon
+          variant="transparent"
+          radius={0}
+          h="100%"
+          onClick={() => cardDec(type)}
+          disabled={count === 0}
+          style={{
+            color: "black",
+            opacity: count === 0 ? 0.2 : 0.7,
+          }}
+        >
+          <IconMinus size="1.4rem" stroke={2.5} />
+        </ActionIcon>
 
+        <ActionIcon
+          variant="transparent"
+          radius={0}
+          h="100%"
+          onClick={() => cardInc(type)}
+          style={{
+            color: "black",
+            borderLeft: "1px solid rgba(0,0,0,0.1)",
+            opacity: 0.7,
+          }}
+        >
+          <IconPlus size="1.4rem" stroke={2.5} />
+        </ActionIcon>
+      </Group>
+    </Paper>
+  );
+};
+
+export default AddCardsPopUp;

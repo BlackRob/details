@@ -1,303 +1,214 @@
 import React, { useState } from "react";
+import { useMantineTheme } from "@mantine/core";
 
-const Word = (element, follower, placing, insert, index) => {
-  // take a word object, turn it into an array of spans
-  // each span is coded to display a certain color
+// Helper to identify punctuation that should "stick" to the previous word
+const isLeftSticky = (type) => {
+  return [
+    "p_prd", // .
+    "p_com", // ,
+    "p_semi", // ;
+    "p_cln", // :
+    "p_exc", // !
+    "p_qm", // ?
+    "p_parR", // )
+    "p_Rqt", // ”
+    "p_Rsq", // ’
+    "p_dbldashR", // — (right side)
+  ].includes(type);
+};
+
+const Word = ({ element, follower, placing, insert, index, theme }) => {
+  const color =
+    element.type === "head"
+      ? theme.colors.darkCharcoal[0]
+      : element.type.startsWith("p_")
+        ? theme.colors.punc[0]
+        : theme.colors[element.type]?.[0] || "inherit";
+
+  const wordStyle = {
+    color: color,
+    position: "relative",
+    padding: "1px",
+  };
+
+  const checkSpace = (fType) => {
+    return (
+      fType === null ||
+      ["noun", "verb", "pron", "adj", "adv", "intrj", "conj", "prep"].includes(
+        fType,
+      )
+    );
+  };
+
+  const hasSpace = checkSpace(follower);
+
   if (element.type === "head") {
     return (
-      <span
-        key={element.id}
-        style={{ color: "var(--mainbg)", position: "relative", padding: "1px" }}
-      >
+      <span key={element.id} style={wordStyle}>
         &nbsp;
-        <InsertZone placing={placing} insert={insert} index={index} />
+        <InsertZone
+          placing={placing}
+          insert={insert}
+          index={index}
+          hasSpace={true}
+        />
         <PuncSpace aType={follower} />
       </span>
     );
-  } else if (element.type === "noun") {
+  } else if (element.type.startsWith("p_")) {
+    let char = "";
+    switch (element.type) {
+      case "p_com":
+        char = ",";
+        break;
+      case "p_semi":
+        char = ";";
+        break;
+      case "p_cln":
+        char = ":";
+        break;
+      case "p_prd":
+        char = ".";
+        break;
+      case "p_exc":
+        char = "!";
+        break;
+      case "p_parR":
+        char = ")";
+        break;
+      case "p_qm":
+        char = "?";
+        break;
+      case "p_dbldashR":
+        char = "—";
+        break;
+      case "p_Rqt":
+        char = "”";
+        break;
+      case "p_Rsq":
+        char = "’";
+        break;
+      case "p_dbldashL":
+        return (
+          <span key={element.id} style={wordStyle}>
+            &nbsp;—
+            <InsertZone
+              placing={placing}
+              insert={insert}
+              index={index}
+              hasSpace={false}
+            />
+          </span>
+        );
+      case "p_Lqt":
+        return (
+          <span key={element.id} style={wordStyle}>
+            &nbsp;“
+            <InsertZone
+              placing={placing}
+              insert={insert}
+              index={index}
+              hasSpace={false}
+            />
+          </span>
+        );
+      case "p_parL":
+        return (
+          <span key={element.id} style={wordStyle}>
+            &nbsp;(
+            <InsertZone
+              placing={placing}
+              insert={insert}
+              index={index}
+              hasSpace={false}
+            />
+          </span>
+        );
+      case "p_Lsq":
+        return (
+          <span key={element.id} style={wordStyle}>
+            &nbsp;‘
+            <InsertZone
+              placing={placing}
+              insert={insert}
+              index={index}
+              hasSpace={false}
+            />
+          </span>
+        );
+      default:
+        char = "";
+    }
+
     return (
-      <span
-        key={element.id}
-        style={{ color: "var(--noun)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
+      <span key={element.id} style={wordStyle}>
+        {char}
         <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "verb") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--verb)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "adj") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--adj)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "adv") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--adv)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "pron") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--pron)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "prep") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--prep)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "conj") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--conj)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "intrj") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--intrj)", position: "relative", padding: "1px" }}
-      >
-        {element.word}
-        <InsertZone placing={placing} insert={insert} index={index} />
-        <PuncSpace aType={follower} />
-      </span>
-    );
-  } else if (element.type === "p_com") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`,`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_semi") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`;`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_cln") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`:`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_prd") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`.`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_exc") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`!`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_parR") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`)`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_qm") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`?`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_dbldashR") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`—`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_Rqt") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`”`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_Rsq") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        {`’`}
-        <PuncSpace aType={follower}></PuncSpace>
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_dbldashL") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        &nbsp;{`—`}
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_Lqt") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        &nbsp;{`“`}
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_parL") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        &nbsp;{`(`}
-        <InsertZone placing={placing} insert={insert} index={index} />
-      </span>
-    );
-  } else if (element.type === "p_Lsq") {
-    return (
-      <span
-        key={element.id}
-        style={{ color: "var(--punc)", position: "relative", padding: "1px" }}
-      >
-        &nbsp;{`‘`}
-        <InsertZone placing={placing} insert={insert} index={index} />
+        <InsertZone
+          placing={placing}
+          insert={insert}
+          index={index}
+          hasSpace={hasSpace}
+        />
       </span>
     );
   } else {
-    console.log("unknown type");
-    console.log(element);
-    return <></>;
+    return (
+      <span key={element.id} style={wordStyle}>
+        {element.word}
+        <InsertZone
+          placing={placing}
+          insert={insert}
+          index={index}
+          hasSpace={hasSpace}
+        />
+        <PuncSpace aType={follower} />
+      </span>
+    );
   }
 };
 
-const InsertZone = ({ placing, insert, index }) => {
-  // class for showing the insert triangle
+const InsertZone = ({ placing, insert, index, hasSpace }) => {
   let classToUse = "hidden";
   if (placing) {
     classToUse = "visible";
   }
-  // add position adjustment class
-  if (index % 2 === 1) {
-    classToUse = classToUse + " top";
-  } else {
-    classToUse = classToUse + " bottom";
-  }
+  const rightPosition = hasSpace ? "-0.35em" : "-0.55em";
 
   return (
-    <div className={classToUse} onClick={(e) => insert(index)}>
-      <DrawCaret index={index} />
+    <div
+      className={classToUse}
+      onClick={(e) => insert(index)}
+      style={{ right: rightPosition }}
+    >
+      <DrawCaret />
       <style jsx>
         {`
           .hidden,
           .visible {
-            height: 0.8em;
-            width: 0.8em;
-            border: 0px;
             position: absolute;
-            right: -0.4em;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 1.4em;
+            width: 1em;
+            border: 0px;
             padding: 0px;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           .hidden {
             display: none;
           }
-          .visible:hover {
+          .visible {
             cursor: pointer;
           }
-          .top {
-            top: -0.2em;
-          }
-          .bottom {
-            top: 1em;
+          .visible:hover :global(.caret) {
+            background-color: #73cef4;
+            opacity: 1;
+            box-shadow: 0 0 8px #73cef4;
+            transform: scaleX(1.5);
           }
         `}
       </style>
@@ -305,55 +216,31 @@ const InsertZone = ({ placing, insert, index }) => {
   );
 };
 
-const DrawCaret = ({ index }) => {
-  const bottomTriangle = <polygon points="13 38 37 38 25 13" />;
-  const topTriangle = <polygon points="13 13 37 13 25 38" />;
-  let polygon = bottomTriangle;
-  if (index % 2 === 1) {
-    polygon = topTriangle;
-  }
-
+const DrawCaret = () => {
   return (
-    <svg
-      width="100%"
-      viewBox="0 0 50 50"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-      strokeLinejoin="round"
-    >
-      {polygon}
+    <div className="caret">
       <style jsx>
         {`
-          svg {
-            position: absolute;
-            fill: rgba(255, 51, 0, 0.4);
-            right: 0;
-          }
-          svg.hidden {
-            opacity: 0;
-          }
-          svg:hover,
-          svg:active,
-          svg:focus {
-            fill: rgba(255, 51, 0, 1);
+          .caret {
+            width: 3px;
+            height: 1.1em;
+            background-color: white;
+            opacity: 0.15;
+            border-radius: 2px;
+            transition: all 0.2s ease-in-out;
           }
         `}
       </style>
-    </svg>
+    </div>
   );
 };
 
 const PuncSpace = ({ aType }) => {
   if (
     aType === null ||
-    aType === "noun" ||
-    aType === "verb" ||
-    aType === "pron" ||
-    aType === "adj" ||
-    aType === "adv" ||
-    aType === "intrj" ||
-    aType === "conj" ||
-    aType === "prep"
+    ["noun", "verb", "pron", "adj", "adv", "intrj", "conj", "prep"].includes(
+      aType,
+    )
   ) {
     return <>&nbsp;</>;
   } else {
@@ -361,100 +248,126 @@ const PuncSpace = ({ aType }) => {
   }
 };
 
-const TheSentence = ({ sentence, placing, insert }) => (
-  <div
-    className="active_sentence_slot"
-    onDragOver={(event) => event.preventDefault()}
-  >
-    <div className="active_sentence_content">
-      <div className="active_sentence">
-        {sentence.map((element, index, elements) => {
-          let follower = null;
-          if (index < sentence.length - 1) {
-            follower = sentence[index + 1].type;
-          }
-          return Word(element, follower, placing, insert, index);
-        })}
-      </div>
-    </div>
-    <div className="active_sentence_top_effect"></div>
-    <div className="active_sentence_bottom_effect"></div>
-    <style jsx>
-      {`
-        .active_sentence_slot {
-          grid-area: mid;
-          position: relative;
-          box-sizing: border-box;
-          display: flex;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          align-items: center;
-          justify-content: center;
-        }
-        .active_sentence_top_effect {
-          position: absolute; /* Stay in place */
-          top: 0px;
-          width: 100%;
-          height: 15px;
-          background: linear-gradient(
-            to bottom,
-            rgba(40, 44, 52, 1),
-            rgba(40, 44, 52, 0)
-          );
-          pointer-events: none;
-        }
-        .active_sentence_bottom_effect {
-          position: absolute; /* Stay in place */
-          bottom: 0px;
-          width: 100%;
-          height: 15px;
-          background: linear-gradient(
-            to top,
-            rgba(40, 44, 52, 1),
-            rgba(40, 44, 52, 0)
-          );
-          pointer-events: none;
-        }
-        .active_sentence_content {
-          min-height: 0;
-          height: 100%;
-          width: auto;
-          margin: 1px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          align-content: flex-start;
-          overflow-y: scroll;
-          scrollbar-width: none;
-        }
-        .active_sentence_content::-webkit-scrollbar {
-          display: none;
-        }
+const TheSentence = ({ sentence, placing, insert }) => {
+  const theme = useMantineTheme();
 
-        .active_sentence {
-          min-height: 0;
-          height: auto;
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-items: flex-start;
-          justify-content: center;
-          align-content: flex-start;
-          font-size: 1.6em;
-          padding: 12px;
-          padding-top: 0.5em;
-          padding-bottom: 0.5em;
-          line-height: 1.6em;
-        }
-        @media screen and (orientation: landscape) {
-          .active_sentence {
-            font-size: min(1.6em, 7vmin);
+  // Logic to group words with sticky punctuation
+  const renderedElements = [];
+  let i = 0;
+  while (i < sentence.length) {
+    const group = [sentence[i]];
+    const startIndex = i;
+
+    // Look ahead: if next items are punctuation that should stick to the left, add them to this group
+    while (i + 1 < sentence.length && isLeftSticky(sentence[i + 1].type)) {
+      i++;
+      group.push(sentence[i]);
+    }
+
+    if (group.length > 1) {
+      // Render as a group that cannot break
+      renderedElements.push(
+        <span
+          key={`group-${sentence[startIndex].id}`}
+          style={{ display: "inline-block", whiteSpace: "nowrap" }}
+        >
+          {group.map((el, gIdx) => {
+            const absIndex = startIndex + gIdx;
+            let follower = null;
+            if (absIndex < sentence.length - 1) {
+              follower = sentence[absIndex + 1].type;
+            }
+            return (
+              <Word
+                key={el.id}
+                element={el}
+                follower={follower}
+                placing={placing}
+                insert={insert}
+                index={absIndex}
+                theme={theme}
+              />
+            );
+          })}
+        </span>,
+      );
+    } else {
+      // Render normally
+      let follower = null;
+      if (i < sentence.length - 1) {
+        follower = sentence[i + 1].type;
+      }
+      renderedElements.push(
+        <Word
+          key={sentence[i].id}
+          element={sentence[i]}
+          follower={follower}
+          placing={placing}
+          insert={insert}
+          index={i}
+          theme={theme}
+        />,
+      );
+    }
+    i++;
+  }
+
+  return (
+    <div
+      className="active_sentence_slot"
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        display: "block",
+      }}
+      onDragOver={(event) => event.preventDefault()}
+    >
+      <div
+        className="active_sentence_content"
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "scroll",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        <div className="active_sentence">{renderedElements}</div>
+      </div>
+
+      <style jsx>
+        {`
+          .active_sentence_slot {
+            box-sizing: border-box;
+            overflow: hidden;
           }
-        }
-      `}
-    </style>
-  </div>
-);
+          .active_sentence_content::-webkit-scrollbar {
+            display: none;
+          }
+          .active_sentence {
+            min-height: 0;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: center;
+            align-content: flex-start;
+            /* Fluid font size */
+            font-size: clamp(1.5rem, 5vmin, 2.5rem);
+            padding: 12px;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            line-height: 1.6em;
+          }
+        `}
+      </style>
+    </div>
+  );
+};
 
 export default TheSentence;

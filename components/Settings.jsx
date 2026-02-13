@@ -1,274 +1,84 @@
-import React, { useState, useRef } from "react";
+import React from "react";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  Modal,
+  ActionIcon,
+  Stack,
+  Radio,
+  Text,
+  Group,
+  Title,
+} from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 
-// Clicking on the span opens a configuration popup
-const PopUp = ({ gameMode, setGameMode }) => {
-  const [show, setShow] = useState(false);
-  const popUpRef = useRef(null);
-
-  return (
-    <div className="gearDiv">
-      <button
-        onClick={() => {
-          setShow(true);
-        }}
-      >
-        <svg
-          alt="Gear by Aya Sofya from the Noun Project"
-          ref={popUpRef}
-          onMouseEnter={() => {
-            popUpRef.current.style.animationPlayState = "running";
-            popUpRef.current.style.webkitAnimationPlayState = "running";
-          }}
-          onMouseLeave={() => {
-            popUpRef.current.style.animationPlayState = "paused";
-            popUpRef.current.style.webkitAnimationPlayState = "paused";
-          }}
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-          x="0px"
-          y="0px"
-          viewBox="0 0 100 100"
-          fillOpacity="1"
-          stroke="none"
-          marker="none"
-          visibility="visible"
-          display="inline"
-          overflow="visible"
-        >
-          <g transform="translate(0,-952.36218)">
-            <path
-              d="m 41.99461,957.36222 c -1.4459,0.0197 -2.6889,1.27519 -2.9375,2.4375 
-        l -1.625,8.96872 c -3.4821,1.3103 -6.6953,3.1189 -9.5625,5.375 l -8.4688,-3.2812 
-        c -1.3045,-0.5063 -2.9347,0.051 -3.6562,1.25 l -8.3438002,13.6562 
-        c -0.7065,1.1896 -0.4434,2.8655 0.5938,3.7813 l 6.7188002,5.9687 
-        c -0.4295,2.217 -0.7188,4.49976 -0.7188,6.84376 0,2.3379 0.2914,4.6008 0.7188,6.8125 
-        l -6.7188002,5.9687 c -1.0523,0.9189 -1.3166,2.6171 -0.5938,3.8125 
-        l 8.3438002,13.6562 c 0.731,1.1882 2.3586,1.7307 3.6562,1.2188 l 8.4688,-3.25 
-        c 2.8638,2.2517 6.0858,4.0352 9.5625,5.3437 l 1.625,8.9688 
-        c 0.2458,1.3658 1.5497,2.4616 2.9375,2.4687 l 16,0 c 1.3981,0.01 2.7211,-1.0927 2.9688,-2.4687 
-        l 1.625,-8.9688 c 3.4766,-1.3085 6.6986,-3.092 9.5624,-5.3437 
-        l 8.4688,3.25 c 1.2903,0.4956 2.8961,-0.044 3.625,-1.2188 
-        l 8.3438,-13.6562 c 0.7301,-1.1886 0.4799,-2.8855 -0.5626,-3.8125 
-        l -6.7187,-6 c 0.4188,-2.2115 0.6875,-4.4662 0.6875,-6.7812 0,-2.3211 -0.2666,-4.59556 -0.6875,-6.81246 
-        l 6.7187,-6 c 1.0273,-0.9238 1.2764,-2.5985 0.5626,-3.7813 
-        l -8.3438,-13.6562 c -0.7195,-1.1853 -2.3279,-1.74 -3.625,-1.25 
-        l -8.4688,3.2812 c -2.8672,-2.2561 -6.0804,-4.0647 -9.5624,-5.375 
-        l -1.625,-8.96872 c -0.2607,-1.36484 -1.5794,-2.44755 -2.9688,-2.4375 
-        l -16,0 z m 2.5312,6 10.9688,0 1.4688,8.03122 
-        c 0.2003,1.0667 1.0255,1.9919 2.0624,2.3125 4,1.2574 7.6266,3.3566 10.7188,6.0625 0.8214,0.7151 2.0481,0.9279 3.0625,0.5313 
-        l 7.625,-2.9375 5.7187,9.4062 -6.0937,5.4375 
-        c -0.8098,0.7259 -1.1726,1.9144 -0.9063,2.9688 0.5626,2.2888 0.8438,4.6951 
-        0.8438,7.18746 0,2.4923 -0.2812,4.8987 -0.8438,7.1875 -0.2543,1.0453 
-        0.1072,2.2171 0.9063,2.9375 l 6.125,5.4687 -5.75,9.375 -7.625,-2.9375 
-        c -1.0144,-0.3966 -2.2411,-0.1838 -3.0625,0.5312 -3.0922,2.706 
-        -6.7189,4.8052 -10.7188,6.0625 -1.0369,0.3206 -1.8621,1.2458 -2.0624,2.3125 
-        l -1.4688,8.0625 -10.9688,0 -1.4687,-8.0625 c -0.2004,-1.0667 -1.0256,-1.9919 
-        -2.0625,-2.3125 -3.9999,-1.2573 -7.6265,-3.3565 -10.7188,-6.0625 -0.8215,-0.715 
-        -2.0481,-0.9278 -3.0624,-0.5312 l -7.6563,2.9375 -5.7187,-9.375 6.125,-5.4375 
-        c 0.8099,-0.7136 1.1844,-1.8866 0.9374,-2.9375 -0.5718,-2.3158 -0.9062,-4.7308 
-        -0.9062,-7.2187 0,-2.48796 0.3344,-4.90286 0.9062,-7.21876 0.259,-1.0599 
-        -0.1168,-2.2497 -0.9374,-2.9687 l -6.125,-5.4375 5.75,-9.375 7.625,2.9375 
-        c 1.0143,0.3966 2.2409,0.1838 3.0624,-0.5313 3.0922,-2.7059 6.7189,-4.8051 
-        10.7188,-6.0625 1.0369,-0.3206 1.8621,-1.2458 2.0625,-2.3125 l 1.4687,-8.03122 
-        z m 5.4688,18.00002 c -11.5624,0 -21,9.4375 -21,20.99996 0,11.5624 9.4376,20.9999 
-        21,20.9999 11.5625,0 21,-9.4375 21,-20.9999 0,-11.56246 -9.4375,-20.99996 -21,-20.99996 
-        z m 0,6 c 8.3198,0 15,6.6801 15,14.99996 0,8.3197 -6.6802,14.9999 -15,14.9999 
-        -8.3198,0 -15,-6.6802 -15,-14.9999 0,-8.31986 6.6802,-14.99996 15,-14.99996 z"
-            />
-          </g>
-        </svg>
-      </button>
-      <SettingsPage
-        showVal={show}
-        setShow={() => {
-          setShow(false);
-        }}
-        gameMode={gameMode}
-        setGameMode={setGameMode}
-      />
-      <style jsx>
-        {`
-          svg {
-            display: inline-block;
-            box-sizing: border-box;
-            background-color: inherit;
-            padding: none;
-            fill: var(--active_outline);
-            transition: all 0.2s;
-            width: 0.85em;
-            height: 0.85em;
-            -webkit-animation: Gear-spin infinite 15s linear;
-            animation: Gear-spin infinite 15s linear;
-            -webkit-animation-play-state: paused;
-            animation-play-state: paused;
-          }
-          svg:visited {
-            fill: var(--active_outline);
-          }
-          svg:hover {
-            fill: var(--insert);
-            cursor: pointer;
-          }
-          svg:active {
-            fill: darkslategray;
-          }
-          @keyframes Gear-spin {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
-          @-webkit-keyframes Gear-spin {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
-          button {
-            border: none;
-            padding: 0 2vmin 0 7vmin;
-            margin: 0.22em 0 0 0;
-            font-weight: 300;
-            font-size: 1em;
-            color: var(--active_outline);
-            transition: all 0.2s;
-            width: auto;
-          }
-          button:hover {
-            color: var(--insert);
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-const SettingsPage = ({ showVal, setShow, gameMode, setGameMode }) => {
-  let showHide = "hidden";
-  if (showVal) {
-    showHide = "z2";
-  }
-
-  return (
-    <div className={showHide}>
-      <div className="z2_body">
-        <div className="z2_title">
-          Settings
-          <span className="z2_hide" onClick={setShow}>
-            x
-          </span>
-        </div>
-        <p>
-          <strong>Choose how you want to play:</strong>{" "}
-        </p>
-        <div className="option">
-          <GameModeButton
-            buttonMode="collaborative"
-            gameMode={gameMode}
-            setGameMode={setGameMode}
-          />
-          <strong>collaborative mode</strong>&nbsp;(default)
-        </div>
-        <div className="option">
-          <GameModeButton
-            buttonMode="creative"
-            gameMode={gameMode}
-            setGameMode={setGameMode}
-          />
-          <strong>creative mode</strong>&nbsp;
-        </div>
-        <div className="option">
-          <a
-            href="
-              https://play.google.com/store/apps/details?id=com.details_reactnative"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Get the details app for Android!
-          </a>
-        </div>
-        <div className="option">
-          <a
-            href="
-            https://apps.apple.com/app/details-the-game/id6449182298"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Get the details app for iOS!
-          </a>
-        </div>
-        {/* 
-      <div className="option"><GameModeButton buttonMode="competitive" gameMode={gameMode} setGameMode={setGameMode} />
-        <strong>competitive mode </strong>&nbsp;<i>coming soon!!!</i></div> */}
-      </div>
-      <style jsx>{`
-        .option {
-          margin-bottom: 1.2rem;
-          display: flex;
-          width: 100%;
-          justify-content: flex-start;
-          align-items: center;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-const GameModeButton = ({ buttonMode, gameMode, setGameMode }) => {
-  let checkedOrNot = "not";
-  let symbol = " ";
-  if (buttonMode === gameMode) {
-    checkedOrNot = "checked";
-    symbol = "✔";
-  }
-
-  let disabled = false;
-  if (buttonMode === "competitive") {
-    disabled = true;
-  }
+const SettingsPopUp = ({ gameMode, setGameMode }) => {
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
-      <button
-        className={checkedOrNot}
-        onClick={() => {
-          if (!disabled) {
-            setGameMode(buttonMode);
-          }
+      <ActionIcon variant="subtle" color="gray" size={52} onClick={open}>
+        <IconSettings size="2.5rem" stroke={1.5} />
+      </ActionIcon>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Settings"
+        centered
+        padding="xl" // Matches Question.jsx
+        overlayProps={{ opacity: 0.5, blur: 4 }}
+        styles={{
+          title: {
+            fontSize: "1.8rem", // Matches Question.jsx
+            fontWeight: 700,
+          },
+          close: {
+            color: "black",
+            width: "44px", // Bigger click area
+            height: "44px",
+
+            // Force the internal SVG icon to be larger
+            "& svg": {
+              width: "28px !important",
+              height: "28px !important",
+            },
+
+            transition: "background-color 0.2s",
+            // We are keeping the default Mantine hover behavior here
+          },
         }}
       >
-        {symbol}
-      </button>
-      <style jsx>{`
-        button {
-          width: 3vw;
-          height: 3vw;
-          font-size: 1.3rem;
-          line-height: 1rem;
-          text-align: center;
-          padding: 0;
-          padding-bottom: 0.1rem;
-          background-color: var(--mainbg);
-          border: 1.5px solid black;
-          border-radius: 0.5vmin;
-          margin-right: 2vw;
-        }
-        button.not:hover {
-          background-color: var(--active-outline);
-        }
-        .checked {
-          color: var(--insert);
-        }
-        button.checked:hover {
-          color: var(--insert);
-        }
-      `}</style>
+        <Stack gap="md">
+          <Title order={3} size="h4">
+            Choose how you want to play:
+          </Title>
+
+          <Radio.Group value={gameMode} onChange={setGameMode} name="gameMode">
+            <Stack gap="md">
+              <Radio
+                size="md"
+                value="collaborative"
+                label={
+                  <Group gap={5}>
+                    <Text size="md">Collaborative Mode</Text>
+                    <Text c="dimmed" size="sm">
+                      (default)
+                    </Text>
+                  </Group>
+                }
+              />
+
+              <Radio
+                size="md"
+                value="creative"
+                label={<Text size="md">Creative Mode</Text>}
+              />
+            </Stack>
+          </Radio.Group>
+        </Stack>
+      </Modal>
     </>
   );
 };
 
-export default PopUp;
+export default SettingsPopUp;
