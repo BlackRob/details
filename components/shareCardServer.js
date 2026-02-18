@@ -231,7 +231,7 @@ const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1
   );
 };
 
-export const renderShareCardSVG = async ({ sentence, cards, width = 1024, height = 1024, moveCount = null }) => {
+export const renderShareCardSVG = async ({ sentence, cards, width = 1080, height = 1080, moveCount = null }) => {
   const font = getFontData();
   
   const svg = await satori(

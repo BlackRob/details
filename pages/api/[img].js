@@ -7,7 +7,7 @@ const drawImage = async (req, res) => {
   const fallbackString =
     "1xThe~2ysent~3zlink~4yis~5wnot~6xa~7xvalid~8zsentence~9f~~";
 
-  const imageSize = 1024;
+  const imageSize = 1080;
 
   try {
     const reqString64png = req.url.split("/")[2];
