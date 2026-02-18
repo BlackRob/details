@@ -8,35 +8,43 @@ const drawImage = (req, res) => {
   let imageWidth = 1200;
   let imageHeight = 628;
 
-  const reqString64png = req.url.split("/")[2];
-  const reqString64 = reqString64png.substring(0, reqString64png.length - 4);
-  const reqString = Buffer.from(reqString64, "base64").toString("utf8");
+  try {
+    const reqString64png = req.url.split("/")[2];
+    const reqString64 = reqString64png.substring(0, reqString64png.length - 4);
+    const reqString = Buffer.from(reqString64, "base64").toString("utf8");
 
-  let pngBuffer = null;
+    let pngBuffer = null;
 
-  if (stringIsValid({ sentenceString: reqString })) {
-    let data = JSON.parse(strToGameState({ canvasURLstring: reqString }));
-    console.log("from api, string is valid");
-    pngBuffer = renderShareCard({
-      sentence: data.sentence,
-      cards: data.cards,
-      width: imageWidth,
-      height: imageHeight,
-    });
-  } else {
-    let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
-    console.log("from api, string is not valid");
-    pngBuffer = renderShareCard({
-      sentence: data.sentence,
-      cards: data.cards,
-      width: imageWidth,
-      height: imageHeight,
-    });
+    if (stringIsValid({ sentenceString: reqString })) {
+      let data = JSON.parse(strToGameState({ canvasURLstring: reqString }));
+      console.log("from api, string is valid");
+      pngBuffer = renderShareCard({
+        sentence: data.sentence,
+        cards: data.cards,
+        width: imageWidth,
+        height: imageHeight,
+      });
+    } else {
+      let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
+      console.log("from api, string is not valid");
+      pngBuffer = renderShareCard({
+        sentence: data.sentence,
+        cards: data.cards,
+        width: imageWidth,
+        height: imageHeight,
+      });
+    }
+
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "image/png");
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+    res.end(pngBuffer);
+  } catch (err) {
+    console.error("Error generating image:", err);
+    res.statusCode = 500;
+    res.setHeader("Content-Type", "text/plain");
+    res.end(`Error generating image: ${err.message}`);
   }
-
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "image/png");
-  res.end(pngBuffer);
 };
 
 export default drawImage;
