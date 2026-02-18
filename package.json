@@ -10,15 +10,12 @@
     "export": "npm run build && next export"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
     "@mantine/core": "^8.3.14",
     "@mantine/hooks": "^8.3.14",
     "@resvg/resvg-js": "^2.6.2",
     "@tabler/icons-react": "^3.36.1",
     "@types/react": "^18.2.48",
     "@vercel/og": "^0.8.6",
-    "firebase-admin": "^13.6.1",
-    "frontmatter-markdown-loader": "^3.7.0",
     "mp4-muxer": "^5.2.2",
     "next": "^12.3.4",
     "react": "^18.1.0",
@@ -29,7 +26,6 @@
   "devDependencies": {
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
-    "file-loader": "^6.2.0",
     "typescript": "5.9.3"
   }
 }
