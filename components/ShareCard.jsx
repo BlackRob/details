@@ -16,9 +16,9 @@ const getTypeColor = (type) => typeColors[type] || typeColors.default;
 
 const cardTypes = ["adj", "adv", "conj", "pron", "noun", "verb", "prep", "intrj"];
 
-const Header = ({ width }) => {
+const Header = ({ width, height }) => {
   const fontSize = Math.floor(width / 30);
-  const bannerHeight = Math.floor(width / 18);
+  const bannerHeight = Math.floor(height / 8);
   const margin = Math.floor(width / 60);
   
   return (
@@ -70,9 +70,9 @@ const Word = ({ word, type, fontSize }) => {
   );
 };
 
-const Sentence = ({ sentence, width }) => {
+const Sentence = ({ sentence, width, height }) => {
   const margin = Math.floor(width / 60);
-  const fontSize = Math.floor(width / 20);
+  const fontSize = Math.floor(height / 14);
   
   const words = Object.values(sentence);
   
@@ -100,10 +100,10 @@ const Sentence = ({ sentence, width }) => {
   );
 };
 
-const CardRow = ({ cards, width }) => {
+const CardRow = ({ cards, width, height }) => {
   const margin = Math.floor(width / 60);
-  const cardRowHeight = Math.floor(width / 13.33);
-  const fontSize = Math.floor(width / 40);
+  const cardRowHeight = Math.floor(height / 7);
+  const fontSize = Math.floor(height / 20);
   const cardWidth = Math.floor(width / 9.4);
   const gap = Math.floor((width - margin * 2 - 8 * cardWidth) / 7);
   const radius = Math.floor(width / 150);
@@ -169,9 +169,9 @@ const CardRow = ({ cards, width }) => {
   );
 };
 
-const MoveCounter = ({ moveCount, width }) => {
+const MoveCounter = ({ moveCount, width, height }) => {
   const margin = Math.floor(width / 60);
-  const fontSize = Math.floor(width / 40);
+  const fontSize = Math.floor(height / 20);
   const spacing = Math.floor(fontSize * 0.5);
   
   return (
@@ -195,8 +195,8 @@ const MoveCounter = ({ moveCount, width }) => {
 
 export const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1080 }) => {
   const margin = Math.floor(width / 60);
-  const bannerHeight = Math.floor(width / 18);
-  const spacing = Math.floor(width / 55);
+  const bannerHeight = Math.floor(height / 8);
+  const spacing = Math.floor(height / 30);
   
   return (
     <div
@@ -210,17 +210,17 @@ export const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, hei
         boxSizing: "border-box",
       }}
     >
-      <Header width={width} />
+      <Header width={width} height={height} />
       
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <Sentence sentence={sentence} width={width} />
+        <Sentence sentence={sentence} width={width} height={height} />
       </div>
       
       {moveCount !== null && (
-        <MoveCounter moveCount={moveCount} width={width} />
+        <MoveCounter moveCount={moveCount} width={width} height={height} />
       )}
       
-      <CardRow cards={cards} width={width} />
+      <CardRow cards={cards} width={width} height={height} />
     </div>
   );
 };
