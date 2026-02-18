@@ -7,8 +7,7 @@ const drawImage = async (req, res) => {
   const fallbackString =
     "1xThe~2ysent~3zlink~4yis~5wnot~6xa~7xvalid~8zsentence~9f~~";
 
-  let imageWidth = 1200;
-  let imageHeight = 628;
+  const imageSize = 600;
 
   try {
     const reqString64png = req.url.split("/")[2];
@@ -21,16 +20,16 @@ const drawImage = async (req, res) => {
       svg = await renderShareCardSVG({
         sentence: data.sentence,
         cards: data.cards,
-        width: imageWidth,
-        height: imageHeight,
+        width: imageSize,
+        height: imageSize,
       });
     } else {
       let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
       svg = await renderShareCardSVG({
         sentence: data.sentence,
         cards: data.cards,
-        width: imageWidth,
-        height: imageHeight,
+        width: imageSize,
+        height: imageSize,
       });
     }
 

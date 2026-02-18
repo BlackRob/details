@@ -26,8 +26,8 @@ const Game = ({ returnString }) => (
         property="og:image"
         content={`https://details.grumbly.games/api/${returnString}.svg`}
       />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="628" />
+      <meta property="og:image:width" content="600" />
+      <meta property="og:image:height" content="600" />
 
       {/* <!-- Twitter Meta Tags --> */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -43,7 +43,7 @@ const Game = ({ returnString }) => (
       />
       <meta
         name="twitter:image"
-        content={`https://details.grumbly.games/api/square/${returnString}.svg`}
+        content={`https://details.grumbly.games/api/${returnString}.svg`}
       />
       <meta name="twitter:image:width" content="600" />
       <meta name="twitter:image:height" content="600" />
