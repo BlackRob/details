@@ -24,7 +24,7 @@ const Game = ({ returnString }) => (
       <meta property="fb:app_id" content="220488252548780" />
       <meta
         property="og:image"
-        content={`https://details.grumbly.games/api/${returnString}.png`}
+        content={`https://details.grumbly.games/.netlify/images?url=/api/${returnString}.svg&w=1200&h=628&fm=png`}
       />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="628" />
@@ -43,7 +43,7 @@ const Game = ({ returnString }) => (
       />
       <meta
         name="twitter:image"
-        content={`https://details.grumbly.games/api/square/${returnString}.png`}
+        content={`https://details.grumbly.games/.netlify/images?url=/api/square/${returnString}.svg&w=600&h=600&fm=png`}
       />
       <meta name="twitter:image:width" content="600" />
       <meta name="twitter:image:height" content="600" />
