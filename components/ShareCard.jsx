@@ -193,7 +193,7 @@ const MoveCounter = ({ moveCount, width }) => {
   );
 };
 
-export const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1080 }) => {
+export const ShareCard = ({ sentence, cards, moveCount = null, width = 1024, height = 1024 }) => {
   const margin = Math.floor(width / 60);
   const bannerHeight = Math.floor(width / 12);
   const spacing = Math.floor(width / 40);

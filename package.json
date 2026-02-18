@@ -23,6 +23,7 @@
     "satori": "^0.10.11"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.15.8",
     "@types/node": "^18.19.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.0",
