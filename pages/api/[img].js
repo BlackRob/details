@@ -8,7 +8,8 @@ const drawImage = (req, res) => {
   let imageWidth = 1200;
   let imageHeight = 628;
 
-  const reqString64 = req.url.split("/")[2];
+  const reqString64png = req.url.split("/")[2];
+  const reqString64 = reqString64png.substring(0, reqString64png.length - 4);
   const reqString = Buffer.from(reqString64, "base64").toString("utf8");
 
   let pngBuffer = null;
