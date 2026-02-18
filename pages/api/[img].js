@@ -1,6 +1,8 @@
 import { renderShareCard } from "../../components/shareCardServer";
 import { stringIsValid, strToGameState } from "../../components/gameStatePack";
 
+export const dynamic = "force-dynamic";
+
 const drawImage = (req, res) => {
   const fallbackString =
     "1xThe~2ysent~3zlink~4yis~5wnot~6xa~7xvalid~8zsentence~9f~~";
@@ -13,12 +15,10 @@ const drawImage = (req, res) => {
     const reqString64 = reqString64png.substring(0, reqString64png.length - 4);
     const reqString = Buffer.from(reqString64, "base64").toString("utf8");
 
-    let pngBuffer = null;
-
     if (stringIsValid({ sentenceString: reqString })) {
       let data = JSON.parse(strToGameState({ canvasURLstring: reqString }));
       console.log("from api, string is valid");
-      pngBuffer = renderShareCard({
+      return renderShareCard({
         sentence: data.sentence,
         cards: data.cards,
         width: imageWidth,
@@ -27,23 +27,18 @@ const drawImage = (req, res) => {
     } else {
       let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
       console.log("from api, string is not valid");
-      pngBuffer = renderShareCard({
+      return renderShareCard({
         sentence: data.sentence,
         cards: data.cards,
         width: imageWidth,
         height: imageHeight,
       });
     }
-
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "image/png");
-    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-    res.end(pngBuffer);
   } catch (err) {
     console.error("Error generating image:", err);
     res.statusCode = 500;
     res.setHeader("Content-Type", "text/plain");
-    res.end(`Error generating image: ${err.message}`);
+    return res.end(`Error generating image: ${err.message}`);
   }
 };
 
