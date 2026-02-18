@@ -12,7 +12,6 @@
   "dependencies": {
     "@mantine/core": "^8.3.14",
     "@mantine/hooks": "^8.3.14",
-    "@resvg/resvg-js": "^2.6.2",
     "@tabler/icons-react": "^3.36.1",
     "@types/react": "^18.2.48",
     "@vercel/og": "^0.8.6",

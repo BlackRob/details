@@ -1,5 +1,4 @@
-import satori from "satori";
-import { Resvg } from "@resvg/resvg-js";
+import { ImageResponse } from "@vercel/og";
 import fs from "fs";
 import path from "path";
 
@@ -208,7 +207,6 @@ const MoveCounter = ({ moveCount, width }) => {
 
 const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1080 }) => {
   const margin = Math.floor(width / 60);
-  const bannerHeight = Math.floor(width / 18);
   
   return (
     <div
@@ -240,7 +238,7 @@ const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1
 export const renderShareCard = ({ sentence, cards, width = 1080, height = 1080, moveCount = null }) => {
   const font = getFontData();
   
-  const svg = satori(
+  return new ImageResponse(
     <ShareCard sentence={sentence} cards={cards} moveCount={moveCount} width={width} height={height} />,
     {
       width,
@@ -255,7 +253,4 @@ export const renderShareCard = ({ sentence, cards, width = 1080, height = 1080, 
       ],
     }
   );
-  
-  const resvg = new Resvg(svg);
-  return resvg.render().asPng();
 };
