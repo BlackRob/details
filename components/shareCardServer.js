@@ -1,16 +1,4 @@
 import { ImageResponse } from "@vercel/og";
-import fs from "fs";
-import path from "path";
-
-let fontData = null;
-
-const getFontData = () => {
-  if (fontData) return fontData;
-  
-  const fontPath = path.join(process.cwd(), "public/Roboto-Regular.ttf");
-  fontData = fs.readFileSync(fontPath);
-  return fontData;
-};
 
 const typeColors = {
   conj: "#ffe377",
@@ -236,21 +224,11 @@ const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1
 };
 
 export const renderShareCard = ({ sentence, cards, width = 1080, height = 1080, moveCount = null }) => {
-  const font = getFontData();
-  
   return new ImageResponse(
     <ShareCard sentence={sentence} cards={cards} moveCount={moveCount} width={width} height={height} />,
     {
       width,
       height,
-      fonts: [
-        {
-          name: "Roboto",
-          data: font,
-          weight: 400,
-          style: "normal",
-        },
-      ],
     }
   );
 };
