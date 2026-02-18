@@ -1,12 +1,3 @@
 module.exports = {
-  webpack: (cfg, { isServer }) => {
-    if (isServer) {
-      cfg.externals = cfg.externals || [];
-      cfg.externals.push({
-        sharp: "commonjs sharp",
-      });
-    }
-    
-    return cfg;
-  },
+  // Config removed - was for old Next.js 12, not needed for v14
 };

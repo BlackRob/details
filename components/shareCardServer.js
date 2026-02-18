@@ -1,16 +1,10 @@
 import satori from "satori";
-import sharp from "sharp";
 import fs from "fs";
 import path from "path";
 
-let fontData = null;
-
 const getFontData = () => {
-  if (fontData) return fontData;
-  
   const fontPath = path.join(process.cwd(), "public/Roboto-Regular.ttf");
-  fontData = fs.readFileSync(fontPath);
-  return fontData;
+  return fs.readFileSync(fontPath);
 };
 
 const typeColors = {
@@ -236,7 +230,7 @@ const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1
   );
 };
 
-export const renderShareCard = async ({ sentence, cards, width = 1080, height = 1080, moveCount = null }) => {
+export const renderShareCardSVG = async ({ sentence, cards, width = 1080, height = 1080, moveCount = null }) => {
   const font = getFontData();
   
   const svg = await satori(
@@ -255,6 +249,5 @@ export const renderShareCard = async ({ sentence, cards, width = 1080, height = 
     }
   );
   
-  const pngBuffer = await sharp(Buffer.from(svg)).png().toBuffer();
-  return pngBuffer;
+  return svg;
 };

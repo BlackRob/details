@@ -1,4 +1,4 @@
-import { renderShareCard } from "../../../components/shareCardServer";
+import { renderShareCardSVG } from "../../../components/shareCardServer";
 import {
   stringIsValid,
   strToGameState,
@@ -18,10 +18,10 @@ const square = async (req, res) => {
     const reqString64 = reqString64png.substring(0, reqString64png.length - 4);
     const reqString = Buffer.from(reqString64, "base64").toString("utf8");
 
-    let pngBuffer;
+    let svg;
     if (stringIsValid({ sentenceString: reqString })) {
       let data = JSON.parse(strToGameState({ canvasURLstring: reqString }));
-      pngBuffer = await renderShareCard({
+      svg = await renderShareCardSVG({
         sentence: data.sentence,
         cards: data.cards,
         width: imageWidth,
@@ -29,7 +29,7 @@ const square = async (req, res) => {
       });
     } else {
       let data = JSON.parse(strToGameState({ canvasURLstring: fallbackString }));
-      pngBuffer = await renderShareCard({
+      svg = await renderShareCardSVG({
         sentence: data.sentence,
         cards: data.cards,
         width: imageWidth,
@@ -37,9 +37,9 @@ const square = async (req, res) => {
       });
     }
 
-    res.setHeader("Content-Type", "image/png");
+    res.setHeader("Content-Type", "image/svg+xml");
     res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-    return res.end(pngBuffer);
+    return res.send(svg);
   } catch (err) {
     console.error("Error generating square image:", err);
     res.statusCode = 500;
