@@ -1,5 +1,5 @@
 import { Muxer, ArrayBufferTarget } from "mp4-muxer";
-import { drawVideoFrame } from "./drawVideoFrame";
+import { renderShareCard } from "./shareCardRenderer";
 
 /**
  * Generates an MP4 video of the game history.
@@ -110,11 +110,10 @@ export const generateVideo = async (
     for (let i = 0; i < history.length; i++) {
       const state = history[i];
 
-      // Generate the visual using the dedicated Video Drawer
-      const dataUrl = drawVideoFrame({
+      const dataUrl = await renderShareCard({
         sentence: state.sentence,
         cards: state.cards,
-        moveCount: i, // Frame 0 = Move 0, Frame 1 = Move 1, etc.
+        moveCount: i,
       });
 
       // Draw to video canvas

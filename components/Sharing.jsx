@@ -19,7 +19,7 @@ import {
   IconMovie,
   IconPhoto,
 } from "@tabler/icons-react";
-import { drawCanvas } from "./drawCanvas";
+import { renderShareCard } from "./shareCardRenderer";
 import { generateVideo } from "./generateVideo";
 import { gameStateToStr } from "./gameStatePack";
 
@@ -60,19 +60,37 @@ const SharingBody = ({ sentence, cards, undoStack }) => {
   const [videoUrl, setVideoUrl] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
+  const [imageDataUrl, setImageDataUrl] = useState(null);
 
-  // 1. Generate Static Image (Instant)
-  const { canvasDataURL, gameURL, readableSentence } = useMemo(() => {
-    const canvasDataURL = drawCanvas({ sentence, cards });
+  const gameURL = useMemo(() => {
     const gameAsString = gameStateToStr({ sentence, cards });
-    const readableSentence = makeReadable({ sentence });
-
     const canvasURLstring = Buffer.from(gameAsString, "utf8").toString(
       "base64",
     );
-    const gameURL = `https://details.grumbly.games/${canvasURLstring}`;
+    return `https://details.grumbly.games/${canvasURLstring}`;
+  }, [sentence, cards]);
 
-    return { canvasDataURL, gameURL, readableSentence };
+  const readableSentence = useMemo(() => makeReadable({ sentence }), [sentence]);
+
+  useEffect(() => {
+    let active = true;
+    
+    const generateImage = async () => {
+      try {
+        const dataUrl = await renderShareCard({ sentence, cards });
+        if (active) {
+          setImageDataUrl(dataUrl);
+        }
+      } catch (e) {
+        console.error("Image generation failed", e);
+      }
+    };
+    
+    generateImage();
+    
+    return () => {
+      active = false;
+    };
   }, [sentence, cards]);
 
   // 2. Generate Video (Async on mount)
@@ -166,18 +184,24 @@ const SharingBody = ({ sentence, cards, undoStack }) => {
             height: "100%",
           }}
         >
-          <Image
-            src={canvasDataURL}
-            width={1080}
-            height={1080}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              display: "block",
-            }}
-            alt="sentence as image"
-          />
+          {imageDataUrl ? (
+            <Image
+              src={imageDataUrl}
+              width={1080}
+              height={1080}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                display: "block",
+              }}
+              alt="sentence as image"
+            />
+          ) : (
+            <Center style={{ width: "100%", height: "100%" }}>
+              <Loader color="white" type="bars" />
+            </Center>
+          )}
         </Box>
 
         {/* 2. VIDEO VIEW */}
@@ -200,19 +224,30 @@ const SharingBody = ({ sentence, cards, undoStack }) => {
             />
           ) : (
             <>
-              <Image
-                src={canvasDataURL}
-                width={1080}
-                height={1080}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  display: "block",
-                  opacity: 0.5,
-                }}
-                alt="generating video preview"
-              />
+              {imageDataUrl ? (
+                <Image
+                  src={imageDataUrl}
+                  width={1080}
+                  height={1080}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                    opacity: 0.5,
+                  }}
+                  alt="generating video preview"
+                />
+              ) : (
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "#282c34",
+                    opacity: 0.5,
+                  }}
+                />
+              )}
               <Center
                 style={{
                   position: "absolute",

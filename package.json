@@ -13,18 +13,18 @@
     "@emotion/react": "^11.14.0",
     "@mantine/core": "^8.3.14",
     "@mantine/hooks": "^8.3.14",
-    "@mapbox/node-pre-gyp": "^1.0.11",
+    "@resvg/resvg-js": "^2.6.2",
     "@tabler/icons-react": "^3.36.1",
     "@types/react": "^18.2.48",
     "@vercel/og": "^0.8.6",
-    "canvas": "^2.11.0",
     "firebase-admin": "^13.6.1",
     "frontmatter-markdown-loader": "^3.7.0",
     "mp4-muxer": "^5.2.2",
     "next": "^12.3.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-error-boundary": "^4.0.12"
+    "react-error-boundary": "^4.0.12",
+    "satori": "^0.19.2"
   },
   "devDependencies": {
     "eslint": "8.17.0",
