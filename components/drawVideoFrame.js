@@ -136,7 +136,7 @@ export const drawVideoFrame = ({ sentence, cards, moveCount = 0 }) => {
   ctx.textAlign = "right";
   ctx.font = `${sF}px Roboto, sans-serif`;
   const moveText = `moves: ${moveCount}`;
-  ctx.fillText(moveText, cw - margin, rb - sF / 2);
+  ctx.fillText(moveText, cw - margin, rb - sF);
   ctx.restore();
 
   // Card Row

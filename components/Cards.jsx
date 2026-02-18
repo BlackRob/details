@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import {
   SimpleGrid,
   UnstyledButton,
@@ -31,7 +31,8 @@ const DrawWorkingRowContent = ({
   gameMode,
 }) => {
   let content = "";
-  let rando = randomInterjection();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const rando = useMemo(() => randomInterjection(), [winner]);
 
   if (undoable && gameMode !== "creative") {
     content = (
