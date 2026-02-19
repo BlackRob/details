@@ -179,18 +179,13 @@ const CardRow = ({ cards, width }) => {
 const MoveCounter = ({ moveCount, width }) => {
   const margin = Math.floor(width / 60);
   const fontSize = Math.floor(width / 35);
-  const spacing = Math.floor(fontSize * 0.5);
   
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        width: "100%",
-        paddingLeft: margin,
-        paddingRight: margin,
-        boxSizing: "border-box",
-        marginBottom: spacing,
+        position: "absolute",
+        right: margin,
+        bottom: margin,
       }}
     >
       <span style={{ color: "lightgray", fontSize, fontFamily: "Roboto" }}>
@@ -202,7 +197,6 @@ const MoveCounter = ({ moveCount, width }) => {
 
 const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1080 }) => {
   const margin = Math.floor(width / 60);
-  const bannerHeight = Math.floor(width / 12);
   
   return (
     <div
@@ -214,6 +208,7 @@ const ShareCard = ({ sentence, cards, moveCount = null, width = 1080, height = 1
         backgroundColor: "#282c34",
         padding: margin,
         boxSizing: "border-box",
+        position: "relative",
       }}
     >
       <Header width={width} />
